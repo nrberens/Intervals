@@ -18,25 +18,26 @@ public class SmoothFollow : MonoBehaviour {
 	    if (!target)
 	        return;
 
-	    float wantedRotationAngle = target.eulerAngles.y;
+	    //float wantedRotationAngle = target.eulerAngles.y;
 	    float wantedHeight = target.position.y + height;
 
-	    float currentRotationAngle = transform.eulerAngles.y;
+	    //float currentRotationAngle = transform.eulerAngles.y;
 	    float currentHeight = transform.position.y;
 
         //Damp the rotation around the y-axis
-	    currentRotationAngle = Mathf.LerpAngle(currentRotationAngle, wantedRotationAngle, rotationDamping*Time.deltaTime);
+	    //currentRotationAngle = Mathf.LerpAngle(currentRotationAngle, wantedRotationAngle, rotationDamping*Time.deltaTime);
         
         //Damp the height
 	    currentHeight = Mathf.Lerp(currentHeight, wantedHeight, heightDamping*Time.deltaTime);
 
         //Convert the angle into a rotation
-	    Quaternion currentRotation = Quaternion.Euler(0, currentRotationAngle, 0);
+	    //Quaternion currentRotation = Quaternion.Euler(0, currentRotationAngle, 0);
 
         //Set the position of the camera on the x-z plane to:
         //distance meters behind the target
 	    transform.position = target.position;
-	    transform.position -= currentRotation*Vector3.forward*distance;
+	    //transform.position -= currentRotation*Vector3.forward*distance;
+	    transform.position -= Vector3.forward*distance;
 
         //Set the height of the camera
 	    transform.position = new Vector3(transform.position.x, currentHeight, transform.position.z);

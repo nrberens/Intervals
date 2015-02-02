@@ -1,34 +1,75 @@
 ﻿using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 using System.Collections;
 using UnityEngine.SocialPlatforms;
 
 public class World : MonoBehaviour {
+    public GameObject player;
+    public PlayerController playerController;
+
+    private const int worldLength = 10;
 
     private const int BlockWidth = 20;
     private const int BlockHeight = 3;
 
-    public GameObject[] worldBlocks = new GameObject[10];
+    public GameObject[] worldBlockPrefabs = new GameObject[10];
+    public GameObject[] worldBlocks; //to be initialized using queue.length in GenerateInitialWorld()
+    public GameObject[,] nodes = new GameObject[10,7];
 
-    private Queue<GameObject> worldQ = new Queue<GameObject>();
-    private Vector3 InitPosition = new Vector3(0, -1, 0);
+    private Vector3 InitBlockPosition = new Vector3(0, -1, 0);
 
 	// Use this for initialization
-	void Start () {
+	void Start () { 
+        //CACHE CONTROLLER SCRIPTS
+	    playerController = player.GetComponent<PlayerController>();
+
+        //GENERATE WORLD
 	    GenerateInitialWorld();
+	    GenerateNodeArray();
+
+        //PLACE OBJECTS
+        //find spawn point
+        //FOR NOW HARDCODE IN 0,0
+	    GameObject spawnPoint = nodes[0, 0];
+	    MoveNode spawnScript = GetComponent<MoveNode>();
+	    //instantiate player at spawn point
+	    player.transform.position = spawnPoint.transform.position;
+	    playerController.currentNode = spawnPoint;
 	}
 
     private void GenerateInitialWorld() {
-        Vector3 thisPosition = InitPosition;
-        for (int i = 0; i < 10; i++) {
+        Vector3 thisPosition = InitBlockPosition;
+        Queue<GameObject> queue = new Queue<GameObject>();
+
+        for (int i = 0; i < worldLength; i++) {
             int randomBlock = Random.Range(0, 10);
-            GameObject worldBlock = (GameObject)Instantiate(worldBlocks[randomBlock]);
+            GameObject worldBlock = (GameObject)Instantiate(worldBlockPrefabs[randomBlock]);
+            WorldBlock b = worldBlock.GetComponent<WorldBlock>();
+            b.id = i;
+            worldBlock.transform.parent = this.transform;
+            worldBlock.transform.SetSiblingIndex(i);
             worldBlock.transform.position = thisPosition;
-            worldQ.Enqueue(worldBlock);
             thisPosition.z += BlockHeight;
         }
+
+        //worldBlocks = queue.ToArray();
     }
 	
+    private void GenerateNodeArray() {
+        foreach (Transform block in transform) {
+            int node_id = 0;
+            foreach (Transform node in block.transform) {
+                WorldBlock b = block.GetComponent<WorldBlock>(); 
+                MoveNode n = node.GetComponent<MoveNode>(); 
+                node.SetSiblingIndex(node_id);
+                n.id = node_id;
+                nodes[b.id, n.id] = node.gameObject;
+                node_id++;
+            }
+        }
+    }
+
 	// Update is called once per frame
 	void Update () {
 	

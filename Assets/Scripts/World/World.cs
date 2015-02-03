@@ -5,8 +5,9 @@ using System.Collections;
 using UnityEngine.SocialPlatforms;
 
 public class World : MonoBehaviour {
-    public GameObject player;
-    public PlayerController playerController;
+    //public GameObject player;
+    //public PlayerController playerController;
+    public PlayerController player;
 
     private const int worldLength = 10;
 
@@ -22,7 +23,6 @@ public class World : MonoBehaviour {
 	// Use this for initialization
 	void Start () { 
         //CACHE CONTROLLER SCRIPTS
-	    playerController = player.GetComponent<PlayerController>();
 
         //GENERATE WORLD
 	    GenerateInitialWorld();
@@ -34,7 +34,7 @@ public class World : MonoBehaviour {
 	    MoveNode spawnPoint = nodes[0, 0];
 	    //instantiate player at spawn point
 	    player.transform.position = spawnPoint.transform.position;
-	    playerController.currentNode = spawnPoint;
+	    player.currentNode = spawnPoint;
 	}
 
     private void GenerateInitialWorld() {

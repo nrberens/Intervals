@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngineInternal;
 
-public class PlayerController : MonoBehaviour, IMover, IActor {
+public class PlayerController : MonoBehaviour, IMover {
 
     private float moveX, moveZ;
     private float moveSpeed = 4.0f;

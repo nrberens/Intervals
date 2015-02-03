@@ -3,13 +3,13 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngineInternal;
 
-public class PlayerController : MonoBehaviour {
+public class PlayerController : MonoBehaviour, IMover, IActor {
 
     private float moveX, moveZ;
     private float moveSpeed = 4.0f;
 
     public Transform weapon;    //currently equipped weapon
-    public GameObject currentNode;
+    public MoveNode currentNode { get; set; }
 
 	// Use this for initialization
 	void Start () {
@@ -23,9 +23,9 @@ public class PlayerController : MonoBehaviour {
         moveZ = Input.GetAxis("Vertical");
 
 	    if (moveX > 0) //if positive vertical, move forward
-	        MoveForward();
+	        MoveForward(1);
         else if (moveX < 0) //if negative vertical, move backward
-            MoveBackward();
+            MoveBackward(1);
 
 
         //if positive horizontal move right?
@@ -41,16 +41,33 @@ public class PlayerController : MonoBehaviour {
         } 
 	}
 
-    private void MoveBackward() {
-        throw new System.NotImplementedException();
-    }
-
-    private void MoveForward() {
-        throw new System.NotImplementedException();
-    }
-
     void LateUpdate() {
         //update player position
+        GetCurrentNode();
+    }
+
+
+    public void MoveForward(int distance) {
+        //throw new System.NotImplementedException();
+        int x = currentNode.x;
+        int y = currentNode.y;
         
+        // TODO implement interface for player to talk to world
+    }
+
+    public void MoveBackward(int distance) {
+        throw new System.NotImplementedException();
+    }
+
+    public void MoveLeft(int distance) {
+        throw new System.NotImplementedException();
+    }
+
+    public void MoveRight(int distance) {
+        throw new System.NotImplementedException();
+    }
+
+    public void GetCurrentNode() {
+        throw new System.NotImplementedException();
     }
 }

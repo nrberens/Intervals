@@ -15,7 +15,7 @@ public class World : MonoBehaviour {
 
     public GameObject[] worldBlockPrefabs = new GameObject[10];
     public GameObject[] worldBlocks; //to be initialized using queue.length in GenerateInitialWorld()
-    public GameObject[,] nodes = new GameObject[10,7];
+    public MoveNode[,] nodes = new MoveNode[10,7];
 
     private Vector3 InitBlockPosition = new Vector3(0, -1, 0);
 
@@ -31,8 +31,7 @@ public class World : MonoBehaviour {
         //PLACE OBJECTS
         //find spawn point
         //FOR NOW HARDCODE IN 0,0
-	    GameObject spawnPoint = nodes[0, 0];
-	    MoveNode spawnScript = GetComponent<MoveNode>();
+	    MoveNode spawnPoint = nodes[0, 0];
 	    //instantiate player at spawn point
 	    player.transform.position = spawnPoint.transform.position;
 	    playerController.currentNode = spawnPoint;
@@ -64,7 +63,7 @@ public class World : MonoBehaviour {
                 MoveNode n = node.GetComponent<MoveNode>(); 
                 node.SetSiblingIndex(node_id);
                 n.id = node_id;
-                nodes[b.id, n.id] = node.gameObject;
+                nodes[b.id, n.id] = n;
                 node_id++;
             }
         }

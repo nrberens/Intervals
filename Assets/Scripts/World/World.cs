@@ -16,7 +16,7 @@ public class World : MonoBehaviour {
 
     public GameObject[] worldBlockPrefabs = new GameObject[10];
     public GameObject[] worldBlocks; //to be initialized using queue.length in GenerateInitialWorld()
-    public MoveNode[,] nodes = new MoveNode[10,7];
+    public MoveNode[,] nodes = new MoveNode[7,10];
 
     private Vector3 InitBlockPosition = new Vector3(0, -1, 0);
 
@@ -63,7 +63,7 @@ public class World : MonoBehaviour {
                 MoveNode n = node.GetComponent<MoveNode>(); 
                 node.SetSiblingIndex(node_id);
                 n.id = node_id;
-                nodes[b.id, n.id] = n;
+                nodes[n.id, b.id] = n;
                 node_id++;
             }
         }

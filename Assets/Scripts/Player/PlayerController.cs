@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngineInternal;
@@ -9,10 +10,20 @@ public class PlayerController : MonoBehaviour, IMover {
     private float moveSpeed = 4.0f;
 
     public Transform weapon;    //currently equipped weapon
+    
+    //IMover properties
+    public MoveNode[,] nodes { get; private set; }
+    
     public MoveNode currentNode { get; set; }
 
+    //---------------------------------------------//
+    
 	// Use this for initialization
-	void Start () {
+	void Start ()
+	{
+        //Cache node grid
+        //This is smelly code, I think
+	    nodes = GameObject.Find("World").GetComponent<World>().nodes;
 	}
 	
 	// Update is called once per frame
@@ -23,8 +34,12 @@ public class PlayerController : MonoBehaviour, IMover {
         moveZ = Input.GetAxis("Vertical");
 
 	    if (moveX > 0) //if positive vertical, move forward
-	        MoveForward(1);
+	        MoveLeft(1);
         else if (moveX < 0) //if negative vertical, move backward
+            MoveRight(1);
+        else if (moveZ > 0)
+            MoveForward(1);
+        else if (moveZ < 0)
             MoveBackward(1);
 
 
@@ -43,7 +58,7 @@ public class PlayerController : MonoBehaviour, IMover {
 
     void LateUpdate() {
         //update player position
-        GetCurrentNode();
+        //DetectCurrentNode();
     }
 
 
@@ -51,23 +66,43 @@ public class PlayerController : MonoBehaviour, IMover {
         //throw new System.NotImplementedException();
         int x = currentNode.x;
         int y = currentNode.y;
-        
-        // TODO implement interface for player to talk to world
+
+        MoveNode targetNode = nodes[x, y + distance];
+        currentNode = targetNode;
+        transform.position = currentNode.transform.position;
     }
 
     public void MoveBackward(int distance) {
-        throw new System.NotImplementedException();
+        //throw new System.NotImplementedException();
+        int x = currentNode.x;
+        int y = currentNode.y;
+
+        MoveNode targetNode = nodes[x, y - distance];
+        currentNode = targetNode;
+        transform.position = currentNode.transform.position;
     }
 
     public void MoveLeft(int distance) {
-        throw new System.NotImplementedException();
+        //throw new System.NotImplementedException();
+        int x = currentNode.x;
+        int y = currentNode.y;
+
+        MoveNode targetNode = nodes[x + distance, y];
+        currentNode = targetNode;
+        transform.position = currentNode.transform.position;
     }
 
     public void MoveRight(int distance) {
-        throw new System.NotImplementedException();
+        //throw new System.NotImplementedException();
+        int x = currentNode.x;
+        int y = currentNode.y;
+
+        MoveNode targetNode = nodes[x - distance, y];
+        currentNode = targetNode;
+        transform.position = currentNode.transform.position;
     }
 
-    public void GetCurrentNode() {
-        throw new System.NotImplementedException();
+    public void DetectCurrentNode() {
+        //throw new System.NotImplementedException();
     }
 }

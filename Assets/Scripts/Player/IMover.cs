@@ -15,5 +15,6 @@ public interface IMover
     void MoveLeft(int distance);
     void MoveRight(int distance);
     void DetectCurrentNode();
+    IEnumerator MoveToNode(MoveNode targetNode);
 
 }

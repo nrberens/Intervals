@@ -10,8 +10,7 @@ public class PlayerController : MonoBehaviour, IMover {
 
     private float moveX, moveZ;
     private float moveSpeed = 4.0f;
-    private float timeSinceMoved = 0.0f;
-    private const float MOVE_DELAY = 1.0f;
+    private Boolean moving = false;
 
     public Transform weapon;    //currently equipped weapon
     
@@ -34,7 +33,7 @@ public class PlayerController : MonoBehaviour, IMover {
 	void Update () {
         Vector3 crosshairPos = Crosshair.GetCrosshairInWorld();
 
-	    if (timeSinceMoved >= MOVE_DELAY)
+	    if (!moving)
 	    {
 
 	        moveX = Input.GetAxis("Horizontal");
@@ -42,13 +41,25 @@ public class PlayerController : MonoBehaviour, IMover {
 
             //TODO add diagonal movement
 	        if (moveX > 0) //if positive vertical, move forward
+	        {
+	            moving = true; 
 	            MoveRight(1);
+	        }
 	        else if (moveX < 0) //if negative vertical, move backward
+	        {
+	            moving = true;
 	            MoveLeft(1);
+	        }
 	        else if (moveZ > 0)
+	        {
+	            moving = true;
 	            MoveForward(1);
+	        }
 	        else if (moveZ < 0)
+	        {
+	            moving = true;
 	            MoveBackward(1);
+	        }
 
 
 	        //if positive horizontal move right?
@@ -58,7 +69,6 @@ public class PlayerController : MonoBehaviour, IMover {
 	        //transform.Translate(new Vector3(moveX, 0, moveZ) * moveSpeed * Time.deltaTime);
 
 	    }
-	    else timeSinceMoved += Time.deltaTime;
 
 	    Transform bulletSpawnPoint = weapon.Find("BulletPoint");
         transform.LookAt(crosshairPos);
@@ -85,9 +95,8 @@ public class PlayerController : MonoBehaviour, IMover {
         }
 
         MoveNode targetNode = nodes[node_id, block_id + distance];
+        StartCoroutine(MoveToNode(targetNode));
         currentNode = targetNode;
-        transform.position = currentNode.transform.position;
-        timeSinceMoved = 0.0f;
     }
 
     public void MoveBackward(int distance) {
@@ -102,9 +111,8 @@ public class PlayerController : MonoBehaviour, IMover {
         }
 
         MoveNode targetNode = nodes[node_id, block_id - distance];
+        StartCoroutine(MoveToNode(targetNode));
         currentNode = targetNode;
-        transform.position = currentNode.transform.position;
-        timeSinceMoved = 0.0f;
     }
 
     public void MoveLeft(int distance) {
@@ -118,9 +126,8 @@ public class PlayerController : MonoBehaviour, IMover {
         }
 
         MoveNode targetNode = nodes[node_id - distance, block_id];
+        StartCoroutine(MoveToNode(targetNode));
         currentNode = targetNode;
-        transform.position = currentNode.transform.position;
-        timeSinceMoved = 0.0f;
     }
 
     public void MoveRight(int distance) {
@@ -134,12 +141,35 @@ public class PlayerController : MonoBehaviour, IMover {
         }
 
         MoveNode targetNode = nodes[node_id + distance, block_id];
+        StartCoroutine(MoveToNode(targetNode));
         currentNode = targetNode;
-        transform.position = currentNode.transform.position;
-        timeSinceMoved = 0.0f;
     }
 
     public void DetectCurrentNode() {
         //throw new System.NotImplementedException();
+    }
+
+    public IEnumerator MoveToNode(MoveNode targetNode)
+    {
+        Vector3 startPos = currentNode.transform.position;
+        Vector3 endPos = targetNode.transform.position;
+        Vector3 bending = Vector3.up;
+        float totalTime = 1.0f;
+        float startTime = Time.time;
+
+        while (Time.time < totalTime + startTime)
+        {
+            Vector3 currentPos = Vector3.Lerp(startPos, endPos, (Time.time - startTime)/totalTime);
+
+            currentPos.x += bending.x * Mathf.Sin(Mathf.Clamp01((Time.time - startTime) / totalTime) * Mathf.PI);
+            currentPos.y += bending.y * Mathf.Sin(Mathf.Clamp01((Time.time - startTime) / totalTime) * Mathf.PI);
+            currentPos.z += bending.z * Mathf.Sin(Mathf.Clamp01((Time.time - startTime) / totalTime) * Mathf.PI);
+
+            transform.position = currentPos;
+
+            yield return null;
+        }
+
+        moving = false;
     }
 }

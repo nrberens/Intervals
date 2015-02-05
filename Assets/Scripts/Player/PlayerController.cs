@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour, IMover {
     private float moveX, moveZ;
     private float moveSpeed = 4.0f;
     private float timeSinceMoved = 0.0f;
+    private const float MOVE_DELAY = 1.0f;
 
     public Transform weapon;    //currently equipped weapon
     
@@ -33,26 +34,33 @@ public class PlayerController : MonoBehaviour, IMover {
 	void Update () {
         Vector3 crosshairPos = Crosshair.GetCrosshairInWorld();
 
-        moveX= Input.GetAxis("Horizontal");
-        moveZ = Input.GetAxis("Vertical");
+	    if (timeSinceMoved >= MOVE_DELAY)
+	    {
 
-	    if (moveX > 0) //if positive vertical, move forward
-            MoveRight(1);
-        else if (moveX < 0) //if negative vertical, move backward
-	        MoveLeft(1);
-        else if (moveZ > 0)
-            MoveForward(1);
-        else if (moveZ < 0)
-            MoveBackward(1);
+	        moveX = Input.GetAxis("Horizontal");
+	        moveZ = Input.GetAxis("Vertical");
+
+            //TODO add diagonal movement
+	        if (moveX > 0) //if positive vertical, move forward
+	            MoveRight(1);
+	        else if (moveX < 0) //if negative vertical, move backward
+	            MoveLeft(1);
+	        else if (moveZ > 0)
+	            MoveForward(1);
+	        else if (moveZ < 0)
+	            MoveBackward(1);
 
 
-        //if positive horizontal move right?
-        //if negative horizontal move left?
+	        //if positive horizontal move right?
+	        //if negative horizontal move left?
 
 
-        //transform.Translate(new Vector3(moveX, 0, moveZ) * moveSpeed * Time.deltaTime);
+	        //transform.Translate(new Vector3(moveX, 0, moveZ) * moveSpeed * Time.deltaTime);
 
-        Transform bulletSpawnPoint = weapon.Find("BulletPoint");
+	    }
+	    else timeSinceMoved += Time.deltaTime;
+
+	    Transform bulletSpawnPoint = weapon.Find("BulletPoint");
         transform.LookAt(crosshairPos);
         if (Input.GetButton("Fire1")) {
             weapon.SendMessage("Shoot", crosshairPos);
@@ -79,6 +87,7 @@ public class PlayerController : MonoBehaviour, IMover {
         MoveNode targetNode = nodes[node_id, block_id + distance];
         currentNode = targetNode;
         transform.position = currentNode.transform.position;
+        timeSinceMoved = 0.0f;
     }
 
     public void MoveBackward(int distance) {
@@ -95,6 +104,7 @@ public class PlayerController : MonoBehaviour, IMover {
         MoveNode targetNode = nodes[node_id, block_id - distance];
         currentNode = targetNode;
         transform.position = currentNode.transform.position;
+        timeSinceMoved = 0.0f;
     }
 
     public void MoveLeft(int distance) {
@@ -110,6 +120,7 @@ public class PlayerController : MonoBehaviour, IMover {
         MoveNode targetNode = nodes[node_id - distance, block_id];
         currentNode = targetNode;
         transform.position = currentNode.transform.position;
+        timeSinceMoved = 0.0f;
     }
 
     public void MoveRight(int distance) {
@@ -125,6 +136,7 @@ public class PlayerController : MonoBehaviour, IMover {
         MoveNode targetNode = nodes[node_id + distance, block_id];
         currentNode = targetNode;
         transform.position = currentNode.transform.position;
+        timeSinceMoved = 0.0f;
     }
 
     public void DetectCurrentNode() {

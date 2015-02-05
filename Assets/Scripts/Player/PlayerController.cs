@@ -9,8 +9,8 @@ public class PlayerController : MonoBehaviour, IMover {
     // TODO break out Input, Movement, and Firing into different Player classes
 
     private float moveX, moveZ;
-    private float moveSpeed = 4.0f;
     private Boolean moving = false;
+    public float moveTime = 1.0f;
 
     public Transform weapon;    //currently equipped weapon
     
@@ -154,16 +154,15 @@ public class PlayerController : MonoBehaviour, IMover {
         Vector3 startPos = currentNode.transform.position;
         Vector3 endPos = targetNode.transform.position;
         Vector3 bending = Vector3.up;
-        float totalTime = 1.0f;
         float startTime = Time.time;
 
-        while (Time.time < totalTime + startTime)
+        while (Time.time < moveTime + startTime)
         {
-            Vector3 currentPos = Vector3.Lerp(startPos, endPos, (Time.time - startTime)/totalTime);
+            Vector3 currentPos = Vector3.Lerp(startPos, endPos, (Time.time - startTime)/moveTime);
 
-            currentPos.x += bending.x * Mathf.Sin(Mathf.Clamp01((Time.time - startTime) / totalTime) * Mathf.PI);
-            currentPos.y += bending.y * Mathf.Sin(Mathf.Clamp01((Time.time - startTime) / totalTime) * Mathf.PI);
-            currentPos.z += bending.z * Mathf.Sin(Mathf.Clamp01((Time.time - startTime) / totalTime) * Mathf.PI);
+            currentPos.x += bending.x * Mathf.Sin(Mathf.Clamp01((Time.time - startTime) / moveTime) * Mathf.PI);
+            currentPos.y += bending.y * Mathf.Sin(Mathf.Clamp01((Time.time - startTime) / moveTime) * Mathf.PI);
+            currentPos.z += bending.z * Mathf.Sin(Mathf.Clamp01((Time.time - startTime) / moveTime) * Mathf.PI);
 
             transform.position = currentPos;
 

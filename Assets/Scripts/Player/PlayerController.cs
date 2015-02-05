@@ -6,8 +6,11 @@ using UnityEngineInternal;
 
 public class PlayerController : MonoBehaviour, IMover {
 
+    // TODO break out Input, Movement, and Firing into different Player classes
+
     private float moveX, moveZ;
     private float moveSpeed = 4.0f;
+    private float timeSinceMoved = 0.0f;
 
     public Transform weapon;    //currently equipped weapon
     
@@ -22,7 +25,7 @@ public class PlayerController : MonoBehaviour, IMover {
 	void Start ()
 	{
         //Cache node grid
-        //This is smelly code, I think
+        //This is smelly code, I think -- relies on World class -- abstract out?
 	    nodes = GameObject.Find("World").GetComponent<World>().nodes;
 	}
 	
@@ -30,13 +33,13 @@ public class PlayerController : MonoBehaviour, IMover {
 	void Update () {
         Vector3 crosshairPos = Crosshair.GetCrosshairInWorld();
 
-        moveX = Input.GetAxis("Horizontal");
+        moveX= Input.GetAxis("Horizontal");
         moveZ = Input.GetAxis("Vertical");
 
 	    if (moveX > 0) //if positive vertical, move forward
-	        MoveLeft(1);
-        else if (moveX < 0) //if negative vertical, move backward
             MoveRight(1);
+        else if (moveX < 0) //if negative vertical, move backward
+	        MoveLeft(1);
         else if (moveZ > 0)
             MoveForward(1);
         else if (moveZ < 0)
@@ -64,40 +67,62 @@ public class PlayerController : MonoBehaviour, IMover {
 
     public void MoveForward(int distance) {
         //throw new System.NotImplementedException();
-        int x = currentNode.x;
-        int y = currentNode.y;
+        int node_id = currentNode.x;
+        int block_id = currentNode.z;
 
-        MoveNode targetNode = nodes[x, y + distance];
+        if (block_id >= nodes.GetUpperBound(1))
+        {
+            Debug.Log("You hit the top! node_id= " + node_id + " z = " + block_id);
+            return; //bust out early if you're at the top of the map
+        }
+
+        MoveNode targetNode = nodes[node_id, block_id + distance];
         currentNode = targetNode;
         transform.position = currentNode.transform.position;
     }
 
     public void MoveBackward(int distance) {
         //throw new System.NotImplementedException();
-        int x = currentNode.x;
-        int y = currentNode.y;
+        int node_id= currentNode.x;
+        int block_id = currentNode.z;
 
-        MoveNode targetNode = nodes[x, y - distance];
+        if (block_id <= 0) 
+        {
+            Debug.Log("You hit the bottom! node_id= " + node_id + " z = " + block_id);
+            return; 
+        }
+
+        MoveNode targetNode = nodes[node_id, block_id - distance];
         currentNode = targetNode;
         transform.position = currentNode.transform.position;
     }
 
     public void MoveLeft(int distance) {
         //throw new System.NotImplementedException();
-        int x = currentNode.x;
-        int y = currentNode.y;
+        int node_id = currentNode.x;
+        int block_id = currentNode.z;
 
-        MoveNode targetNode = nodes[x + distance, y];
+        if (node_id <= 0) {
+            Debug.Log("You hit the left! node_id= " + node_id + " z = " + block_id);
+            return;
+        }
+
+        MoveNode targetNode = nodes[node_id - distance, block_id];
         currentNode = targetNode;
         transform.position = currentNode.transform.position;
     }
 
     public void MoveRight(int distance) {
         //throw new System.NotImplementedException();
-        int x = currentNode.x;
-        int y = currentNode.y;
+        int node_id = currentNode.x;
+        int block_id = currentNode.z;
 
-        MoveNode targetNode = nodes[x - distance, y];
+        if (node_id >= nodes.GetUpperBound(0)) {
+            Debug.Log("You hit the right! node_id= " + node_id + " z = " + block_id);
+            return;
+        }
+
+        MoveNode targetNode = nodes[node_id + distance, block_id];
         currentNode = targetNode;
         transform.position = currentNode.transform.position;
     }

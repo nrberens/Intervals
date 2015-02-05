@@ -18,13 +18,13 @@ public class SmoothFollow : MonoBehaviour {
 	    if (!target)
 	        return;
 
-	    //float wantedRotationAngle = target.eulerAngles.y;
+	    //float wantedRotationAngle = target.eulerAngles.z;
 	    float wantedHeight = target.position.y + height;
 
-	    //float currentRotationAngle = transform.eulerAngles.y;
+	    //float currentRotationAngle = transform.eulerAngles.z;
 	    float currentHeight = transform.position.y;
 
-        //Damp the rotation around the y-axis
+        //Damp the rotation around the z-axis
 	    //currentRotationAngle = Mathf.LerpAngle(currentRotationAngle, wantedRotationAngle, rotationDamping*Time.deltaTime);
         
         //Damp the height

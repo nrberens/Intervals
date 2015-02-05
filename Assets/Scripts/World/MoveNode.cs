@@ -13,15 +13,15 @@ public class MoveNode : MonoBehaviour {
     public WorldBlock parentBlockController;
 
     public int id;
-    public int x, y;
+    public int x, z;
 
 	// Use this for initialization
 	void Start () {
 	    parentBlock = transform.parent.gameObject;
 	    parentBlockController = parentBlock.GetComponent<WorldBlock>();
 
-	    x = parentBlockController.id;
-	    y = id;
+	    x = id;
+	    z = parentBlockController.id;
 	}
 	
 	// Update is called once per frame

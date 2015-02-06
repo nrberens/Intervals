@@ -9,14 +9,15 @@ public class World : MonoBehaviour {
     //public PlayerMovement playerController;
     public PlayerMovement player;
 
-    private const int worldLength = 10;
+    public const int NODES_PER_BLOCK = 7;
+    public const int WORLD_LENGTH = 10;
 
     private const int BlockWidth = 20;
     private const int BlockHeight = 3;
 
     public GameObject[] worldBlockPrefabs = new GameObject[10];
     public GameObject[] worldBlocks; //to be initialized using queue.length in GenerateInitialWorld()
-    public MoveNode[,] nodes = new MoveNode[7,10];
+    public MoveNode[,] nodes = new MoveNode[NODES_PER_BLOCK, WORLD_LENGTH];
 
     private Vector3 InitBlockPosition = new Vector3(0, -1, 0);
 
@@ -41,7 +42,7 @@ public class World : MonoBehaviour {
         Vector3 thisPosition = InitBlockPosition;
         Queue<GameObject> queue = new Queue<GameObject>();
 
-        for (int i = 0; i < worldLength; i++) {
+        for (int i = 0; i < WORLD_LENGTH; i++) {
             int randomBlock = Random.Range(0, 10);
             GameObject worldBlock = (GameObject)Instantiate(worldBlockPrefabs[randomBlock]);
             WorldBlock b = worldBlock.GetComponent<WorldBlock>();

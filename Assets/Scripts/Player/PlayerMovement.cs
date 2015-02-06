@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour, IMover {
     // TODO break out Input, Movement, and Firing into different Player classes
 
     private float moveX, moveZ;
-    public float moveTime = 1.0f;
+    public float moveTime;
 
     private PlayerInventory inventory;
     private PlayerInput input;

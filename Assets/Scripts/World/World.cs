@@ -6,8 +6,8 @@ using UnityEngine.SocialPlatforms;
 
 public class World : MonoBehaviour {
     //public GameObject player;
-    //public PlayerController playerController;
-    public PlayerController player;
+    //public PlayerMovement playerController;
+    public PlayerMovement player;
 
     private const int worldLength = 10;
 

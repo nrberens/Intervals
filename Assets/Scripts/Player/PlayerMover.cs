@@ -4,7 +4,7 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngineInternal;
 
-public class PlayerMovement : MonoBehaviour, IMover {
+public class PlayerMover : MonoBehaviour, IMover {
 
     // TODO break out Input, Movement, and Firing into different Player classes
 

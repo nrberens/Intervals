@@ -14,7 +14,7 @@ public class PlayerInput : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-	    mover = GetComponentInParent<PlayerMovement>();
+	    mover = GetComponentInParent<PlayerMover>();
 	    inventory = GetComponentInParent<PlayerInventory>();
 	}
 	

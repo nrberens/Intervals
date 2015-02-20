@@ -12,8 +12,8 @@ public interface IMover
 
     bool moving { get; set; }
 
-    void MoveForward(int distance);
-    void MoveBackward(int distance);
+    void MoveUp(int distance);
+    void MoveDown(int distance);
     void MoveLeft(int distance);
     void MoveRight(int distance);
     void DetectCurrentNode();

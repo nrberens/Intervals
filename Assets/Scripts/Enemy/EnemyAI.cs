@@ -22,18 +22,27 @@ public class EnemyAI : FSM {
         Dead,
     }
 
+	public enum Direction {
+		Up,
+		Down,
+		Left,
+		Right,
+	}
+
     public FSMState curState;
-    private float curSpeed;
-    private float curRotSpeed;
     private Transform target;
     public GameObject bullet;
     private bool bDead;
     public int health;
     public float attackDistance;
     public float aggroDistance;
+	public int distance;
+
+	private IMover mover;
 
     // Use this for initialization
     protected override void Initialize() {
+		 mover = GetComponentInParent<EnemyMover>();
     }
 
     // Update is called once per frame
@@ -58,6 +67,22 @@ public class EnemyAI : FSM {
     }
 
     protected void UpdateWanderState() {  //Choose random new position
+		Direction randomDir = GetRandomDirection();
+
+		switch(randomDir) {
+		case Direction.Up:
+			mover.MoveUp(distance);
+			break;
+		case Direction.Down:
+			mover.MoveDown(distance);
+			break;
+		case Direction.Left:
+			mover.MoveLeft(distance);
+			break;
+		case Direction.Right:
+			mover.MoveRight(distance);
+			break;
+		}
     }
 
     protected void UpdateAttackState() {
@@ -96,5 +121,12 @@ transform.position - new Vector3(rndX, 10.0f, rndZ), 40.0f, 10.0f);
     void TakeDamage(int damage) {
         health -= damage;
     }
+
+	private Direction GetRandomDirection ()
+	{
+		Array dirArray = Enum.GetValues (typeof(Direction));
+		Direction dir = (Direction)dirArray.GetValue(UnityEngine.Random.Range (0, dirArray.Length));
+		return dir;
+	}
 
 }

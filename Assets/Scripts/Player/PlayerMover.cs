@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
@@ -44,7 +44,7 @@ public class PlayerMover : MonoBehaviour, IMover {
     }
 
 
-    public void MoveForward(int distance) {
+    public void MoveUp(int distance) {
         //throw new System.NotImplementedException();
         int node_id = currentNode.x;
         int block_id = currentNode.z;
@@ -61,7 +61,7 @@ public class PlayerMover : MonoBehaviour, IMover {
         currentNode = targetNode;
     }
 
-    public void MoveBackward(int distance) {
+    public void MoveDown(int distance) {
         //throw new System.NotImplementedException();
         int node_id= currentNode.x;
         int block_id = currentNode.z;

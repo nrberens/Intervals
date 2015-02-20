@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class PlayerInput : MonoBehaviour
@@ -42,12 +42,12 @@ public class PlayerInput : MonoBehaviour
 	        else if (moveZ > 0)
 	        {
 	            mover.moving = true;
-	            mover.MoveForward(1);
+	            mover.MoveUp(1);
 	        }
 	        else if (moveZ < 0)
 	        {
 	            mover.moving = true;
-	            mover.MoveBackward(1);
+	            mover.MoveDown(1);
 	        }
 	    }
 

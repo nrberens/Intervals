@@ -8,6 +8,7 @@ public class World : MonoBehaviour {
     //public GameObject player;
     //public PlayerMover playerController;
     public PlayerMover player;
+    public Transform EnemyTransform;
 
     public const int NODES_PER_BLOCK = 7;
     public const int WORLD_LENGTH = 10;
@@ -36,6 +37,12 @@ public class World : MonoBehaviour {
 	    //instantiate player at spawn point
 	    player.transform.position = spawnPoint.transform.position;
 	    player.currentNode = spawnPoint;
+
+        //instantiate enemy at random position
+        GameObject enemy = (GameObject) GameObject.Instantiate(EnemyTransform.gameObject);
+	    int enemyX = UnityEngine.Random.Range(0,7);
+	    int enemyZ = UnityEngine.Random.Range(0,WORLD_LENGTH);
+	    enemy.GetComponent<EnemyMover>().currentNode = nodes[enemyX, enemyZ];
 	}
 
     private void GenerateInitialWorld() {

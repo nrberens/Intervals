@@ -7,7 +7,7 @@ public class EnemyMover : MonoBehaviour, IMover {
 
 	// Use this for initialization
 	void Start () {
-	
+	    nodes = GameObject.Find("World").GetComponent<World>().nodes;
 	}
 	
 	// Update is called once per frame
@@ -22,18 +22,69 @@ public class EnemyMover : MonoBehaviour, IMover {
     public bool moving { get; set; }
 
     public void MoveUp(int distance) {
+        //throw new System.NotImplementedException();
+        int node_id = currentNode.x;
+        int block_id = currentNode.z;
+
+        if (block_id >= nodes.GetUpperBound(1)) //bust out early if you're at the top of the map
+        {
+            Debug.Log("You hit the top! node_id= " + node_id + " z = " + block_id);
+            moving = false;
+            return; 
+        }
+
+        MoveNode targetNode = nodes[node_id, block_id + distance];
+        StartCoroutine(MoveToNode(targetNode));
+        currentNode = targetNode;
     }
 
     public void MoveDown(int distance) {
+        //throw new System.NotImplementedException();
+        int node_id= currentNode.x;
+        int block_id = currentNode.z;
+
+        if (block_id <= 0) 
+        {
+            Debug.Log("You hit the bottom! node_id= " + node_id + " z = " + block_id);
+            moving = false;
+            return; 
+        }
+
+        MoveNode targetNode = nodes[node_id, block_id - distance];
+        StartCoroutine(MoveToNode(targetNode));
+        currentNode = targetNode;
     }
 
     public void MoveLeft(int distance) {
+        //throw new System.NotImplementedException();
+        int node_id = currentNode.x;
+        int block_id = currentNode.z;
+
+        if (node_id <= 0) {
+            Debug.Log("You hit the left! node_id= " + node_id + " z = " + block_id);
+            moving = false;
+            return;
+        }
+
+        MoveNode targetNode = nodes[node_id - distance, block_id];
+        StartCoroutine(MoveToNode(targetNode));
+        currentNode = targetNode;
     }
 
     public void MoveRight(int distance) {
-    }
+        //throw new System.NotImplementedException();
+        int node_id = currentNode.x;
+        int block_id = currentNode.z;
 
-    public void DetectCurrentNode() {
+        if (node_id >= nodes.GetUpperBound(0)) {
+            Debug.Log("You hit the right! node_id= " + node_id + " z = " + block_id);
+            moving = false;
+            return;
+        }
+
+        MoveNode targetNode = nodes[node_id + distance, block_id];
+        StartCoroutine(MoveToNode(targetNode));
+        currentNode = targetNode;
     }
 
     public IEnumerator MoveToNode(MoveNode targetNode) {
@@ -57,4 +108,8 @@ public class EnemyMover : MonoBehaviour, IMover {
 
         moving = false;
     }
+
+    public void DetectCurrentNode() {
+    }
+
 }

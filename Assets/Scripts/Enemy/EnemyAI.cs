@@ -13,7 +13,7 @@ using System;
  **/
 
 //[RequireComponent(typeof(Rigidbody))]
-public class EnemyAI : FSM {
+public class EnemyAI : FSM, ITurnBased {
 
     public enum FSMState {
         None,
@@ -29,6 +29,8 @@ public class EnemyAI : FSM {
 		Right,
 	}
 
+    public Turn CurrentTurn { get; set; }
+
     public FSMState curState;
     private Transform target;
     public GameObject bullet;
@@ -42,28 +44,35 @@ public class EnemyAI : FSM {
 
     // Use this for initialization
     protected override void Initialize() {
-		 mover = GetComponentInParent<EnemyMover>();
+	    mover = GetComponentInParent<EnemyMover>();
+        CurrentTurn = FindObjectOfType<Turn>();
     }
 
-    // Update is called once per frame
+    // FSMUpdate is called once per frame
     protected override void FSMUpdate() {
-        switch (curState) {
-            case FSMState.Wander:
-                UpdateWanderState();
-                break;
-            case FSMState.Attack:
-                UpdateAttackState();
-                break;
-            case FSMState.Dead:
-                UpdateDeadState();
-                break;
+        if (CurrentTurn.CurrentPhase == Turn.Phase.Enemy) {
+            switch (curState) {
+                case FSMState.Wander:
+                    UpdateWanderState();
+                    break;
+                case FSMState.Attack:
+                    UpdateAttackState();
+                    break;
+                case FSMState.Dead:
+                    UpdateDeadState();
+                    break;
+            }
+
+            elapsedTime += Time.deltaTime;
+
+            if (health <= 0) {
+                curState = FSMState.Dead;
+            }
+
+            // TODO Move this out of single enemy script - must trigger after all enemies have taken turn
+            CurrentTurn.AdvancePhase();
         }
 
-        elapsedTime += Time.deltaTime;
-
-        if (health <= 0) {
-            curState = FSMState.Dead;
-        }
     }
 
     protected void UpdateWanderState() {  //Choose random new position

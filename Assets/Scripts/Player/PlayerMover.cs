@@ -35,7 +35,7 @@ public class PlayerMover : MonoBehaviour, IMover {
 	void Update () {
 
 	    Transform bulletSpawnPoint = inventory.weapon.Find("BulletPoint");
-        transform.LookAt(input.crosshairPos);
+        //transform.LookAt(input.crosshairPos);
 	}
 
     void LateUpdate() {

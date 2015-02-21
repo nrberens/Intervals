@@ -1,24 +1,19 @@
 using UnityEngine;
 using System.Collections;
 
-public class PlayerInput : MonoBehaviour, ITurnBased
+public class PlayerInput : MonoBehaviour
 {
 
     private float moveX, moveZ;
 
-    private IMover mover;
-    private PlayerInventory inventory;
-    public Turn CurrentTurn { get; set; }
+    private PlayerController pc;
 
     //public Vector3 crosshairPos;
 
 
 	// Use this for initialization
-	void Start ()
-	{
-	    mover = GetComponentInParent<PlayerMover>();
-	    inventory = GetComponentInParent<PlayerInventory>();
-	    CurrentTurn = FindObjectOfType<Turn>();
+	void Start () {
+	    pc = GetComponentInParent<PlayerController>();
 	}
 	
 	// Update is called once per frame
@@ -26,34 +21,30 @@ public class PlayerInput : MonoBehaviour, ITurnBased
 
         //crosshairPos = Crosshair.GetCrosshairInWorld();
 
-	    if (!mover.moving && CurrentTurn.CurrentPhase == Turn.Phase.Player) 
+	    if (!pc.mover.moving && pc.CurrentTurn.CurrentPhase == Turn.Phase.Player) 
 	    {
 	        moveX = Input.GetAxis("Horizontal");
 	        moveZ = Input.GetAxis("Vertical");
 
 	        if (moveX > 0) //if positive vertical, move forward
 	        {
-	            mover.moving = true; 
-	            mover.MoveRight(1);
+	            pc.mover.moving = true; 
+	            pc.mover.MoveRight(1);
 	        }
 	        else if (moveX < 0) //if negative vertical, move backward
 	        {
-	            mover.moving = true;
-	            mover.MoveLeft(1);
+	            pc.mover.moving = true;
+	            pc.mover.MoveLeft(1);
 	        }
 	        else if (moveZ > 0)
 	        {
-	            mover.moving = true;
-	            mover.MoveUp(1);
+	            pc.mover.moving = true;
+	            pc.mover.MoveUp(1);
 	        }
 	        else if (moveZ < 0)
 	        {
-	            mover.moving = true;
-	            mover.MoveDown(1);
-	        }
-
-	        if (moveX != 0 || moveZ != 0) {
-	            CurrentTurn.AdvancePhase();
+	            pc.mover.moving = true;
+	            pc.mover.MoveDown(1);
 	        }
 
 	    }

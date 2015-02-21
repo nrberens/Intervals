@@ -13,7 +13,7 @@ using System;
  **/
 
 //[RequireComponent(typeof(Rigidbody))]
-public class EnemyAI : FSM, ITurnBased {
+public class EnemyAI : FSM {
 
     public enum FSMState {
         None,
@@ -29,7 +29,8 @@ public class EnemyAI : FSM, ITurnBased {
 		Right,
 	}
 
-    public Turn CurrentTurn { get; set; }
+
+    private EnemyController ec;
 
     public FSMState curState;
     private Transform target;
@@ -40,17 +41,14 @@ public class EnemyAI : FSM, ITurnBased {
     public float aggroDistance;
 	public int distance;
 
-	private IMover mover;
-
     // Use this for initialization
     protected override void Initialize() {
-	    mover = GetComponentInParent<EnemyMover>();
-        CurrentTurn = FindObjectOfType<Turn>();
+        ec = GetComponentInParent<EnemyController>();
     }
 
     // FSMUpdate is called once per frame
     protected override void FSMUpdate() {
-        if (CurrentTurn.CurrentPhase == Turn.Phase.Enemy) {
+        if (ec.CurrentTurn.CurrentPhase == Turn.Phase.Enemy) {
             switch (curState) {
                 case FSMState.Wander:
                     UpdateWanderState();
@@ -70,9 +68,8 @@ public class EnemyAI : FSM, ITurnBased {
             }
 
             // TODO Move this out of single enemy script - must trigger after all enemies have taken turn
-            CurrentTurn.AdvancePhase();
+            //CurrentTurn.AdvancePhase();
         }
-
     }
 
     protected void UpdateWanderState() {  //Choose random new position
@@ -80,16 +77,16 @@ public class EnemyAI : FSM, ITurnBased {
 
 		switch(randomDir) {
 		case Direction.Up:
-			mover.MoveUp(distance);
+			ec.mover.MoveUp(distance);
 			break;
 		case Direction.Down:
-			mover.MoveDown(distance);
+			ec.mover.MoveDown(distance);
 			break;
 		case Direction.Left:
-			mover.MoveLeft(distance);
+			ec.mover.MoveLeft(distance);
 			break;
 		case Direction.Right:
-			mover.MoveRight(distance);
+			ec.mover.MoveRight(distance);
 			break;
 		}
     }

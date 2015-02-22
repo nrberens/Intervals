@@ -24,8 +24,15 @@ public class PlayerController : MonoBehaviour, ITurnBased {
 	    acting = false;
 	}
 
+    void Update() {
+        if (!acting && CurrentTurn.CurrentPhase == Turn.Phase.Player) {
+            input.allowInput = true;
+        }
+    }
+
     public void EndPhase() {
         if(CurrentTurn.CurrentPhase == Turn.Phase.Player)
             CurrentTurn.AdvancePhase();   
+        else Debug.Log("Calling AdvancePhase from the wrong object!");
     }
 }

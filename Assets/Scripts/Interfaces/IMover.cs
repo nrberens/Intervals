@@ -10,8 +10,6 @@ public interface IMover
 
     MoveNode currentNode {get; set;}
 
-    bool moving { get; set; }
-
     void MoveUp(int distance);
     void MoveDown(int distance);
     void MoveLeft(int distance);

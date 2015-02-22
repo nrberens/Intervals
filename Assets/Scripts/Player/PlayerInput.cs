@@ -8,6 +8,8 @@ public class PlayerInput : MonoBehaviour
 
     private PlayerController pc;
 
+    public bool allowInput; 
+
     //public Vector3 crosshairPos;
 
 
@@ -21,32 +23,33 @@ public class PlayerInput : MonoBehaviour
 
         //crosshairPos = Crosshair.GetCrosshairInWorld();
 
-	    if (!pc.mover.moving && pc.CurrentTurn.CurrentPhase == Turn.Phase.Player) 
+	    if (allowInput) 
 	    {
 	        moveX = Input.GetAxis("Horizontal");
 	        moveZ = Input.GetAxis("Vertical");
 
 	        if (moveX > 0) //if positive vertical, move forward
 	        {
-	            pc.mover.moving = true; 
+	            pc.acting = true;
 	            pc.mover.MoveRight(1);
 	        }
 	        else if (moveX < 0) //if negative vertical, move backward
 	        {
-	            pc.mover.moving = true;
+	            pc.acting = true;
 	            pc.mover.MoveLeft(1);
 	        }
 	        else if (moveZ > 0)
 	        {
-	            pc.mover.moving = true;
+	            pc.acting = true;
 	            pc.mover.MoveUp(1);
 	        }
 	        else if (moveZ < 0)
 	        {
-	            pc.mover.moving = true;
+	            pc.acting = true;
 	            pc.mover.MoveDown(1);
 	        }
 
+            // TODO HERE
 	    }
 
 	}

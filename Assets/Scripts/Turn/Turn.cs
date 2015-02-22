@@ -26,8 +26,9 @@ public class Turn : MonoBehaviour {
                 CurrentPhase = Phase.Enemy;
                 break;
         }
+
         TurnNumber++;
 
-        Debug.Log(TurnNumber + " " + CurrentPhase);
+        Debug.Log("Beginning of " + TurnNumber + " " + CurrentPhase);
     }
 }

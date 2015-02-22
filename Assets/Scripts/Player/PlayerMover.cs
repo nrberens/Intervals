@@ -14,7 +14,6 @@ public class PlayerMover : MonoBehaviour, IMover {
 
 
     //IMover properties
-    public bool moving { get; set; }
     public MoveNode[,] nodes { get; private set; }
     public MoveNode currentNode { get; set; }
 
@@ -48,7 +47,7 @@ public class PlayerMover : MonoBehaviour, IMover {
         if (block_id >= nodes.GetUpperBound(1)) //bust out early if you're at the top of the map
         {
             Debug.Log("You hit the top! node_id= " + node_id + " z = " + block_id);
-            moving = false;
+            pc.acting = false;
             pc.EndPhase();
             return;
         }
@@ -65,7 +64,7 @@ public class PlayerMover : MonoBehaviour, IMover {
 
         if (block_id <= 0) {
             Debug.Log("You hit the bottom! node_id= " + node_id + " z = " + block_id);
-            moving = false;
+            pc.acting = false;
             pc.EndPhase();
             return;
         }
@@ -82,7 +81,7 @@ public class PlayerMover : MonoBehaviour, IMover {
 
         if (node_id <= 0) {
             Debug.Log("You hit the left! node_id= " + node_id + " z = " + block_id);
-            moving = false;
+            pc.acting = false;
             pc.EndPhase();
             return;
         }
@@ -99,7 +98,7 @@ public class PlayerMover : MonoBehaviour, IMover {
 
         if (node_id >= nodes.GetUpperBound(0)) {
             Debug.Log("You hit the right! node_id= " + node_id + " z = " + block_id);
-            moving = false;
+            pc.acting = false;
             pc.EndPhase();
             return;
         }
@@ -131,7 +130,7 @@ public class PlayerMover : MonoBehaviour, IMover {
             yield return null;
         }
 
-        moving = false;
+        pc.acting = false;
         pc.EndPhase();
     }
 }

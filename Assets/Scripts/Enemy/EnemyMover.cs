@@ -23,9 +23,8 @@ public class EnemyMover : MonoBehaviour, IMover {
 
     public MoveNode currentNode { get; set; }
 
-    public bool moving { get; set; }
-
     public void MoveUp(int distance) {
+        Debug.Log(gameObject.name + ": Moving Up");
         //throw new System.NotImplementedException();
         int node_id = currentNode.x;
         int block_id = currentNode.z;
@@ -33,6 +32,7 @@ public class EnemyMover : MonoBehaviour, IMover {
         if (block_id >= nodes.GetUpperBound(1)) //bust out early if you're at the top of the map
         {
             Debug.Log("You hit the top! node_id= " + node_id + " z = " + block_id);
+            ec.acting = false;
             ec.EndPhase();
             return;
         }
@@ -43,12 +43,14 @@ public class EnemyMover : MonoBehaviour, IMover {
     }
 
     public void MoveDown(int distance) {
+        Debug.Log(gameObject.name + ": Moving Down");
         //throw new System.NotImplementedException();
         int node_id = currentNode.x;
         int block_id = currentNode.z;
 
         if (block_id <= 0) {
             Debug.Log("You hit the bottom! node_id= " + node_id + " z = " + block_id);
+            ec.acting = false;
             ec.EndPhase();
             return;
         }
@@ -59,12 +61,14 @@ public class EnemyMover : MonoBehaviour, IMover {
     }
 
     public void MoveLeft(int distance) {
+        Debug.Log(gameObject.name + ": Moving Left");
         //throw new System.NotImplementedException();
         int node_id = currentNode.x;
         int block_id = currentNode.z;
 
         if (node_id <= 0) {
             Debug.Log("You hit the left! node_id= " + node_id + " z = " + block_id);
+            ec.acting = false;
             ec.EndPhase();
             return;
         }
@@ -75,12 +79,14 @@ public class EnemyMover : MonoBehaviour, IMover {
     }
 
     public void MoveRight(int distance) {
+        Debug.Log(gameObject.name + ": Moving Right");
         //throw new System.NotImplementedException();
         int node_id = currentNode.x;
         int block_id = currentNode.z;
 
         if (node_id >= nodes.GetUpperBound(0)) {
             Debug.Log("You hit the right! node_id= " + node_id + " z = " + block_id);
+            ec.acting = false;
             ec.EndPhase();
             return;
         }
@@ -108,6 +114,7 @@ public class EnemyMover : MonoBehaviour, IMover {
             yield return null;
         }
 
+        ec.acting = false;
         ec.EndPhase();
     }
 

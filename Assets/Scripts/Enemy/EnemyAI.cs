@@ -22,12 +22,12 @@ public class EnemyAI : FSM {
         Dead,
     }
 
-	public enum Direction {
-		Up,
-		Down,
-		Left,
-		Right,
-	}
+    public enum Direction {
+        Up,
+        Down,
+        Left,
+        Right,
+    }
 
 
     private EnemyController ec;
@@ -39,56 +39,59 @@ public class EnemyAI : FSM {
     public int health;
     public float attackDistance;
     public float aggroDistance;
-	public int distance;
+    public int distance;
 
     // Use this for initialization
     protected override void Initialize() {
         ec = GetComponentInParent<EnemyController>();
     }
 
+    //TODO AI should not be tied to Update, or needs to check that state has changed
+    //Only Update state if phase = enemy AND a decision hasn't been made
+
     // FSMUpdate is called once per frame
-    protected override void FSMUpdate() {
-        if (ec.CurrentTurn.CurrentPhase == Turn.Phase.Enemy) {
-            switch (curState) {
-                case FSMState.Wander:
-                    UpdateWanderState();
-                    break;
-                case FSMState.Attack:
-                    UpdateAttackState();
-                    break;
-                case FSMState.Dead:
-                    UpdateDeadState();
-                    break;
-            }
+    protected override void FSMUpdate() { }
 
-            elapsedTime += Time.deltaTime;
+    // Update once per turn
+    public void UpdateAI() {
 
-            if (health <= 0) {
-                curState = FSMState.Dead;
-            }
-
-            // TODO Move this out of single enemy script - must trigger after all enemies have taken turn
-            //CurrentTurn.AdvancePhase();
+        switch (curState) {
+            case FSMState.Wander:
+                UpdateWanderState();
+                break;
+            case FSMState.Attack:
+                UpdateAttackState();
+                break;
+            case FSMState.Dead:
+                UpdateDeadState();
+                break;
         }
+
+        elapsedTime += Time.deltaTime;
+
+        if (health <= 0) {
+            curState = FSMState.Dead;
+        }
+
     }
 
     protected void UpdateWanderState() {  //Choose random new position
-		Direction randomDir = GetRandomDirection();
+        Direction randomDir = GetRandomDirection();
 
-		switch(randomDir) {
-		case Direction.Up:
-			ec.mover.MoveUp(distance);
-			break;
-		case Direction.Down:
-			ec.mover.MoveDown(distance);
-			break;
-		case Direction.Left:
-			ec.mover.MoveLeft(distance);
-			break;
-		case Direction.Right:
-			ec.mover.MoveRight(distance);
-			break;
-		}
+        switch (randomDir) {
+            case Direction.Up:
+                ec.mover.MoveUp(distance);
+                break;
+            case Direction.Down:
+                ec.mover.MoveDown(distance);
+                break;
+            case Direction.Left:
+                ec.mover.MoveLeft(distance);
+                break;
+            case Direction.Right:
+                ec.mover.MoveRight(distance);
+                break;
+        }
     }
 
     protected void UpdateAttackState() {
@@ -128,11 +131,10 @@ transform.position - new Vector3(rndX, 10.0f, rndZ), 40.0f, 10.0f);
         health -= damage;
     }
 
-	private Direction GetRandomDirection ()
-	{
-		Array dirArray = Enum.GetValues (typeof(Direction));
-		Direction dir = (Direction)dirArray.GetValue(UnityEngine.Random.Range (0, dirArray.Length));
-		return dir;
-	}
+    private Direction GetRandomDirection() {
+        Array dirArray = Enum.GetValues(typeof(Direction));
+        Direction dir = (Direction)dirArray.GetValue(UnityEngine.Random.Range(0, dirArray.Length));
+        return dir;
+    }
 
 }

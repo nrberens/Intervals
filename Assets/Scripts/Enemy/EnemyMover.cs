@@ -1,16 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-// TODO Enemy takes multiple turns? Why?
-
 public class EnemyMover : MonoBehaviour, IMover {
 
     private EnemyController ec;
-    public float moveTime;
+    public float MoveTime;
 
     // Use this for initialization
     void Start() {
-        nodes = GameObject.Find("World").GetComponent<World>().nodes;
+        nodes = GameObject.Find("World").GetComponent<World>().Nodes;
         ec = GetComponentInParent<EnemyController>();
     }
 
@@ -26,18 +24,18 @@ public class EnemyMover : MonoBehaviour, IMover {
     public void MoveUp(int distance) {
         Debug.Log(gameObject.name + ": Moving Up");
         //throw new System.NotImplementedException();
-        int node_id = currentNode.x;
-        int block_id = currentNode.z;
+        int nodeId = currentNode.x;
+        int blockId = currentNode.z;
 
-        if (block_id >= nodes.GetUpperBound(1)) //bust out early if you're at the top of the map
+        if (blockId >= nodes.GetUpperBound(1)) //bust out early if you're at the top of the map
         {
-            Debug.Log("You hit the top! node_id= " + node_id + " z = " + block_id);
+            Debug.Log("You hit the top! node_id= " + nodeId + " z = " + blockId);
             ec.acting = false;
             ec.EndPhase();
             return;
         }
 
-        MoveNode targetNode = nodes[node_id, block_id + distance];
+        MoveNode targetNode = nodes[nodeId, blockId + distance];
         StartCoroutine(MoveToNode(targetNode));
         currentNode = targetNode;
     }
@@ -45,17 +43,17 @@ public class EnemyMover : MonoBehaviour, IMover {
     public void MoveDown(int distance) {
         Debug.Log(gameObject.name + ": Moving Down");
         //throw new System.NotImplementedException();
-        int node_id = currentNode.x;
-        int block_id = currentNode.z;
+        int nodeId = currentNode.x;
+        int blockId = currentNode.z;
 
-        if (block_id <= 0) {
-            Debug.Log("You hit the bottom! node_id= " + node_id + " z = " + block_id);
+        if (blockId <= 0) {
+            Debug.Log("You hit the bottom! node_id= " + nodeId + " z = " + blockId);
             ec.acting = false;
             ec.EndPhase();
             return;
         }
 
-        MoveNode targetNode = nodes[node_id, block_id - distance];
+        MoveNode targetNode = nodes[nodeId, blockId - distance];
         StartCoroutine(MoveToNode(targetNode));
         currentNode = targetNode;
     }
@@ -63,17 +61,17 @@ public class EnemyMover : MonoBehaviour, IMover {
     public void MoveLeft(int distance) {
         Debug.Log(gameObject.name + ": Moving Left");
         //throw new System.NotImplementedException();
-        int node_id = currentNode.x;
-        int block_id = currentNode.z;
+        int nodeId = currentNode.x;
+        int blockId = currentNode.z;
 
-        if (node_id <= 0) {
-            Debug.Log("You hit the left! node_id= " + node_id + " z = " + block_id);
+        if (nodeId <= 0) {
+            Debug.Log("You hit the left! node_id= " + nodeId + " z = " + blockId);
             ec.acting = false;
             ec.EndPhase();
             return;
         }
 
-        MoveNode targetNode = nodes[node_id - distance, block_id];
+        MoveNode targetNode = nodes[nodeId - distance, blockId];
         StartCoroutine(MoveToNode(targetNode));
         currentNode = targetNode;
     }
@@ -81,17 +79,17 @@ public class EnemyMover : MonoBehaviour, IMover {
     public void MoveRight(int distance) {
         Debug.Log(gameObject.name + ": Moving Right");
         //throw new System.NotImplementedException();
-        int node_id = currentNode.x;
-        int block_id = currentNode.z;
+        int nodeId = currentNode.x;
+        int blockId = currentNode.z;
 
-        if (node_id >= nodes.GetUpperBound(0)) {
-            Debug.Log("You hit the right! node_id= " + node_id + " z = " + block_id);
+        if (nodeId >= nodes.GetUpperBound(0)) {
+            Debug.Log("You hit the right! node_id= " + nodeId + " z = " + blockId);
             ec.acting = false;
             ec.EndPhase();
             return;
         }
 
-        MoveNode targetNode = nodes[node_id + distance, block_id];
+        MoveNode targetNode = nodes[nodeId + distance, blockId];
         StartCoroutine(MoveToNode(targetNode));
         currentNode = targetNode;
     }
@@ -102,12 +100,12 @@ public class EnemyMover : MonoBehaviour, IMover {
         Vector3 bending = Vector3.up;
         float startTime = Time.time;
 
-        while (Time.time < moveTime + startTime) {
-            Vector3 currentPos = Vector3.Lerp(startPos, endPos, (Time.time - startTime) / moveTime);
+        while (Time.time < MoveTime + startTime) {
+            Vector3 currentPos = Vector3.Lerp(startPos, endPos, (Time.time - startTime) / MoveTime);
 
-            currentPos.x += bending.x * Mathf.Sin(Mathf.Clamp01((Time.time - startTime) / moveTime) * Mathf.PI);
-            currentPos.y += bending.y * Mathf.Sin(Mathf.Clamp01((Time.time - startTime) / moveTime) * Mathf.PI);
-            currentPos.z += bending.z * Mathf.Sin(Mathf.Clamp01((Time.time - startTime) / moveTime) * Mathf.PI);
+            currentPos.x += bending.x * Mathf.Sin(Mathf.Clamp01((Time.time - startTime) / MoveTime) * Mathf.PI);
+            currentPos.y += bending.y * Mathf.Sin(Mathf.Clamp01((Time.time - startTime) / MoveTime) * Mathf.PI);
+            currentPos.z += bending.z * Mathf.Sin(Mathf.Clamp01((Time.time - startTime) / MoveTime) * Mathf.PI);
 
             transform.position = currentPos;
 

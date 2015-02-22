@@ -12,16 +12,16 @@ public class Turn : MonoBehaviour {
     public Phase CurrentPhase { get; set; }
     public static int TurnNumber { get; set; }
 
-    public PlayerController pc;
-    public EnemyController ec;
+    private PlayerController _pc;
+    private EnemiesController _ec;
 
     public void Start() {
-        pc = FindObjectOfType<PlayerController>();
-        ec = FindObjectOfType<EnemyController>(); //TODO Update to EnemiesController when > 1 enemies
+        _pc = FindObjectOfType<PlayerController>();
+        _ec = FindObjectOfType<EnemiesController>(); 
         CurrentPhase = Phase.Player;
         TurnNumber = 1;
         //HACK
-        pc.BeginPhase();
+        _pc.BeginPhase();
     }
 
     public void AdvancePhase() {
@@ -30,11 +30,11 @@ public class Turn : MonoBehaviour {
         switch (CurrentPhase) {
             case Phase.Enemy:
                 CurrentPhase = Phase.Player;
-                pc.BeginPhase();
+                _pc.BeginPhase();
                 break;
             case Phase.Player:
                 CurrentPhase = Phase.Enemy;
-                ec.BeginPhase();
+                _ec.BeginPhase();
                 break;
         }
 

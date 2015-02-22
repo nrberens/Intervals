@@ -30,24 +30,21 @@ public class EnemyAI : FSM {
     }
 
 
-    private EnemyController ec;
+    private EnemyController _ec;
 
-    public FSMState curState;
-    private Transform target;
-    public GameObject bullet;
-    private bool bDead;
-    public int health;
-    public float attackDistance;
-    public float aggroDistance;
-    public int distance;
+    public FSMState CurState;
+    private Transform _target;
+    public GameObject Bullet;
+    private bool _bDead;
+    public int Health;
+    public float AttackDistance;
+    public float AggroDistance;
+    public int Distance;
 
     // Use this for initialization
     protected override void Initialize() {
-        ec = GetComponentInParent<EnemyController>();
+        _ec = GetComponentInParent<EnemyController>();
     }
-
-    //TODO AI should not be tied to Update, or needs to check that state has changed
-    //Only Update state if phase = enemy AND a decision hasn't been made
 
     // FSMUpdate is called once per frame
     protected override void FSMUpdate() { }
@@ -55,7 +52,7 @@ public class EnemyAI : FSM {
     // Update once per turn
     public void UpdateAI() {
 
-        switch (curState) {
+        switch (CurState) {
             case FSMState.Wander:
                 UpdateWanderState();
                 break;
@@ -67,8 +64,8 @@ public class EnemyAI : FSM {
                 break;
         }
 
-        if (health <= 0) {
-            curState = FSMState.Dead;
+        if (Health <= 0) {
+            CurState = FSMState.Dead;
         }
 
     }
@@ -78,16 +75,16 @@ public class EnemyAI : FSM {
 
         switch (randomDir) {
             case Direction.Up:
-                ec.mover.MoveUp(distance);
+                _ec.Mover.MoveUp(Distance);
                 break;
             case Direction.Down:
-                ec.mover.MoveDown(distance);
+                _ec.Mover.MoveDown(Distance);
                 break;
             case Direction.Left:
-                ec.mover.MoveLeft(distance);
+                _ec.Mover.MoveLeft(Distance);
                 break;
             case Direction.Right:
-                ec.mover.MoveRight(distance);
+                _ec.Mover.MoveRight(Distance);
                 break;
         }
     }
@@ -110,7 +107,7 @@ transform.position - new Vector3(rndX, 10.0f, rndZ), 40.0f, 10.0f);
     }
 
     private void ShootBullet() {
-            Transform spawnedBullet = (Transform)GameObject.Instantiate(bullet.transform, bulletSpawnPoint.transform.position, Quaternion.identity);
+            Transform spawnedBullet = (Transform)GameObject.Instantiate(Bullet.transform, bulletSpawnPoint.transform.position, Quaternion.identity);
             Bullet bulletController = spawnedBullet.GetComponent<Bullet>();
             bulletController.ShootAtPoint(player.transform.position);
             elapsedTime = 0.0f;
@@ -123,7 +120,7 @@ transform.position - new Vector3(rndX, 10.0f, rndZ), 40.0f, 10.0f);
     }
 
     void TakeDamage(int damage) {
-        health -= damage;
+        Health -= damage;
     }
 
     private Direction GetRandomDirection() {

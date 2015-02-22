@@ -67,8 +67,6 @@ public class EnemyAI : FSM {
                 break;
         }
 
-        elapsedTime += Time.deltaTime;
-
         if (health <= 0) {
             curState = FSMState.Dead;
         }
@@ -112,13 +110,10 @@ transform.position - new Vector3(rndX, 10.0f, rndZ), 40.0f, 10.0f);
     }
 
     private void ShootBullet() {
-        if (elapsedTime >= fireRate) {
             Transform spawnedBullet = (Transform)GameObject.Instantiate(bullet.transform, bulletSpawnPoint.transform.position, Quaternion.identity);
             Bullet bulletController = spawnedBullet.GetComponent<Bullet>();
-            //bulletController.drone = transform;
             bulletController.ShootAtPoint(player.transform.position);
             elapsedTime = 0.0f;
-        }
     }
 
     void OnCollisionEnter(Collision coll) {

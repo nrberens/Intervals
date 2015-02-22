@@ -11,8 +11,6 @@ public class PlayerController : MonoBehaviour, ITurnBased {
     public Turn CurrentTurn { get; set; }
     public bool acting { get; set; }
 
-    private bool doneWithTurn;
-
 	// Use this for initialization
 	void Start () {
 	    mover = GetComponentInParent<PlayerMover>();
@@ -25,9 +23,11 @@ public class PlayerController : MonoBehaviour, ITurnBased {
 	}
 
     void Update() {
-        if (!acting && CurrentTurn.CurrentPhase == Turn.Phase.Player) {
+
+    }
+
+    public void BeginPhase() {
             input.allowInput = true;
-        }
     }
 
     public void EndPhase() {

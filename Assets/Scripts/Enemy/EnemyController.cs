@@ -22,13 +22,18 @@ public class EnemyController : MonoBehaviour, ITurnBased {
     }
 
     void Update() {
-        if (!acting && CurrentTurn.CurrentPhase == Turn.Phase.Enemy) {
-            ai.UpdateAI();
-        }
+
+    }
+
+    public void BeginPhase() {
+        //AI DECISION PHASE
+        Debug.Log("Updating AI");
+        ai.UpdateAI();
+        Debug.Log("AI Updated");
     }
 
     public void EndPhase() {
-        if(CurrentTurn.CurrentPhase == Turn.Phase.Enemy)
+        if (CurrentTurn.CurrentPhase == Turn.Phase.Enemy)
             CurrentTurn.AdvancePhase();
     }
 }

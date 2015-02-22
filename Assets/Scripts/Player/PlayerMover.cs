@@ -6,8 +6,6 @@ using UnityEngineInternal;
 
 public class PlayerMover : MonoBehaviour, IMover {
 
-    // TODO break out Input, Movement, and Firing into different Player classes
-
     private PlayerController pc;
     private float moveX, moveZ;
     public float moveTime;

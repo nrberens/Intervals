@@ -28,6 +28,7 @@ public class EnemyController : MonoBehaviour, ITurnBased {
         //AI DECISION PHASE
         Debug.Log("Updating AI");
         AI.UpdateAI();
+		//HACK shoot every turn
         Shooter.Shoot();
         Debug.Log("AI Updated");
     }

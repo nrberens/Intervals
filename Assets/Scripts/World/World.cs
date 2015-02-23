@@ -46,7 +46,7 @@ public class World : MonoBehaviour {
 	        int enemyZ = Random.Range(0, WORLD_LENGTH);
 	        enemy.GetComponent<EnemyMover>().currentNode = Nodes[enemyX, enemyZ];
 
-	        _ec.Enemies.Enqueue(enemy);
+	        _ec.Enemies.Enqueue(enemy.GetComponent<EnemyController>());
 	    }
 	}
 

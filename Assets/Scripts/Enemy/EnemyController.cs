@@ -5,6 +5,7 @@ using UnityEngineInternal;
 public class EnemyController : MonoBehaviour, ITurnBased {
     public EnemyMover Mover;
     public EnemyAI AI;
+    public EnemyShooter Shooter;
 
     public Turn CurrentTurn { get; set; }
     public bool acting { get; set; }
@@ -13,6 +14,7 @@ public class EnemyController : MonoBehaviour, ITurnBased {
     void Start() {
         Mover = GetComponentInParent<EnemyMover>();
         AI = GetComponentInParent<EnemyAI>();
+        Shooter = GetComponentInParent<EnemyShooter>();
         CurrentTurn = FindObjectOfType<Turn>();
 
         acting = false;
@@ -26,6 +28,7 @@ public class EnemyController : MonoBehaviour, ITurnBased {
         //AI DECISION PHASE
         Debug.Log("Updating AI");
         AI.UpdateAI();
+        Shooter.Shoot();
         Debug.Log("AI Updated");
     }
 

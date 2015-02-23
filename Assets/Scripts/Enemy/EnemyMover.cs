@@ -3,13 +3,13 @@ using System.Collections;
 
 public class EnemyMover : MonoBehaviour, IMover {
 
-    private EnemyController ec;
+    private EnemyController _ec;
     public float MoveTime;
 
     // Use this for initialization
     void Start() {
         nodes = GameObject.Find("World").GetComponent<World>().Nodes;
-        ec = GetComponentInParent<EnemyController>();
+        _ec = GetComponentInParent<EnemyController>();
     }
 
     // Update is called once per frame
@@ -30,8 +30,8 @@ public class EnemyMover : MonoBehaviour, IMover {
         if (blockId >= nodes.GetUpperBound(1)) //bust out early if you're at the top of the map
         {
             Debug.Log("You hit the top! node_id= " + nodeId + " z = " + blockId);
-            ec.acting = false;
-            ec.EndPhase();
+            _ec.acting = false;
+            _ec.EndPhase();
             return;
         }
 
@@ -48,8 +48,8 @@ public class EnemyMover : MonoBehaviour, IMover {
 
         if (blockId <= 0) {
             Debug.Log("You hit the bottom! node_id= " + nodeId + " z = " + blockId);
-            ec.acting = false;
-            ec.EndPhase();
+            _ec.acting = false;
+            _ec.EndPhase();
             return;
         }
 
@@ -66,8 +66,8 @@ public class EnemyMover : MonoBehaviour, IMover {
 
         if (nodeId <= 0) {
             Debug.Log("You hit the left! node_id= " + nodeId + " z = " + blockId);
-            ec.acting = false;
-            ec.EndPhase();
+            _ec.acting = false;
+            _ec.EndPhase();
             return;
         }
 
@@ -84,8 +84,8 @@ public class EnemyMover : MonoBehaviour, IMover {
 
         if (nodeId >= nodes.GetUpperBound(0)) {
             Debug.Log("You hit the right! node_id= " + nodeId + " z = " + blockId);
-            ec.acting = false;
-            ec.EndPhase();
+            _ec.acting = false;
+            _ec.EndPhase();
             return;
         }
 
@@ -112,8 +112,8 @@ public class EnemyMover : MonoBehaviour, IMover {
             yield return null;
         }
 
-        ec.acting = false;
-        ec.EndPhase();
+        _ec.acting = false;
+        _ec.EndPhase();
     }
 
     public void DetectCurrentNode() {

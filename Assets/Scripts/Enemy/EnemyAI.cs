@@ -106,19 +106,6 @@ transform.position - new Vector3(rndX, 10.0f, rndZ), 40.0f, 10.0f);
         Destroy(gameObject, 1.5f);
     }
 
-    private void ShootBullet() {
-            Transform spawnedBullet = (Transform)GameObject.Instantiate(Bullet.transform, bulletSpawnPoint.transform.position, Quaternion.identity);
-            Bullet bulletController = spawnedBullet.GetComponent<Bullet>();
-            bulletController.ShootAtPoint(player.transform.position);
-            elapsedTime = 0.0f;
-    }
-
-    void OnCollisionEnter(Collision coll) {
-        if (coll.gameObject.tag == "Bullet") {
-            TakeDamage(coll.gameObject.GetComponent<Bullet>().damage);
-        }
-    }
-
     void TakeDamage(int damage) {
         Health -= damage;
     }

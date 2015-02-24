@@ -3,14 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class EnemiesController : MonoBehaviour, ITurnBased {
-    public Queue<EnemyController> Enemies { get; set; }
+    public List<EnemyController> Enemies { get; set; }
 
     public Turn CurrentTurn { get; set; }
     public bool acting { get; set; }
 
 	// Use this for initialization
 	void Start () {
-        Enemies = new Queue<EnemyController>();
+        Enemies = new List<EnemyController>();
         CurrentTurn = FindObjectOfType<Turn>();
 	}
 	

@@ -24,7 +24,8 @@ public class EnemyShooter : MonoBehaviour {
         bullet.position = bulletSpawnPoint.transform.position;
 		Bullet bulletScript = bullet.GetComponent<Bullet>();
 		//HACK all bullets shoot down
+        bulletScript.currentNode = _ec.Mover.currentNode;
 		bulletScript.Dir = Bullet.Direction.Down;
-		bulletScript.bc.Bullets.Enqueue(bulletScript);
+		bulletScript.bc.Bullets.Add(bulletScript);
     }
 }

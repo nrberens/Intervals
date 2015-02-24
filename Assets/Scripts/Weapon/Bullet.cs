@@ -20,7 +20,8 @@ public class Bullet : MonoBehaviour, IMover{
 
     public MoveNode currentNode { get; set; }
 
-	public void Start() {
+	public void Awake() {
+        nodes = GameObject.Find("World").GetComponent<World>().Nodes;
 		bc = FindObjectOfType<BulletsController>();
 	}
 
@@ -54,7 +55,7 @@ public class Bullet : MonoBehaviour, IMover{
         if (blockId >= nodes.GetUpperBound(1)) //bust out early if you're at the top of the map
         {
             Debug.Log("You hit the top! node_id= " + nodeId + " z = " + blockId);
-			Destroy (gameObject);
+			DestroyBullet();
 			EndPhase();
             return;
         }
@@ -72,7 +73,7 @@ public class Bullet : MonoBehaviour, IMover{
 
         if (blockId <= 0) {
             Debug.Log("You hit the bottom! node_id= " + nodeId + " z = " + blockId);
-			Destroy (gameObject);
+			DestroyBullet();
 			EndPhase();
             return;
         }
@@ -90,7 +91,7 @@ public class Bullet : MonoBehaviour, IMover{
 
         if (nodeId <= 0) {
             Debug.Log("You hit the left! node_id= " + nodeId + " z = " + blockId);
-			Destroy(gameObject);
+            DestroyBullet();
 			EndPhase();
             return;
         }
@@ -108,7 +109,7 @@ public class Bullet : MonoBehaviour, IMover{
 
         if (nodeId >= nodes.GetUpperBound(0)) {
             Debug.Log("You hit the right! node_id= " + nodeId + " z = " + blockId);
-			Destroy(gameObject);
+            DestroyBullet();
 			EndPhase();
             return;
         }
@@ -141,6 +142,11 @@ public class Bullet : MonoBehaviour, IMover{
 	public void EndPhase() {
 		//TODO end bullet phase
 	}
+
+    public void DestroyBullet() {
+        bc.Bullets.Remove(this);
+        Destroy(gameObject);
+    }
 
     public void DetectCurrentNode() {
     }

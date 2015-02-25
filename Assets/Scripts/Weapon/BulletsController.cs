@@ -18,9 +18,14 @@ public class BulletsController : MonoBehaviour, ITurnBased {
 	public void BeginPhase() {
 		//Cycle through each enemies turn
         //TODO create temporary list of bullets to enumerate through -- list is being modified during the turn
-		foreach (Bullet bullet in Bullets) {
+		for(int i = Bullets.Count-1; i >= 0; i--) {
+			Bullet bullet = Bullets[i];
 			bullet.BeginPhase();
 		}
+
+//		foreach (Bullet bullet in Bullets) {
+//			bullet.BeginPhase();
+//		}
 		
 		EndPhase();
 	}

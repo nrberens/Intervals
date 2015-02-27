@@ -26,6 +26,13 @@ public class PlayerInput : MonoBehaviour
 	    if (pc.CurrentTurn.CurrentPhase == Turn.Phase.Player) {
 	        //INPUT PHASE 
 	        if (allowInput && !pc.acting) {
+
+                //TODO mouse click to shoot
+                // Get mouse click
+                // Cast ray into world, get target
+                // Check for valid target
+                // Shoot in direction
+
 	            moveX = Input.GetAxis("Horizontal");
 	            moveZ = Input.GetAxis("Vertical");
 

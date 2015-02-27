@@ -4,7 +4,7 @@ using UnityEngineInternal;
 
 public class EnemyController : MonoBehaviour, ITurnBased {
     public EnemyMover Mover;
-    public EnemyAI AI;
+    public FSM AI;
     public EnemyShooter Shooter;
 
     public Turn CurrentTurn { get; set; }
@@ -13,7 +13,7 @@ public class EnemyController : MonoBehaviour, ITurnBased {
     // Use this for initialization
     void Start() {
         Mover = GetComponentInParent<EnemyMover>();
-        AI = GetComponentInParent<EnemyAI>();
+        AI = GetComponentInParent<FSM>();
         Shooter = GetComponentInParent<EnemyShooter>();
         CurrentTurn = FindObjectOfType<Turn>();
 
@@ -29,7 +29,7 @@ public class EnemyController : MonoBehaviour, ITurnBased {
         Debug.Log("Updating AI");
         AI.UpdateAI();
 		//HACK shoot every turn
-        Shooter.Shoot();
+        //Shooter.Shoot();
         Debug.Log("AI Updated");
     }
 

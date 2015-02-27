@@ -13,11 +13,10 @@ using System;
  **/
 
 //[RequireComponent(typeof(Rigidbody))]
-public class EnemyAI : FSM {
+public class RandomAI : FSM {
 
     public enum FSMState {
         None,
-        Attack,
         Wander,
         Dead,
     }
@@ -56,9 +55,6 @@ public class EnemyAI : FSM {
             case FSMState.Wander:
                 UpdateWanderState();
                 break;
-            case FSMState.Attack:
-                UpdateAttackState();
-                break;
             case FSMState.Dead:
                 UpdateDeadState();
                 break;
@@ -67,29 +63,34 @@ public class EnemyAI : FSM {
         if (Health <= 0) {
             CurState = FSMState.Dead;
         }
-
     }
 
     protected void UpdateWanderState() {  //Choose random new position
-        Direction randomDir = GetRandomDirection();
 
-        switch (randomDir) {
-            case Direction.Up:
-                _ec.Mover.MoveUp(Distance);
-                break;
-            case Direction.Down:
-                _ec.Mover.MoveDown(Distance);
-                break;
-            case Direction.Left:
-                _ec.Mover.MoveLeft(Distance);
-                break;
-            case Direction.Right:
-                _ec.Mover.MoveRight(Distance);
-                break;
+        //random chance of shooting, otherwise get randomDir and move
+        int shootCoin = UnityEngine.Random.Range(0, 5);
+
+        if (shootCoin == 0) {
+            _ec.Shooter.Shoot();
         }
-    }
+        else {
+            Direction randomDir = GetRandomDirection();
 
-    protected void UpdateAttackState() {
+            switch (randomDir) {
+                case Direction.Up:
+                    _ec.Mover.MoveUp(Distance);
+                    break;
+                case Direction.Down:
+                    _ec.Mover.MoveDown(Distance);
+                    break;
+                case Direction.Left:
+                    _ec.Mover.MoveLeft(Distance);
+                    break;
+                case Direction.Right:
+                    _ec.Mover.MoveRight(Distance);
+                    break;
+            }
+        }
     }
 
     protected void UpdateDeadState() {

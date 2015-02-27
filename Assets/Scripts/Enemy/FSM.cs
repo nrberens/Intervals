@@ -28,4 +28,8 @@ public class FSM : MonoBehaviour {
     void FixedUpdate() {
         FSMFixedUpdate();
     }
+
+    //Update once per turn
+    public virtual void UpdateAI() {
+    }
 }

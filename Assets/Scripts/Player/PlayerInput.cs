@@ -30,8 +30,16 @@ public class PlayerInput : MonoBehaviour
                 //TODO mouse click to shoot
                 // Get mouse click
                 // Cast ray into world, get target
-                // Check for valid target
-                // Shoot in direction
+
+				if(Input.GetMouseButtonDown(0)) {
+					Debug.Log ("Registered click");
+					Transform target = GetTargetOfClick();
+                	// Check for valid target
+					if(target != null && CheckValidTarget(target)) {
+						//shoot target
+						Debug.Log("Shooting " + target);
+					}
+				}
 
 	            moveX = Input.GetAxis("Horizontal");
 	            moveZ = Input.GetAxis("Vertical");
@@ -66,5 +74,18 @@ public class PlayerInput : MonoBehaviour
                 pc.EndPhase();
 	        }
 	    }
+	}
+
+	//On click, get target of mouse click
+	private Transform GetTargetOfClick() {
+		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+		RaycastHit hit;
+		if(Physics.Raycast (ray, out hit)) {
+			return hit.transform;
+		} else return null;
+	}
+
+	private bool CheckValidTarget (Transform target) {
+		return (target.tag == "Enemy");
 	}
 }

@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour, ITurnBased {
     public PlayerMover Mover;
     public PlayerInventory Inventory;
     public PlayerInput Input;
+	public PlayerShooter Shooter;
 
     public Turn CurrentTurn { get; set; }
     public bool acting { get; set; }
@@ -16,6 +17,7 @@ public class PlayerController : MonoBehaviour, ITurnBased {
 	    Mover = GetComponentInParent<PlayerMover>();
 	    Inventory = GetComponentInParent<PlayerInventory>();
 	    Input = GetComponentInParent<PlayerInput>();
+		Shooter = GetComponentInParent<PlayerShooter>();
 	    CurrentTurn = FindObjectOfType<Turn>();
 	    Transform bulletSpawnPoint = Inventory.weapon.Find("BulletPoint");
 

@@ -86,4 +86,11 @@ public class World : MonoBehaviour {
 	void Update () {
 	
 	}
+
+	//HELPER METHODS
+	public MoveNode GetDistantNode(MoveNode currentNode, int newX, int newZ) {
+		int thisX = currentNode.x;
+		int thisZ = currentNode.z;
+		return Nodes[thisX + newX, thisZ + newZ];
+	}
 }

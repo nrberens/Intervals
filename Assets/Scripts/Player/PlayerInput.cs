@@ -34,17 +34,7 @@ public class PlayerInput : MonoBehaviour
 				//SHOOTING
 				if(Input.GetMouseButtonDown(0)) {
 					Debug.Log ("Registered click");
-					Transform target = pc.Shooter.GetTargetOfClick();
-					// TODO player can only shoot target where playerx == enemyx or playery == enemyy
-					// TODO player can only shoot target with line of sight
-					if(target != null && pc.Shooter.CheckValidTarget(target)) {
-					    allowInput = false;
-						//shoot target
-						Debug.Log("Shooting " + target);
-						pc.acting = false;
-						pc.Shooter.Shoot(target);
-						return;
-					}
+				    pc.Shooter.BeginShot();
 				}
 
 				//IF PLAYER DOESN'T SHOOT, HANDLE MOVEMENT

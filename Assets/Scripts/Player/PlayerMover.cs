@@ -112,15 +112,15 @@ public class PlayerMover : MonoBehaviour, IMover {
     public IEnumerator MoveToNode(MoveNode targetNode) {
         Vector3 startPos = currentNode.transform.position;
         Vector3 endPos = targetNode.transform.position;
-        Vector3 bending = Vector3.up;
+        //Vector3 bending = Vector3.up;
         float startTime = Time.time;
 
         while (Time.time < MoveTime + startTime) {
             Vector3 currentPos = Vector3.Lerp(startPos, endPos, (Time.time - startTime) / MoveTime);
 
-            currentPos.x += bending.x * Mathf.Sin(Mathf.Clamp01((Time.time - startTime) / MoveTime) * Mathf.PI);
-            currentPos.y += bending.y * Mathf.Sin(Mathf.Clamp01((Time.time - startTime) / MoveTime) * Mathf.PI);
-            currentPos.z += bending.z * Mathf.Sin(Mathf.Clamp01((Time.time - startTime) / MoveTime) * Mathf.PI);
+            //currentPos.x += bending.x * Mathf.Sin(Mathf.Clamp01((Time.time - startTime) / MoveTime) * Mathf.PI);
+            //currentPos.y += bending.y * Mathf.Sin(Mathf.Clamp01((Time.time - startTime) / MoveTime) * Mathf.PI);
+            //currentPos.z += bending.z * Mathf.Sin(Mathf.Clamp01((Time.time - startTime) / MoveTime) * Mathf.PI);
 
             transform.position = currentPos;
 

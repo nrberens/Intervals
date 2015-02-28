@@ -41,6 +41,7 @@ public class PlayerInput : MonoBehaviour
 						//shoot target
 						Debug.Log("Shooting " + target);
 						pc.acting = false;
+						pc.Shooter.Shoot(target);
 						pc.EndPhase();
 						return;
 					}

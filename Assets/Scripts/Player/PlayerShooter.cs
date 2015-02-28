@@ -27,7 +27,15 @@ public class PlayerShooter : MonoBehaviour {
 			//Check for correct positioning
 
 			//Check for line of sight
-		}
+			return true;
+		} else return false;
 
+	}
+
+	public void Shoot (Transform target) {
+		//spawn bullet
+		//bullet travels to enemy
+		//enemy takes damage
+		//if enemy health hits zero, enemy dies
 	}
 }

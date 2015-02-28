@@ -18,30 +18,30 @@ public class EnemyShooter : MonoBehaviour {
 	
 	}
 
-    public void Shoot(Bullet.Direction direction = Bullet.Direction.Down) {
+    public void Shoot(EnemyBullet.Direction direction = EnemyBullet.Direction.Down) {
         // Look in direction
         switch(direction) {
-            case Bullet.Direction.Down:
+            case EnemyBullet.Direction.Down:
                 transform.forward = Vector3.back;
                 break;
-            case Bullet.Direction.Up:
+            case EnemyBullet.Direction.Up:
                 transform.forward = Vector3.forward;
                 break;
-            case Bullet.Direction.Left:
+            case EnemyBullet.Direction.Left:
                 transform.forward = Vector3.left;
                 break;
-            case Bullet.Direction.Right:
+            case EnemyBullet.Direction.Right:
                 transform.forward = Vector3.right;
                 break;
         }
 
-        // Instantiate bullet prefab and set direction
+        // Instantiate EnemyBullet prefab and set direction
         Transform bullet = (Transform) Instantiate(BulletTransform);
         bullet.position = bulletSpawnPoint.transform.position;
-		Bullet bulletScript = bullet.GetComponent<Bullet>();
-        bulletScript.currentNode = _ec.Mover.currentNode;
-        bulletScript.MoveDown(1);
-        bulletScript.Dir = direction;
-		bulletScript.bc.Bullets.Add(bulletScript);
+		EnemyBullet enemyBulletScript = bullet.GetComponent<EnemyBullet>();
+        enemyBulletScript.currentNode = _ec.Mover.currentNode;
+        enemyBulletScript.MoveDown(1);
+        enemyBulletScript.Dir = direction;
+		enemyBulletScript.bc.Bullets.Add(enemyBulletScript);
     }
 }

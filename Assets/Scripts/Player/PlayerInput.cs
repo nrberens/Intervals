@@ -38,11 +38,11 @@ public class PlayerInput : MonoBehaviour
 					// TODO player can only shoot target where playerx == enemyx or playery == enemyy
 					// TODO player can only shoot target with line of sight
 					if(target != null && pc.Shooter.CheckValidTarget(target)) {
+					    allowInput = false;
 						//shoot target
 						Debug.Log("Shooting " + target);
 						pc.acting = false;
 						pc.Shooter.Shoot(target);
-						pc.EndPhase();
 						return;
 					}
 				}

@@ -19,7 +19,6 @@ public class PlayerController : MonoBehaviour, ITurnBased {
 	    Input = GetComponentInParent<PlayerInput>();
 		Shooter = GetComponentInParent<PlayerShooter>();
 	    CurrentTurn = FindObjectOfType<Turn>();
-	    Transform bulletSpawnPoint = Inventory.weapon.Find("BulletPoint");
 
 	    acting = false;
 	}

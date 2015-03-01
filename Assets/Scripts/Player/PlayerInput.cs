@@ -27,10 +27,6 @@ public class PlayerInput : MonoBehaviour
 	        //INPUT PHASE 
 	        if (allowInput && !pc.acting) {
 
-                //TODO mouse click to shoot
-                // Get mouse click
-                // Cast ray into world, get target
-
 				//SHOOTING
 				if(Input.GetMouseButtonDown(0)) {
 					Debug.Log ("Registered click");

@@ -23,7 +23,7 @@ public class Turn : MonoBehaviour {
 		_bc = FindObjectOfType<BulletsController>();
         CurrentPhase = Phase.Player;
         TurnNumber = 1;
-        //HACK plyaer starts automatically
+        //HACK player starts automatically
         _pc.BeginPhase();
     }
 

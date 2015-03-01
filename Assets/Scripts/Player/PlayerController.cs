@@ -36,4 +36,8 @@ public class PlayerController : MonoBehaviour, ITurnBased {
             CurrentTurn.AdvancePhase();   
         else Debug.Log("Calling AdvancePhase from the wrong object!");
     }
+
+    public void GameOver() {
+        Debug.Log("Game over, man, game over!");
+    }
 }

@@ -30,8 +30,6 @@ public class EnemyController : MonoBehaviour, ITurnBased {
         //AI DECISION PHASE
         Debug.Log("Updating AI");
         AI.UpdateAI();
-		//HACK shoot every turn
-        //Shooter.Shoot();
         Debug.Log("AI Updated");
     }
 
@@ -43,6 +41,7 @@ public class EnemyController : MonoBehaviour, ITurnBased {
 		//kill enemy instantly
 		//remove from list of enemies
 		_ec.Enemies.Remove(this);
+        Mover.currentNode.RemoveFromNode(gameObject);
 		Destroy (gameObject);
 
 	}

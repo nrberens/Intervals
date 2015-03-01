@@ -29,6 +29,7 @@ public class Map : MonoBehaviour {
         //instantiate player at spawn point
         _pc.transform.position = spawnPoint.transform.position;
         _pc.Mover.currentNode = spawnPoint;
+        _pc.Mover.currentNode.AddToNode(_pc.gameObject);
 
         //instantiate enemy at random position
         for (int i = 1; i <= 3; i++) {
@@ -39,6 +40,7 @@ public class Map : MonoBehaviour {
 
             _ec.Enemies.Add(enemy.GetComponent<EnemyController>());
             enemy.transform.position = Nodes[enemyX, enemyZ].transform.position;
+            Nodes[enemyX, enemyZ].AddToNode(enemy);
         }
     }
 

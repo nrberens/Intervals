@@ -42,7 +42,11 @@ public class EnemyBullet : MonoBehaviour, IMover{
    		}
 
 		if(gameObject != null) {
-			//TODO check for player on current node
+		    foreach (GameObject obj in currentNode.objectsOnNode) {
+		        if (obj.tag == "Player") {
+		            obj.GetComponent<PlayerController>().GameOver();
+		        }
+		    }
 		}
    	}
 
@@ -61,6 +65,11 @@ public class EnemyBullet : MonoBehaviour, IMover{
         }
 
         MoveNode targetNode = nodes[x, z + distance];
+        //remove from currentNode
+        //add to targetNode
+        currentNode.RemoveFromNode(gameObject);
+        targetNode.AddToNode(gameObject);
+
         StartCoroutine(MoveToNode(targetNode));
         currentNode = targetNode;
     }
@@ -79,6 +88,11 @@ public class EnemyBullet : MonoBehaviour, IMover{
         }
 
         MoveNode targetNode = nodes[x, z - distance];
+        //remove from currentNode
+        //add to targetNode
+        currentNode.RemoveFromNode(gameObject);
+        targetNode.AddToNode(gameObject);
+
         StartCoroutine(MoveToNode(targetNode));
         currentNode = targetNode;
     }
@@ -97,6 +111,11 @@ public class EnemyBullet : MonoBehaviour, IMover{
         }
 
         MoveNode targetNode = nodes[x - distance, z];
+        //remove from currentNode
+        //add to targetNode
+        currentNode.RemoveFromNode(gameObject);
+        targetNode.AddToNode(gameObject);
+
         StartCoroutine(MoveToNode(targetNode));
         currentNode = targetNode;
     }
@@ -115,6 +134,11 @@ public class EnemyBullet : MonoBehaviour, IMover{
         }
 
         MoveNode targetNode = nodes[x + distance, z];
+        //remove from currentNode
+        //add to targetNode
+        currentNode.RemoveFromNode(gameObject);
+        targetNode.AddToNode(gameObject);
+
         StartCoroutine(MoveToNode(targetNode));
         currentNode = targetNode;
     }
@@ -140,11 +164,11 @@ public class EnemyBullet : MonoBehaviour, IMover{
 	}
 
 	public void EndPhase() {
-		//TODO end bullet phase
 	}
 
     public void DestroyBullet() {
         bc.Bullets.Remove(this);
+        currentNode.RemoveFromNode(gameObject);
         Destroy(gameObject);
     }
 

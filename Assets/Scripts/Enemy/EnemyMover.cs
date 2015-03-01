@@ -36,8 +36,14 @@ public class EnemyMover : MonoBehaviour, IMover {
         }
 
         MoveNode targetNode = nodes[x, z + distance];
+        //remove from currentNode
+        //add to targetNode
+        currentNode.RemoveFromNode(gameObject);
+        targetNode.AddToNode(gameObject);
+
         StartCoroutine(MoveToNode(targetNode));
         currentNode = targetNode;
+
     }
 
     public void MoveDown(int distance) {
@@ -54,6 +60,11 @@ public class EnemyMover : MonoBehaviour, IMover {
         }
 
         MoveNode targetNode = nodes[x, z - distance];
+        //remove from currentNode
+        //add to targetNode
+        currentNode.RemoveFromNode(gameObject);
+        targetNode.AddToNode(gameObject);
+
         StartCoroutine(MoveToNode(targetNode));
         currentNode = targetNode;
     }
@@ -72,6 +83,11 @@ public class EnemyMover : MonoBehaviour, IMover {
         }
 
         MoveNode targetNode = nodes[x - distance, z];
+        //remove from currentNode
+        //add to targetNode
+        currentNode.RemoveFromNode(gameObject);
+        targetNode.AddToNode(gameObject);
+
         StartCoroutine(MoveToNode(targetNode));
         currentNode = targetNode;
     }
@@ -90,6 +106,11 @@ public class EnemyMover : MonoBehaviour, IMover {
         }
 
         MoveNode targetNode = nodes[x + distance, z];
+        //remove from currentNode
+        //add to targetNode
+        currentNode.RemoveFromNode(gameObject);
+        targetNode.AddToNode(gameObject);
+
         StartCoroutine(MoveToNode(targetNode));
         currentNode = targetNode;
     }

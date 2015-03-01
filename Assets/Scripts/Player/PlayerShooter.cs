@@ -66,7 +66,6 @@ public class PlayerShooter : MonoBehaviour {
 
     public void BeginShot() {
         Transform target = GetTargetOfClick();
-        // TODO player can only shoot target where playerx == enemyx or playery == enemyy
         // TODO player can only shoot target with line of sight
         if (target != null && pc.Shooter.CheckValidTarget(target)) {
             pc.Input.allowInput = false;

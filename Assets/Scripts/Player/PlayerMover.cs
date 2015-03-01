@@ -50,6 +50,7 @@ public class PlayerMover : MonoBehaviour, IMover {
             return;
         }
 
+        transform.forward = Vector3.forward;
         MoveNode targetNode = nodes[x, z + distance];
         //remove from currentNode
         //add to targetNode
@@ -72,6 +73,7 @@ public class PlayerMover : MonoBehaviour, IMover {
             return;
         }
 
+        transform.forward = Vector3.back;
         MoveNode targetNode = nodes[x, z - distance];
         //remove from currentNode
         //add to targetNode
@@ -94,6 +96,7 @@ public class PlayerMover : MonoBehaviour, IMover {
             return;
         }
 
+        transform.forward = Vector3.left;
         MoveNode targetNode = nodes[x - distance, z];
         //remove from currentNode
         //add to targetNode
@@ -116,6 +119,7 @@ public class PlayerMover : MonoBehaviour, IMover {
             return;
         }
 
+        transform.forward = Vector3.right;
         MoveNode targetNode = nodes[x + distance, z];
         //remove from currentNode
         //add to targetNode

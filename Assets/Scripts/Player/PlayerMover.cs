@@ -36,6 +36,23 @@ public class PlayerMover : MonoBehaviour, IMover {
         //DetectCurrentNode();
     }
 
+    public void Move(Direction direction, int distance) {
+        switch (direction) {
+            case Direction.Up:
+                pc.Mover.MoveUp(distance);
+                break;
+            case Direction.Down:
+                pc.Mover.MoveDown(distance);
+                break;
+            case Direction.Left:
+                pc.Mover.MoveLeft(distance);
+                break;
+            case Direction.Right:
+                pc.Mover.MoveRight(distance);
+                break;
+        } 
+    }
+
 
     public void MoveUp(int distance) {
         //throw new System.NotImplementedException();

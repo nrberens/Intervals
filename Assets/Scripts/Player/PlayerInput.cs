@@ -44,17 +44,17 @@ public class PlayerInput : MonoBehaviour
 
 	            if (moveX > 0) //if positive vertical, move forward
 	            {
-	                pc.Mover.MoveRight(1);
+                    pc.Mover.Move(Direction.Right, 1);
 	            }
 	            else if (moveX < 0) //if negative vertical, move backward
 	            {
-	                pc.Mover.MoveLeft(1);
+                    pc.Mover.Move(Direction.Left, 1);
 	            }
 	            else if (moveZ > 0) {
-	                pc.Mover.MoveUp(1);
+                    pc.Mover.Move(Direction.Up, 1);
 	            }
 	            else if (moveZ < 0) {
-	                pc.Mover.MoveDown(1);
+                    pc.Mover.Move(Direction.Down, 1);
 	            }
 
 	        }

@@ -5,8 +5,9 @@ public class EnemyBullet : MonoBehaviour, IMover{
 
 	public BulletsController bc;
 
-	public Direction Dir { get; set; }
-	public int speed;
+    public Direction Dir;
+
+    public int distance;
     public float MoveTime;
 
 	public MoveNode[,] nodes { get; private set; }
@@ -19,20 +20,7 @@ public class EnemyBullet : MonoBehaviour, IMover{
 	}
 
    	public void UpdateBullet() {
-   		switch(Dir) {
-   			case Direction.Up:
-   			MoveUp(speed);
-   			break;
-   			case Direction.Down:
-   			MoveDown(speed);
-   			break;
-   			case Direction.Left:
-   			MoveLeft(speed);
-   			break;
-   			case Direction.Right:
-   			MoveRight(speed);
-   			break;
-   		}
+        Move(Dir, distance);
 
 		if(gameObject != null) {
 		    foreach (GameObject obj in currentNode.objectsOnNode) {
@@ -42,6 +30,23 @@ public class EnemyBullet : MonoBehaviour, IMover{
 		    }
 		}
    	}
+
+    public void Move(Direction direction, int distance) {
+        switch (direction) {
+            case Direction.Up:
+                MoveUp(distance);
+                break;
+            case Direction.Down:
+                MoveDown(distance);
+                break;
+            case Direction.Left:
+                MoveLeft(distance);
+                break;
+            case Direction.Right:
+                MoveRight(distance);
+                break;
+        }
+    }
 
     public void MoveUp(int distance) {
         Debug.Log(gameObject.name + ": Moving Up");

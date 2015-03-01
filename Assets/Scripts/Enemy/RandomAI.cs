@@ -64,25 +64,12 @@ public class RandomAI : FSM {
         Direction randomDir = GetRandomDirection();
 
         if (shootCoin == 0) {
-            //TODO check for valid direction to shoot -- don't shoot off level
             _ec.Shooter.Shoot(randomDir);
+            //DEBUG - always shoot down
+            //_ec.Shooter.Shoot(Direction.Down);
         }
         else {
-
-            switch (randomDir) {
-                case Direction.Up:
-                    _ec.Mover.MoveUp(Distance);
-                    break;
-                case Direction.Down:
-                    _ec.Mover.MoveDown(Distance);
-                    break;
-                case Direction.Left:
-                    _ec.Mover.MoveLeft(Distance);
-                    break;
-                case Direction.Right:
-                    _ec.Mover.MoveRight(Distance);
-                    break;
-            }
+            _ec.Mover.Move(randomDir, Distance);
         }
     }
 

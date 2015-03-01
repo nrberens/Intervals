@@ -21,6 +21,23 @@ public class EnemyMover : MonoBehaviour, IMover {
 
     public MoveNode currentNode { get; set; }
 
+    public void Move(Direction direction, int distance) {
+        switch (direction) {
+            case Direction.Up:
+                _ec.Mover.MoveUp(distance);
+                break;
+            case Direction.Down:
+                _ec.Mover.MoveDown(distance);
+                break;
+            case Direction.Left:
+                _ec.Mover.MoveLeft(distance);
+                break;
+            case Direction.Right:
+                _ec.Mover.MoveRight(distance);
+                break;
+        } 
+    }
+
     public void MoveUp(int distance) {
         Debug.Log(gameObject.name + ": Moving Up");
         //throw new System.NotImplementedException();

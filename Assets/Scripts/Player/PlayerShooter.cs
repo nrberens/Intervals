@@ -12,8 +12,7 @@ public class PlayerShooter : MonoBehaviour {
     // Use this for initialization
     void Start() {
         pc = GetComponentInParent<PlayerController>();
-        weapon = transform.FindChild("Weapon");
-        bulletSpawnPoint = weapon.FindChild("BulletSpawnPoint");
+        bulletSpawnPoint = transform.FindChild("Weapon/BulletSpawnPoint");
     }
 
     // Update is called once per frame
@@ -81,10 +80,11 @@ public class PlayerShooter : MonoBehaviour {
 
     public void Shoot(Transform target) {
         //spawn bullet
-        Transform newBullet = (Transform)Instantiate(bulletPrefab);
-        newBullet.position = bulletSpawnPoint.position;
+        Transform newBullet = (Transform) Instantiate(bulletPrefab);
+        newBullet.position = new Vector3(bulletSpawnPoint.position.x, 0, bulletSpawnPoint.position.z);
         PlayerBullet newBulletScript = newBullet.GetComponent<PlayerBullet>();
         newBulletScript.pc = pc;
+        newBulletScript.spawnPoint = bulletSpawnPoint;
         newBulletScript.currentNode = pc.Mover.currentNode;
         newBulletScript.targetNode = target.GetComponent<EnemyMover>().currentNode;
         //bullet travels to enemy

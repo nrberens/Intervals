@@ -120,8 +120,8 @@ public class EnemyBullet : MonoBehaviour, IMover{
     }
 
     public IEnumerator MoveToNode(MoveNode targetNode) {
-        Vector3 startPos = currentNode.transform.position;
-        Vector3 endPos = targetNode.transform.position;
+        Vector3 startPos = new Vector3(currentNode.transform.position.x, 0.05f, currentNode.transform.position.z);
+        Vector3 endPos = new Vector3(targetNode.transform.position.x, 0.05f, targetNode.transform.position.z);
         float startTime = Time.time;
 
         while (Time.time < MoveTime + startTime) {

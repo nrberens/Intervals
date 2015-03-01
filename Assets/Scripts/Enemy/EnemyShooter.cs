@@ -38,6 +38,7 @@ public class EnemyShooter : MonoBehaviour {
         // Instantiate EnemyBullet prefab and set direction
         Transform bullet = (Transform) Instantiate(BulletTransform);
         bullet.position = bulletSpawnPoint.transform.position;
+        bullet.rotation = transform.rotation;
 		EnemyBullet enemyBulletScript = bullet.GetComponent<EnemyBullet>();
         enemyBulletScript.currentNode = _ec.Mover.currentNode;
         enemyBulletScript.MoveDown(1);

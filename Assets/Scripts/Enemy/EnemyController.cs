@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngineInternal;
 
 public class EnemyController : MonoBehaviour, ITurnBased {
+	private EnemiesController _ec;
     public EnemyMover Mover;
     public FSM AI;
     public EnemyShooter Shooter;
@@ -12,6 +13,7 @@ public class EnemyController : MonoBehaviour, ITurnBased {
 
     // Use this for initialization
     void Start() {
+		_ec = FindObjectOfType<EnemiesController>();
         Mover = GetComponentInParent<EnemyMover>();
         AI = GetComponentInParent<FSM>();
         Shooter = GetComponentInParent<EnemyShooter>();
@@ -36,4 +38,12 @@ public class EnemyController : MonoBehaviour, ITurnBased {
     public void EndPhase() {
         
     }
+
+	public void TakeDamage() {
+		//kill enemy instantly
+		//remove from list of enemies
+		_ec.Enemies.Remove(this);
+		Destroy (gameObject);
+
+	}
 }

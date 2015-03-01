@@ -35,10 +35,7 @@ public class PlayerBullet : MonoBehaviour {
     public void EndPhase() {
         Debug.Log("Bullet reached target");
         pc.acting = false;
-
-        //TODO deal damage to target
-
-        Destroy(gameObject);
+		Destroy(gameObject);
     }
 
 }

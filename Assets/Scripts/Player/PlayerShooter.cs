@@ -89,8 +89,9 @@ public class PlayerShooter : MonoBehaviour {
         newBulletScript.targetNode = target.GetComponent<EnemyMover>().currentNode;
         //bullet travels to enemy
         newBulletScript.TranslateBullet(newBulletScript.targetNode);
-        //enemy takes damage
-        //if enemy health hits zero, enemy dies
+		//enemy dies
+		Debug.Log (target + " killed!");
+		target.GetComponent<EnemyController>().TakeDamage();
     }
 
 }

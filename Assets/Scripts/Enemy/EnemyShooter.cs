@@ -18,19 +18,19 @@ public class EnemyShooter : MonoBehaviour {
 	
 	}
 
-    public void Shoot(EnemyBullet.Direction direction = EnemyBullet.Direction.Down) {
+    public void Shoot(Direction direction) {
         // Look in direction
         switch(direction) {
-            case EnemyBullet.Direction.Down:
+            case Direction.Down:
                 transform.forward = Vector3.back;
                 break;
-            case EnemyBullet.Direction.Up:
+            case Direction.Up:
                 transform.forward = Vector3.forward;
                 break;
-            case EnemyBullet.Direction.Left:
+            case Direction.Left:
                 transform.forward = Vector3.left;
                 break;
-            case EnemyBullet.Direction.Right:
+            case Direction.Right:
                 transform.forward = Vector3.right;
                 break;
         }

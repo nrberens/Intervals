@@ -70,6 +70,7 @@ public class PlayerShooter : MonoBehaviour {
         if (target != null && pc.Shooter.CheckValidTarget(target)) {
             pc.Input.allowInput = false;
             //shot is valid, shoot target
+            transform.LookAt(target);
             Debug.Log("Shooting " + target);
             pc.acting = false;
             pc.Shooter.Shoot(target);

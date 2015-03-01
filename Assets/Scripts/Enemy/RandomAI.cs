@@ -21,14 +21,6 @@ public class RandomAI : FSM {
         Dead,
     }
 
-    public enum Direction {
-        Up,
-        Down,
-        Left,
-        Right,
-    }
-
-
     private EnemyController _ec;
 
     public FSMState CurState;
@@ -69,12 +61,12 @@ public class RandomAI : FSM {
 
         //random chance of shooting, otherwise get randomDir and move
         int shootCoin = UnityEngine.Random.Range(0, 5);
+        Direction randomDir = GetRandomDirection();
 
         if (shootCoin == 0) {
-            _ec.Shooter.Shoot();
+            _ec.Shooter.Shoot(randomDir);
         }
         else {
-            Direction randomDir = GetRandomDirection();
 
             switch (randomDir) {
                 case Direction.Up:

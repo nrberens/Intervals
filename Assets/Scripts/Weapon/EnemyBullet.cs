@@ -5,13 +5,6 @@ public class EnemyBullet : MonoBehaviour, IMover{
 
 	public BulletsController bc;
 
-	public enum Direction {
-		Up,
-		Down,
-		Left,
-		Right,
-	}
-
 	public Direction Dir { get; set; }
 	public int speed;
     public float MoveTime;

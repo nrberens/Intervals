@@ -64,6 +64,7 @@ public class RandomAI : FSM {
         Direction randomDir = GetRandomDirection();
 
         if (shootCoin == 0) {
+            //TODO check for valid direction to shoot -- don't shoot off level
             _ec.Shooter.Shoot(randomDir);
         }
         else {

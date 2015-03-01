@@ -27,11 +27,13 @@ public class Map : MonoBehaviour {
         //FOR NOW HARDCODE IN 0,0
         MoveNode spawnPoint = Nodes[0, 0];
         //instantiate player at spawn point
+        //TODO make random spawn point
         _pc.transform.position = spawnPoint.transform.position;
         _pc.Mover.currentNode = spawnPoint;
         _pc.Mover.currentNode.AddToNode(_pc.gameObject);
 
         //instantiate enemy at random position
+        //TODO check for valid spawn point for enemies
         for (int i = 1; i <= 3; i++) {
             GameObject enemy = (GameObject)Instantiate(EnemyTransform.gameObject);
             int enemyX = Random.Range(0, mapWidth);

@@ -8,7 +8,7 @@ public class MoveNode : MonoBehaviour {
     public bool enemySpawnPoint = false;
     public bool itemSpawnPoint = false;
 
-	//TODO list of all objects on this node - find all places where objects change nodes and add relevant methods
+    //TODO add flags for blocks that block movement or LOS
 	public List<GameObject> objectsOnNode;
 
     public Transform parentBlock;

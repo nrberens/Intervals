@@ -8,7 +8,7 @@ public class EnemyMover : MonoBehaviour, IMover {
 
     // Use this for initialization
     void Start() {
-        nodes = GameObject.Find("World").GetComponent<World>().Nodes;
+        nodes = GameObject.Find("World").GetComponent<Map>().Nodes;
         _ec = GetComponentInParent<EnemyController>();
     }
 
@@ -24,18 +24,18 @@ public class EnemyMover : MonoBehaviour, IMover {
     public void MoveUp(int distance) {
         Debug.Log(gameObject.name + ": Moving Up");
         //throw new System.NotImplementedException();
-        int nodeId = currentNode.x;
-        int blockId = currentNode.z;
+        int x = currentNode.x;
+        int z = currentNode.z;
 
-        if (blockId >= nodes.GetUpperBound(1)) //bust out early if you're at the top of the map
+        if (z >= nodes.GetUpperBound(1)) //bust out early if you're at the top of the map
         {
-            Debug.Log("You hit the top! node_id= " + nodeId + " z = " + blockId);
+            Debug.Log("You hit the top! node_id= " + x + " z = " + z);
             _ec.acting = false;
             _ec.EndPhase();
             return;
         }
 
-        MoveNode targetNode = nodes[nodeId, blockId + distance];
+        MoveNode targetNode = nodes[x, z + distance];
         StartCoroutine(MoveToNode(targetNode));
         currentNode = targetNode;
     }
@@ -43,17 +43,17 @@ public class EnemyMover : MonoBehaviour, IMover {
     public void MoveDown(int distance) {
         Debug.Log(gameObject.name + ": Moving Down");
         //throw new System.NotImplementedException();
-        int nodeId = currentNode.x;
-        int blockId = currentNode.z;
+        int x = currentNode.x;
+        int z = currentNode.z;
 
-        if (blockId <= 0) {
-            Debug.Log("You hit the bottom! node_id= " + nodeId + " z = " + blockId);
+        if (z <= 0) {
+            Debug.Log("You hit the bottom! node_id= " + x + " z = " + z);
             _ec.acting = false;
             _ec.EndPhase();
             return;
         }
 
-        MoveNode targetNode = nodes[nodeId, blockId - distance];
+        MoveNode targetNode = nodes[x, z - distance];
         StartCoroutine(MoveToNode(targetNode));
         currentNode = targetNode;
     }
@@ -61,17 +61,17 @@ public class EnemyMover : MonoBehaviour, IMover {
     public void MoveLeft(int distance) {
         Debug.Log(gameObject.name + ": Moving Left");
         //throw new System.NotImplementedException();
-        int nodeId = currentNode.x;
-        int blockId = currentNode.z;
+        int x = currentNode.x;
+        int z = currentNode.z;
 
-        if (nodeId <= 0) {
-            Debug.Log("You hit the left! node_id= " + nodeId + " z = " + blockId);
+        if (x <= 0) {
+            Debug.Log("You hit the left! node_id= " + x + " z = " + z);
             _ec.acting = false;
             _ec.EndPhase();
             return;
         }
 
-        MoveNode targetNode = nodes[nodeId - distance, blockId];
+        MoveNode targetNode = nodes[x - distance, z];
         StartCoroutine(MoveToNode(targetNode));
         currentNode = targetNode;
     }
@@ -79,17 +79,17 @@ public class EnemyMover : MonoBehaviour, IMover {
     public void MoveRight(int distance) {
         Debug.Log(gameObject.name + ": Moving Right");
         //throw new System.NotImplementedException();
-        int nodeId = currentNode.x;
-        int blockId = currentNode.z;
+        int x = currentNode.x;
+        int z = currentNode.z;
 
-        if (nodeId >= nodes.GetUpperBound(0)) {
-            Debug.Log("You hit the right! node_id= " + nodeId + " z = " + blockId);
+        if (x >= nodes.GetUpperBound(0)) {
+            Debug.Log("You hit the right! node_id= " + x + " z = " + z);
             _ec.acting = false;
             _ec.EndPhase();
             return;
         }
 
-        MoveNode targetNode = nodes[nodeId + distance, blockId];
+        MoveNode targetNode = nodes[x + distance, z];
         StartCoroutine(MoveToNode(targetNode));
         currentNode = targetNode;
     }
@@ -103,9 +103,9 @@ public class EnemyMover : MonoBehaviour, IMover {
         while (Time.time < MoveTime + startTime) {
             Vector3 currentPos = Vector3.Lerp(startPos, endPos, (Time.time - startTime) / MoveTime);
 
-            currentPos.x += bending.x * Mathf.Sin(Mathf.Clamp01((Time.time - startTime) / MoveTime) * Mathf.PI);
-            currentPos.y += bending.y * Mathf.Sin(Mathf.Clamp01((Time.time - startTime) / MoveTime) * Mathf.PI);
-            currentPos.z += bending.z * Mathf.Sin(Mathf.Clamp01((Time.time - startTime) / MoveTime) * Mathf.PI);
+            //currentPos.x += bending.x * Mathf.Sin(Mathf.Clamp01((Time.time - startTime) / MoveTime) * Mathf.PI);
+            //currentPos.y += bending.y * Mathf.Sin(Mathf.Clamp01((Time.time - startTime) / MoveTime) * Mathf.PI);
+            //currentPos.z += bending.z * Mathf.Sin(Mathf.Clamp01((Time.time - startTime) / MoveTime) * Mathf.PI);
 
             transform.position = currentPos;
 

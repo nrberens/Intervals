@@ -21,7 +21,7 @@ public class EnemyBullet : MonoBehaviour, IMover{
     public MoveNode currentNode { get; set; }
 
 	public void Awake() {
-        nodes = GameObject.Find("World").GetComponent<World>().Nodes;
+        nodes = GameObject.Find("World").GetComponent<Map>().Nodes;
 		bc = FindObjectOfType<BulletsController>();
 	}
 
@@ -49,18 +49,18 @@ public class EnemyBullet : MonoBehaviour, IMover{
     public void MoveUp(int distance) {
         Debug.Log(gameObject.name + ": Moving Up");
         //throw new System.NotImplementedException();
-        int nodeId = currentNode.x;
-        int blockId = currentNode.z;
+        int x = currentNode.x;
+        int z = currentNode.z;
 
-        if (blockId >= nodes.GetUpperBound(1)) //bust out early if you're at the top of the map
+        if (z >= nodes.GetUpperBound(1)) //bust out early if you're at the top of the map
         {
-            Debug.Log("You hit the top! node_id= " + nodeId + " z = " + blockId);
+            Debug.Log("You hit the top! node_id= " + x + " z = " + z);
 			DestroyBullet();
 			EndPhase();
             return;
         }
 
-        MoveNode targetNode = nodes[nodeId, blockId + distance];
+        MoveNode targetNode = nodes[x, z + distance];
         StartCoroutine(MoveToNode(targetNode));
         currentNode = targetNode;
     }
@@ -68,17 +68,17 @@ public class EnemyBullet : MonoBehaviour, IMover{
     public void MoveDown(int distance) {
         Debug.Log(gameObject.name + ": Moving Down");
         //throw new System.NotImplementedException();
-        int nodeId = currentNode.x;
-        int blockId = currentNode.z;
+        int x = currentNode.x;
+        int z = currentNode.z;
 
-        if (blockId <= 0) {
-            Debug.Log("You hit the bottom! node_id= " + nodeId + " z = " + blockId);
+        if (z <= 0) {
+            Debug.Log("You hit the bottom! node_id= " + x + " z = " + z);
 			DestroyBullet();
 			EndPhase();
             return;
         }
 
-        MoveNode targetNode = nodes[nodeId, blockId - distance];
+        MoveNode targetNode = nodes[x, z - distance];
         StartCoroutine(MoveToNode(targetNode));
         currentNode = targetNode;
     }
@@ -86,17 +86,17 @@ public class EnemyBullet : MonoBehaviour, IMover{
     public void MoveLeft(int distance) {
         Debug.Log(gameObject.name + ": Moving Left");
         //throw new System.NotImplementedException();
-        int nodeId = currentNode.x;
-        int blockId = currentNode.z;
+        int x = currentNode.x;
+        int z = currentNode.z;
 
-        if (nodeId <= 0) {
-            Debug.Log("You hit the left! node_id= " + nodeId + " z = " + blockId);
+        if (x <= 0) {
+            Debug.Log("You hit the left! node_id= " + x + " z = " + z);
             DestroyBullet();
 			EndPhase();
             return;
         }
 
-        MoveNode targetNode = nodes[nodeId - distance, blockId];
+        MoveNode targetNode = nodes[x - distance, z];
         StartCoroutine(MoveToNode(targetNode));
         currentNode = targetNode;
     }
@@ -104,17 +104,17 @@ public class EnemyBullet : MonoBehaviour, IMover{
     public void MoveRight(int distance) {
         Debug.Log(gameObject.name + ": Moving Right");
         //throw new System.NotImplementedException();
-        int nodeId = currentNode.x;
-        int blockId = currentNode.z;
+        int x = currentNode.x;
+        int z = currentNode.z;
 
-        if (nodeId >= nodes.GetUpperBound(0)) {
-            Debug.Log("You hit the right! node_id= " + nodeId + " z = " + blockId);
+        if (x >= nodes.GetUpperBound(0)) {
+            Debug.Log("You hit the right! node_id= " + x + " z = " + z);
             DestroyBullet();
 			EndPhase();
             return;
         }
 
-        MoveNode targetNode = nodes[nodeId + distance, blockId];
+        MoveNode targetNode = nodes[x + distance, z];
         StartCoroutine(MoveToNode(targetNode));
         currentNode = targetNode;
     }

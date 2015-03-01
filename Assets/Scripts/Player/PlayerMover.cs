@@ -20,7 +20,8 @@ public class PlayerMover : MonoBehaviour, IMover {
     void Start() {
         //Cache node grid
         //This is smelly code, I think -- relies on World class -- abstract out?
-        nodes = GameObject.Find("World").GetComponent<World>().Nodes;
+        GameObject world = GameObject.Find("World");
+        nodes = world.GetComponent<Map>().Nodes;
 
         pc = GetComponentInParent<PlayerController>();
     }
@@ -38,69 +39,69 @@ public class PlayerMover : MonoBehaviour, IMover {
 
     public void MoveUp(int distance) {
         //throw new System.NotImplementedException();
-        int nodeId = currentNode.x;
-        int blockId = currentNode.z;
+        int x = currentNode.x;
+        int z = currentNode.z;
 
-        if (blockId >= nodes.GetUpperBound(1)) //bust out early if you're at the top of the map
+        if (z >= nodes.GetUpperBound(1)) //bust out early if you're at the top of the map
         {
-            Debug.Log("You hit the top! node_id= " + nodeId + " z = " + blockId);
+            Debug.Log("You hit the top! node_id= " + x + " z = " + z);
             pc.acting = false;
             pc.EndPhase();
             return;
         }
 
-        MoveNode targetNode = nodes[nodeId, blockId + distance];
+        MoveNode targetNode = nodes[x, z + distance];
         StartCoroutine(MoveToNode(targetNode));
         currentNode = targetNode;
     }
 
     public void MoveDown(int distance) {
         //throw new System.NotImplementedException();
-        int nodeId = currentNode.x;
-        int blockId = currentNode.z;
+        int x = currentNode.x;
+        int z = currentNode.z;
 
-        if (blockId <= 0) {
-            Debug.Log("You hit the bottom! node_id= " + nodeId + " z = " + blockId);
+        if (z <= 0) {
+            Debug.Log("You hit the bottom! node_id= " + x + " z = " + z);
             pc.acting = false;
             pc.EndPhase();
             return;
         }
 
-        MoveNode targetNode = nodes[nodeId, blockId - distance];
+        MoveNode targetNode = nodes[x, z - distance];
         StartCoroutine(MoveToNode(targetNode));
         currentNode = targetNode;
     }
 
     public void MoveLeft(int distance) {
         //throw new System.NotImplementedException();
-        int nodeId = currentNode.x;
-        int blockId = currentNode.z;
+        int x = currentNode.x;
+        int z = currentNode.z;
 
-        if (nodeId <= 0) {
-            Debug.Log("You hit the left! node_id= " + nodeId + " z = " + blockId);
+        if (x <= 0) {
+            Debug.Log("You hit the left! node_id= " + x + " z = " + z);
             pc.acting = false;
             pc.EndPhase();
             return;
         }
 
-        MoveNode targetNode = nodes[nodeId - distance, blockId];
+        MoveNode targetNode = nodes[x - distance, z];
         StartCoroutine(MoveToNode(targetNode));
         currentNode = targetNode;
     }
 
     public void MoveRight(int distance) {
         //throw new System.NotImplementedException();
-        int nodeId = currentNode.x;
-        int blockId = currentNode.z;
+        int x = currentNode.x;
+        int z = currentNode.z;
 
-        if (nodeId >= nodes.GetUpperBound(0)) {
-            Debug.Log("You hit the right! node_id= " + nodeId + " z = " + blockId);
+        if (x >= nodes.GetUpperBound(0)) {
+            Debug.Log("You hit the right! node_id= " + x + " z = " + z);
             pc.acting = false;
             pc.EndPhase();
             return;
         }
 
-        MoveNode targetNode = nodes[nodeId + distance, blockId];
+        MoveNode targetNode = nodes[x + distance, z];
         StartCoroutine(MoveToNode(targetNode));
         currentNode = targetNode;
     }

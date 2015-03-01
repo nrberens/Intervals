@@ -3,8 +3,6 @@ using System.Collections;
 
 public class WorldBlock : MonoBehaviour {
 
-    public int id = 0;
-
 	// Use this for initialization
 	void Start () {
 

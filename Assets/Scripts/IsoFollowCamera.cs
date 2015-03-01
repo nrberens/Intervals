@@ -7,9 +7,9 @@ public class IsoFollowCamera : MonoBehaviour {
 	float x, z;
 
 	void LateUpdate() {
-		x = player.transform.position.x + 10;
-		z = player.transform.position.z;
+		x = player.transform.position.x;
+	    z = player.transform.position.z;
 
-		transform.position = new Vector3(x, 10, z);
+		transform.position = new Vector3(x, 0, z);
 	}
 }

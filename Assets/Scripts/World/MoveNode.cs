@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
-using System.Collections;
 
 public class MoveNode : MonoBehaviour {
 
@@ -9,19 +7,13 @@ public class MoveNode : MonoBehaviour {
     public Boolean enemySpawnPoint = false;
     public Boolean itemSpawnPoint = false;
 
-    public GameObject parentBlock;
-    public WorldBlock parentBlockController;
+    public Transform parentBlock;
 
-    public int id;
     public int x, z;
 
 	// Use this for initialization
-	void Start () {
-	    parentBlock = transform.parent.gameObject;
-	    parentBlockController = parentBlock.GetComponent<WorldBlock>();
-
-	    x = id;
-	    z = parentBlockController.id;
+	void Awake() {
+	    parentBlock = transform.parent;
 	}
 	
 	// Update is called once per frame

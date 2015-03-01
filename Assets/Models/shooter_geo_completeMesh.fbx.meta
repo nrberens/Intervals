@@ -1,18 +1,24 @@
 fileFormatVersion: 2
-guid: 9629d3e00648c5740a0806ce65be3854
+guid: c06f7d982c248064d88132990fc04cfa
 ModelImporter:
   serializedVersion: 16
   fileIDToRecycleName:
-    100000: muzzle_lctr
-    100002: rifle_geo_mesh
-    100004: //RootNode
-    400000: muzzle_lctr
-    400002: rifle_geo_mesh
-    400004: //RootNode
+    100000: Camera
+    100002: Directional Light
+    100004: muzzle_lctr
+    100006: rifle_geo_mesh
+    100008: //RootNode
+    100010: soldier_geo_mesh
+    400000: Camera
+    400002: Directional Light
+    400004: muzzle_lctr
+    400006: rifle_geo_mesh
+    400008: //RootNode
+    400010: soldier_geo_mesh
     2300000: rifle_geo_mesh
-    2300002: //RootNode
+    2300002: soldier_geo_mesh
     3300000: rifle_geo_mesh
-    3300002: //RootNode
+    3300002: soldier_geo_mesh
     4300000: soldier_geo_mesh
     4300002: rifle_geo_mesh
     7400000: Take 001
@@ -36,7 +42,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: .00999999978
+    globalScale: 1
     meshCompression: 0
     addColliders: 0
     importBlendShapes: 1

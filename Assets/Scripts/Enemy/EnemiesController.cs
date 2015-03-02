@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class EnemiesController : MonoBehaviour, ITurnBased {
-    public List<EnemyController> Enemies { get; set; }
+    public List<EnemyController> Enemies; 
 
     public Turn CurrentTurn { get; set; }
     public bool acting { get; set; }

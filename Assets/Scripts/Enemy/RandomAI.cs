@@ -64,6 +64,7 @@ public class RandomAI : FSM {
         Direction randomDir = GetRandomDirection();
 
         if (shootCoin == 0) {
+            Debug.Log("Shooting in " + randomDir);
             _ec.Shooter.Shoot(randomDir);
             //DEBUG - always shoot down
             //_ec.Shooter.Shoot(Direction.Down);

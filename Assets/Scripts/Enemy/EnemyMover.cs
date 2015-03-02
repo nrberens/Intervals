@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 
 public class EnemyMover : MonoBehaviour, IMover {
@@ -35,105 +36,120 @@ public class EnemyMover : MonoBehaviour, IMover {
             case Direction.Right:
                 _ec.Mover.MoveRight(distance);
                 break;
-        } 
+        }
     }
 
     public void MoveUp(int distance) {
-        Debug.Log(gameObject.name + ": Moving Up");
-        //throw new System.NotImplementedException();
-        int x = currentNode.x;
-        int z = currentNode.z;
+        try {
+            Debug.Log(gameObject.name + ": Moving Up");
+            //throw new System.NotImplementedException();
+            int x = currentNode.x;
+            int z = currentNode.z;
 
-        if (z >= nodes.GetUpperBound(1)) //bust out early if you're at the top of the map
+            if (z >= nodes.GetUpperBound(1)) //bust out early if you're at the top of the map
         {
-            Debug.Log("You hit the top! node_id= " + x + " z = " + z);
-            _ec.acting = false;
-            _ec.EndPhase();
-            return;
+                Debug.Log("You hit the top! node_id= " + x + " z = " + z);
+                _ec.acting = false;
+                _ec.EndPhase();
+                return;
+            }
+
+            transform.forward = Vector3.forward;
+            MoveNode targetNode = nodes[x, z + distance];
+            //remove from currentNode
+            //add to targetNode
+            currentNode.RemoveFromNode(gameObject);
+            targetNode.AddToNode(gameObject);
+
+            StartCoroutine(MoveToNode(targetNode));
+            currentNode = targetNode;
+        } catch (NullReferenceException e) {
+            Console.WriteLine(e);
         }
-
-        transform.forward = Vector3.forward;
-        MoveNode targetNode = nodes[x, z + distance];
-        //remove from currentNode
-        //add to targetNode
-        currentNode.RemoveFromNode(gameObject);
-        targetNode.AddToNode(gameObject);
-
-        StartCoroutine(MoveToNode(targetNode));
-        currentNode = targetNode;
-
     }
 
     public void MoveDown(int distance) {
-        Debug.Log(gameObject.name + ": Moving Down");
-        //throw new System.NotImplementedException();
-        int x = currentNode.x;
-        int z = currentNode.z;
+        try {
+            Debug.Log(gameObject.name + ": Moving Down");
+            //throw new System.NotImplementedException();
+            int x = currentNode.x;
+            int z = currentNode.z;
 
-        if (z <= 0) {
-            Debug.Log("You hit the bottom! node_id= " + x + " z = " + z);
-            _ec.acting = false;
-            _ec.EndPhase();
-            return;
+            if (z <= 0) {
+                Debug.Log("You hit the bottom! node_id= " + x + " z = " + z);
+                _ec.acting = false;
+                _ec.EndPhase();
+                return;
+            }
+
+            transform.forward = Vector3.back;
+            MoveNode targetNode = nodes[x, z - distance];
+            //remove from currentNode
+            //add to targetNode
+            currentNode.RemoveFromNode(gameObject);
+            targetNode.AddToNode(gameObject);
+
+            StartCoroutine(MoveToNode(targetNode));
+            currentNode = targetNode;
+        } catch (NullReferenceException e) {
+            Console.WriteLine(e);
         }
-
-        transform.forward = Vector3.back;
-        MoveNode targetNode = nodes[x, z - distance];
-        //remove from currentNode
-        //add to targetNode
-        currentNode.RemoveFromNode(gameObject);
-        targetNode.AddToNode(gameObject);
-
-        StartCoroutine(MoveToNode(targetNode));
-        currentNode = targetNode;
     }
 
     public void MoveLeft(int distance) {
-        Debug.Log(gameObject.name + ": Moving Left");
-        //throw new System.NotImplementedException();
-        int x = currentNode.x;
-        int z = currentNode.z;
+        try {
+            Debug.Log(gameObject.name + ": Moving Left");
+            //throw new System.NotImplementedException();
+            int x = currentNode.x;
+            int z = currentNode.z;
 
-        if (x <= 0) {
-            Debug.Log("You hit the left! node_id= " + x + " z = " + z);
-            _ec.acting = false;
-            _ec.EndPhase();
-            return;
+            if (x <= 0) {
+                Debug.Log("You hit the left! node_id= " + x + " z = " + z);
+                _ec.acting = false;
+                _ec.EndPhase();
+                return;
+            }
+
+            transform.forward = Vector3.left;
+            MoveNode targetNode = nodes[x - distance, z];
+            //remove from currentNode
+            //add to targetNode
+            currentNode.RemoveFromNode(gameObject);
+            targetNode.AddToNode(gameObject);
+
+            StartCoroutine(MoveToNode(targetNode));
+            currentNode = targetNode;
+        } catch (NullReferenceException e) {
+            Console.WriteLine(e);
         }
-
-        transform.forward = Vector3.left;
-        MoveNode targetNode = nodes[x - distance, z];
-        //remove from currentNode
-        //add to targetNode
-        currentNode.RemoveFromNode(gameObject);
-        targetNode.AddToNode(gameObject);
-
-        StartCoroutine(MoveToNode(targetNode));
-        currentNode = targetNode;
     }
 
     public void MoveRight(int distance) {
-        Debug.Log(gameObject.name + ": Moving Right");
-        //throw new System.NotImplementedException();
-        int x = currentNode.x;
-        int z = currentNode.z;
+        try {
+            Debug.Log(gameObject.name + ": Moving Right");
+            //throw new System.NotImplementedException();
+            int x = currentNode.x;
+            int z = currentNode.z;
 
-        if (x >= nodes.GetUpperBound(0)) {
-            Debug.Log("You hit the right! node_id= " + x + " z = " + z);
-            _ec.acting = false;
-            _ec.EndPhase();
-            return;
+            if (x >= nodes.GetUpperBound(0)) {
+                Debug.Log("You hit the right! node_id= " + x + " z = " + z);
+                _ec.acting = false;
+                _ec.EndPhase();
+                return;
+            }
+
+            transform.forward = Vector3.right;
+            MoveNode targetNode = nodes[x + distance, z];
+            //remove from currentNode
+            //add to targetNode
+            currentNode.RemoveFromNode(gameObject);
+            targetNode.AddToNode(gameObject);
+
+            StartCoroutine(MoveToNode(targetNode));
+            currentNode = targetNode;
+        } catch (NullReferenceException e) {
+            Console.WriteLine(e);
         }
-
-        transform.forward = Vector3.right;
-        MoveNode targetNode = nodes[x + distance, z];
-        //remove from currentNode
-        //add to targetNode
-        currentNode.RemoveFromNode(gameObject);
-        targetNode.AddToNode(gameObject);
-
-        StartCoroutine(MoveToNode(targetNode));
-        currentNode = targetNode;
     }
 
     public IEnumerator MoveToNode(MoveNode targetNode) {

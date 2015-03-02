@@ -47,12 +47,15 @@ public class EnemyShooter : MonoBehaviour {
             // Instantiate EnemyBullet prefab and set direction
             Transform bullet = (Transform) Instantiate(BulletTransform);
             EnemyBullet enemyBulletScript = bullet.GetComponent<EnemyBullet>();
+            EnemyBullet.totalBullets++;
+            bullet.name = "EnemyBullet " + EnemyBullet.totalBullets;
             enemyBulletScript.currentNode = _ec.Mover.currentNode;
             //TODO move bullet one square in direction
             enemyBulletScript.Dir = direction;
             bullet.position = bulletSpawnPoint.transform.position;
             bullet.rotation = transform.rotation;
             enemyBulletScript.bc.Bullets.Add(enemyBulletScript);
+            enemyBulletScript.currentNode.AddToNode(bullet.gameObject);
             enemyBulletScript.UpdateBullet();
         }
     }

@@ -37,20 +37,25 @@ public class PlayerMover : MonoBehaviour, IMover {
     }
 
     public void Move(Direction direction, int distance) {
-        switch (direction) {
-            case Direction.Up:
-                pc.Mover.MoveUp(distance);
-                break;
-            case Direction.Down:
-                pc.Mover.MoveDown(distance);
-                break;
-            case Direction.Left:
-                pc.Mover.MoveLeft(distance);
-                break;
-            case Direction.Right:
-                pc.Mover.MoveRight(distance);
-                break;
-        } 
+        try {
+            switch (direction) {
+                case Direction.Up:
+                    pc.Mover.MoveUp(distance);
+                    break;
+                case Direction.Down:
+                    pc.Mover.MoveDown(distance);
+                    break;
+                case Direction.Left:
+                    pc.Mover.MoveLeft(distance);
+                    break;
+                case Direction.Right:
+                    pc.Mover.MoveRight(distance);
+                    break;
+            }
+        }
+        catch (NullReferenceException e) {
+            Debug.Log(gameObject + " threw a NullReferenceException.");
+        }
     }
 
 

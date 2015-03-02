@@ -34,7 +34,7 @@ public class PlayerBullet : MonoBehaviour {
     }
 
     public void EndPhase() {
-        Debug.Log("Bullet reached target");
+        //Debug.Log("Bullet reached target");
         pc.acting = false;
         currentNode.RemoveFromNode(gameObject);
 		Destroy(gameObject);

@@ -1,35 +1,37 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 
-public class EnemyBullet : MonoBehaviour, IMover{
+public class EnemyBullet : MonoBehaviour, IMover {
 
-	public BulletsController bc;
+    public BulletsController bc;
 
     public Direction Dir;
 
     public int distance;
     public float MoveTime;
+    public static int totalBullets;
 
-	public MoveNode[,] nodes { get; private set; }
+    public MoveNode[,] nodes { get; private set; }
 
     public MoveNode currentNode { get; set; }
 
-	public void Awake() {
+    public void Awake() {
         nodes = GameObject.Find("World").GetComponent<Map>().Nodes;
-		bc = FindObjectOfType<BulletsController>();
-	}
+        bc = FindObjectOfType<BulletsController>();
+    }
 
-   	public void UpdateBullet() {
+    public void UpdateBullet() {
         Move(Dir, distance);
 
-		if(gameObject != null) {
-		    foreach (GameObject obj in currentNode.objectsOnNode) {
-		        if (obj.tag == "Player") {
-		            obj.GetComponent<PlayerController>().GameOver();
-		        }
-		    }
-		}
-   	}
+        if (gameObject != null) {
+            foreach (GameObject obj in currentNode.objectsOnNode) {
+                if (obj.tag == "Player") {
+                    obj.GetComponent<PlayerController>().GameOver();
+                }
+            }
+        }
+    }
 
     public void Move(Direction direction, int distance) {
         switch (direction) {
@@ -49,96 +51,112 @@ public class EnemyBullet : MonoBehaviour, IMover{
     }
 
     public void MoveUp(int distance) {
-        Debug.Log(gameObject.name + ": Moving Up");
-        //throw new System.NotImplementedException();
-        int x = currentNode.x;
-        int z = currentNode.z;
+        try {
+            Debug.Log(gameObject.name + ": Moving Up");
+            //throw new System.NotImplementedException();
+            int x = currentNode.x;
+            int z = currentNode.z;
 
-        if (z >= nodes.GetUpperBound(1)) //bust out early if you're at the top of the map
-        {
-            Debug.Log("You hit the top! node_id= " + x + " z = " + z);
-			DestroyBullet();
-			EndPhase();
-            return;
+            if (z >= nodes.GetUpperBound(1)) //bust out early if you're at the top of the map
+            {
+                Debug.Log("You hit the top! node_id= " + x + " z = " + z);
+                DestroyBullet();
+                EndPhase();
+                return;
+            }
+
+            MoveNode targetNode = nodes[x, z + distance];
+            //remove from currentNode
+            //add to targetNode
+            currentNode.RemoveFromNode(gameObject);
+            targetNode.AddToNode(gameObject);
+
+            StartCoroutine(MoveToNode(targetNode));
+            currentNode = targetNode;
+        } catch (NullReferenceException e) {
+            Console.WriteLine(e);
         }
-
-        MoveNode targetNode = nodes[x, z + distance];
-        //remove from currentNode
-        //add to targetNode
-        currentNode.RemoveFromNode(gameObject);
-        targetNode.AddToNode(gameObject);
-
-        StartCoroutine(MoveToNode(targetNode));
-        currentNode = targetNode;
     }
 
     public void MoveDown(int distance) {
-        Debug.Log(gameObject.name + ": Moving Down");
-        //throw new System.NotImplementedException();
-        int x = currentNode.x;
-        int z = currentNode.z;
+        try {
+            Debug.Log(gameObject.name + ": Moving Down");
+            //throw new System.NotImplementedException();
+            int x = currentNode.x;
+            int z = currentNode.z;
 
-        if (z <= 0) {
-            Debug.Log("You hit the bottom! node_id= " + x + " z = " + z);
-			DestroyBullet();
-			EndPhase();
-            return;
+            if (z <= 0) {
+                Debug.Log("You hit the bottom! node_id= " + x + " z = " + z);
+                DestroyBullet();
+                EndPhase();
+                return;
+            }
+
+            MoveNode targetNode = nodes[x, z - distance];
+            //remove from currentNode
+            //add to targetNode
+            currentNode.RemoveFromNode(gameObject);
+            targetNode.AddToNode(gameObject);
+
+            StartCoroutine(MoveToNode(targetNode));
+            currentNode = targetNode;
+        } catch (NullReferenceException e) {
+            Console.WriteLine(e);
         }
-
-        MoveNode targetNode = nodes[x, z - distance];
-        //remove from currentNode
-        //add to targetNode
-        currentNode.RemoveFromNode(gameObject);
-        targetNode.AddToNode(gameObject);
-
-        StartCoroutine(MoveToNode(targetNode));
-        currentNode = targetNode;
     }
 
     public void MoveLeft(int distance) {
-        Debug.Log(gameObject.name + ": Moving Left");
-        //throw new System.NotImplementedException();
-        int x = currentNode.x;
-        int z = currentNode.z;
+        try {
+            Debug.Log(gameObject.name + ": Moving Left");
+            //throw new System.NotImplementedException();
+            int x = currentNode.x;
+            int z = currentNode.z;
 
-        if (x <= 0) {
-            Debug.Log("You hit the left! node_id= " + x + " z = " + z);
-            DestroyBullet();
-			EndPhase();
-            return;
+            if (x <= 0) {
+                Debug.Log("You hit the left! node_id= " + x + " z = " + z);
+                DestroyBullet();
+                EndPhase();
+                return;
+            }
+
+            MoveNode targetNode = nodes[x - distance, z];
+            //remove from currentNode
+            //add to targetNode
+            currentNode.RemoveFromNode(gameObject);
+            targetNode.AddToNode(gameObject);
+
+            StartCoroutine(MoveToNode(targetNode));
+            currentNode = targetNode;
+        } catch (NullReferenceException e) {
+            Console.WriteLine(e);
         }
-
-        MoveNode targetNode = nodes[x - distance, z];
-        //remove from currentNode
-        //add to targetNode
-        currentNode.RemoveFromNode(gameObject);
-        targetNode.AddToNode(gameObject);
-
-        StartCoroutine(MoveToNode(targetNode));
-        currentNode = targetNode;
     }
 
     public void MoveRight(int distance) {
-        Debug.Log(gameObject.name + ": Moving Right");
-        //throw new System.NotImplementedException();
-        int x = currentNode.x;
-        int z = currentNode.z;
+        try {
+            Debug.Log(gameObject.name + ": Moving Right");
+            //throw new System.NotImplementedException();
+            int x = currentNode.x;
+            int z = currentNode.z;
 
-        if (x >= nodes.GetUpperBound(0)) {
-            Debug.Log("You hit the right! node_id= " + x + " z = " + z);
-            DestroyBullet();
-			EndPhase();
-            return;
+            if (x >= nodes.GetUpperBound(0)) {
+                Debug.Log("You hit the right! node_id= " + x + " z = " + z);
+                DestroyBullet();
+                EndPhase();
+                return;
+            }
+
+            MoveNode targetNode = nodes[x + distance, z];
+            //remove from currentNode
+            //add to targetNode
+            currentNode.RemoveFromNode(gameObject);
+            targetNode.AddToNode(gameObject);
+
+            StartCoroutine(MoveToNode(targetNode));
+            currentNode = targetNode;
+        } catch (NullReferenceException e) {
+            Console.WriteLine(e);
         }
-
-        MoveNode targetNode = nodes[x + distance, z];
-        //remove from currentNode
-        //add to targetNode
-        currentNode.RemoveFromNode(gameObject);
-        targetNode.AddToNode(gameObject);
-
-        StartCoroutine(MoveToNode(targetNode));
-        currentNode = targetNode;
     }
 
     public IEnumerator MoveToNode(MoveNode targetNode) {
@@ -157,12 +175,12 @@ public class EnemyBullet : MonoBehaviour, IMover{
         EndPhase();
     }
 
-	public void BeginPhase() {
-		UpdateBullet ();
-	}
+    public void BeginPhase() {
+        UpdateBullet();
+    }
 
-	public void EndPhase() {
-	}
+    public void EndPhase() {
+    }
 
     public void DestroyBullet() {
         bc.Bullets.Remove(this);

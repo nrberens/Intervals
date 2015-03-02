@@ -34,7 +34,7 @@ public class Map : MonoBehaviour {
 
         //instantiate enemy at random position
         //TODO check for valid spawn point for enemies
-        for (int i = 1; i <= 3; i++) {
+        for (int i = 1; i <= 6; i++) {
             GameObject enemy = (GameObject)Instantiate(EnemyTransform.gameObject);
             int enemyX = Random.Range(0, mapWidth);
             int enemyZ = Random.Range(0, mapLength);
@@ -42,6 +42,8 @@ public class Map : MonoBehaviour {
 
             _ec.Enemies.Add(enemy.GetComponent<EnemyController>());
             enemy.transform.position = Nodes[enemyX, enemyZ].transform.position;
+            EnemyController.totalEnemies++;
+            enemy.name = "Enemy " + EnemyController.totalEnemies;
             Nodes[enemyX, enemyZ].AddToNode(enemy);
         }
     }

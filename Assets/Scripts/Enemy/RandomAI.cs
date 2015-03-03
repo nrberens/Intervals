@@ -61,15 +61,20 @@ public class RandomAI : FSM {
 
         //random chance of shooting, otherwise get randomDir and move
         int shootCoin = UnityEngine.Random.Range(0, 5);
-        Direction randomDir = GetRandomDirection();
+        Direction randomDir;
 
         if (shootCoin == 0) {
+            randomDir = GetRandomDirection();
             Debug.Log("Shooting in " + randomDir);
             _ec.Shooter.Shoot(randomDir);
-            //DEBUG - always shoot down
-            //_ec.Shooter.Shoot(Direction.Down);
-        }
-        else {
+        } else {
+            bool directionValid = false;
+
+            do {
+                randomDir = GetRandomDirection();
+                directionValid = _ec.Mover.CheckForValidMovement(randomDir, Distance);
+            } while (!directionValid);
+
             _ec.Mover.Move(randomDir, Distance);
         }
     }

@@ -25,6 +25,7 @@ public class PlayerInput : MonoBehaviour
 
 	    if (pc.CurrentTurn.CurrentPhase == Turn.Phase.Player) {
 	        //INPUT PHASE 
+	        //TODO track time between inputs, only allow input every half second or so
 	        if (allowInput && !pc.acting) {
 
 				//SHOOTING

@@ -8,6 +8,9 @@ public class MoveNode : MonoBehaviour {
     public bool enemySpawnPoint = false;
     public bool itemSpawnPoint = false;
 
+    public bool blocksMovement = false;
+    public bool blocksLOS = false;
+
     //TODO add flags for blocks that block movement or LOS
 	public List<GameObject> objectsOnNode;
 

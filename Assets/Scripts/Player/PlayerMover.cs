@@ -38,22 +38,28 @@ public class PlayerMover : MonoBehaviour, IMover {
 
     public void Move(Direction direction, int distance) {
         try {
-            switch (direction) {
-                case Direction.Up:
-                    pc.Mover.MoveUp(distance);
-                    break;
-                case Direction.Down:
-                    pc.Mover.MoveDown(distance);
-                    break;
-                case Direction.Left:
-                    pc.Mover.MoveLeft(distance);
-                    break;
-                case Direction.Right:
-                    pc.Mover.MoveRight(distance);
-                    break;
+            if (CheckForValidMovement(direction, distance)) {
+                switch (direction) {
+                    case Direction.Up:
+                        pc.Mover.MoveUp(distance);
+                        break;
+                    case Direction.Down:
+                        pc.Mover.MoveDown(distance);
+                        break;
+                    case Direction.Left:
+                        pc.Mover.MoveLeft(distance);
+                        break;
+                    case Direction.Right:
+                        pc.Mover.MoveRight(distance);
+                        break;
+                }
             }
-        }
-        catch (NullReferenceException e) {
+            else {
+                //TODO allow player to input again if he didn't actually move
+                pc.acting = false;
+                pc.EndPhase();
+            }
+        } catch (NullReferenceException e) {
             Debug.Log(gameObject + " threw a NullReferenceException.");
         }
     }
@@ -176,5 +182,23 @@ public class PlayerMover : MonoBehaviour, IMover {
 
         pc.acting = false;
         pc.EndPhase();
+    }
+
+    public bool CheckForValidMovement(Direction dir, int distance) {
+        switch (dir) {
+            case Direction.Up:
+                if (!nodes[currentNode.x, currentNode.z + 1].blocksMovement) return true;
+                break;
+            case Direction.Down:
+                if (!nodes[currentNode.x, currentNode.z - 1].blocksMovement) return true;
+                break;
+            case Direction.Left:
+                if (!nodes[currentNode.x - 1, currentNode.z].blocksMovement) return true;
+                break;
+            case Direction.Right:
+                if (!nodes[currentNode.x + 1, currentNode.z].blocksMovement) return true;
+                break;
+        }
+        return false;
     }
 }

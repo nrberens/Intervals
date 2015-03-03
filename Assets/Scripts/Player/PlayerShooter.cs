@@ -74,7 +74,6 @@ public class PlayerShooter : MonoBehaviour {
             Debug.Log("Shooting " + target);
             pc.acting = false;
             pc.Shooter.Shoot(target);
-            return;
         }
     }
 

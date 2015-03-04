@@ -3,6 +3,8 @@ using System.Collections;
 using UnityEngineInternal;
 
 public class EnemyController : MonoBehaviour, ITurnBased {
+    public Transform deathPrefab;
+
 	private EnemiesController _ec;
     public EnemyMover Mover;
     public FSM AI;
@@ -41,6 +43,9 @@ public class EnemyController : MonoBehaviour, ITurnBased {
 	public void TakeDamage() {
 		//kill enemy instantly
 		//remove from list of enemies
+        Vector3 deathPrefabPosition = transform.FindChild("DeathPrefab").position;
+        Transform death = (Transform) Instantiate(deathPrefab, deathPrefabPosition, Quaternion.identity);
+        //TODO set rotation opposite to the bullet impact
 		_ec.Enemies.Remove(this);
         Mover.currentNode.RemoveFromNode(gameObject);
 		Destroy (gameObject);

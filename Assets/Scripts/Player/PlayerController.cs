@@ -4,6 +4,8 @@ using UnityEngineInternal;
 
 public class PlayerController : MonoBehaviour, ITurnBased {
 
+    public Transform deathPrefab;
+
     public PlayerMover Mover;
     public PlayerInventory Inventory;
     public PlayerInput Input;
@@ -39,5 +41,8 @@ public class PlayerController : MonoBehaviour, ITurnBased {
 
     public void GameOver() {
         Debug.Log("Game over, man, game over!");
+        Vector3 deathPrefabPosition = transform.FindChild("DeathPrefab").position;
+        Transform death = (Transform) Instantiate(deathPrefab, deathPrefabPosition, Quaternion.identity);
+        //TODO set rotation opposite to the bullet impact
     }
 }

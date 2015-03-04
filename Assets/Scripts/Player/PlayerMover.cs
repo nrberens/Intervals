@@ -10,6 +10,8 @@ public class PlayerMover : MonoBehaviour, IMover {
     public float MoveTime;
 
 
+	//TODO Check for player-bullet collision when moving on to a square
+
     //IMover properties
     public MoveNode[,] nodes { get; private set; }
     public MoveNode currentNode { get; set; }
@@ -38,7 +40,22 @@ public class PlayerMover : MonoBehaviour, IMover {
 
     public void Move(Direction direction, int distance) {
         try {
-            if (CheckForValidMovement(direction, distance)) {
+			MoveNode targetNode = GetTargetNode(direction, distance);
+
+			bool hasBlocking = targetNode.blocksMovement;
+			bool hasBullet = false;
+			bool hasEnemy = false;
+
+			foreach(GameObject obj in targetNode.objectsOnNode) {
+				if(obj.tag == "Bullet") {
+					hasBullet = true;
+				} else if (obj.tag == "Enemy") {
+					hasEnemy = true;
+				}
+			}
+
+            if (!hasBlocking && !hasEnemy) {
+
                 switch (direction) {
                     case Direction.Up:
                         pc.Mover.MoveUp(distance);
@@ -53,6 +70,8 @@ public class PlayerMover : MonoBehaviour, IMover {
                         pc.Mover.MoveRight(distance);
                         break;
                 }
+
+				if(hasBullet) pc.GameOver();
             }
             else {
                 //TODO allow player to input again if he didn't actually move
@@ -184,21 +203,20 @@ public class PlayerMover : MonoBehaviour, IMover {
         pc.EndPhase();
     }
 
-    public bool CheckForValidMovement(Direction dir, int distance) {
+    public MoveNode GetTargetNode(Direction dir, int distance) {
+		try {
         switch (dir) {
             case Direction.Up:
-                if (!nodes[currentNode.x, currentNode.z + 1].blocksMovement) return true;
-                break;
+                return nodes[currentNode.x, currentNode.z + distance];
             case Direction.Down:
-                if (!nodes[currentNode.x, currentNode.z - 1].blocksMovement) return true;
-                break;
+                return nodes[currentNode.x, currentNode.z - distance];
             case Direction.Left:
-                if (!nodes[currentNode.x - 1, currentNode.z].blocksMovement) return true;
-                break;
+                return nodes[currentNode.x - distance, currentNode.z];
             case Direction.Right:
-                if (!nodes[currentNode.x + 1, currentNode.z].blocksMovement) return true;
-                break;
-        }
-        return false;
+                return nodes[currentNode.x + distance, currentNode.z];
+			} 
+		} catch (IndexOutOfRangeException e) {}
+		throw new Exception("Invalid direction");
+		return null;
     }
 }

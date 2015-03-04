@@ -25,12 +25,19 @@ public class EnemyBullet : MonoBehaviour, IMover {
         Move(Dir, distance);
 
         if (gameObject != null) {
+            if (currentNode.transform.parent.tag == "Obstacle") {
+                DestroyBullet();
+            }
+
+            //check for other characters on node
             foreach (GameObject obj in currentNode.objectsOnNode) {
                 if (obj.tag == "Player") {
                     obj.GetComponent<PlayerController>().GameOver();
                 }
             }
         }
+
+        EndPhase();
     }
 
     public void Move(Direction direction, int distance) {

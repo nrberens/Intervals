@@ -179,24 +179,27 @@ public class EnemyMover : MonoBehaviour, IMover {
 
     public bool CheckForValidMovement(Direction dir, int distance) {
         MoveNode node;
-        switch (dir) {
-            case Direction.Up:
-                node = nodes[currentNode.x, currentNode.z + 1];
-                if (node != null && !node.blocksMovement) return true;
-                break;
-            case Direction.Down:
-                node = nodes[currentNode.x, currentNode.z - 1];
-                if (node != null && !node.blocksMovement) return true;
-                break;
-            case Direction.Left:
-                node = nodes[currentNode.x - 1, currentNode.z];
-                if (node != null && !node.blocksMovement) return true;
-                break;
-            case Direction.Right:
-                node = nodes[currentNode.x + 1, currentNode.z];
-                if (node != null && !node.blocksMovement) return true;
-                break;
+        try {
+            switch (dir) {
+                case Direction.Up:
+                    node = nodes[currentNode.x, currentNode.z + 1];
+                    if (node != null && !node.blocksMovement) return true;
+                    break;
+                case Direction.Down:
+                    node = nodes[currentNode.x, currentNode.z - 1];
+                    if (node != null && !node.blocksMovement) return true;
+                    break;
+                case Direction.Left:
+                    node = nodes[currentNode.x - 1, currentNode.z];
+                    if (node != null && !node.blocksMovement) return true;
+                    break;
+                case Direction.Right:
+                    node = nodes[currentNode.x + 1, currentNode.z];
+                    if (node != null && !node.blocksMovement) return true;
+                    break;
+            }
         }
+        catch (IndexOutOfRangeException e) { } //don't need to do anything because we'll return false anyway
 
         return false;
     }

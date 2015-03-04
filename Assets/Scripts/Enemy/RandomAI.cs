@@ -86,9 +86,9 @@ public class RandomAI : FSM {
         float rndX = UnityEngine.Random.Range(10.0f, 30.0f);
         float rndZ = UnityEngine.Random.Range(10.0f, 30.0f);
         for (int i = 0; i < 3; i++) {
-            rigidbody.AddExplosionForce(10000.0f,
+            GetComponent<Rigidbody>().AddExplosionForce(10000.0f,
 transform.position - new Vector3(rndX, 10.0f, rndZ), 40.0f, 10.0f);
-            rigidbody.velocity = transform.TransformDirection(new Vector3(rndX, 20.0f, rndZ));
+            GetComponent<Rigidbody>().velocity = transform.TransformDirection(new Vector3(rndX, 20.0f, rndZ));
         }
         Destroy(gameObject, 1.5f);
     }

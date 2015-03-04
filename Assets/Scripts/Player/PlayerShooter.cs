@@ -12,7 +12,7 @@ public class PlayerShooter : MonoBehaviour {
     // Use this for initialization
     void Start() {
         pc = GetComponentInParent<PlayerController>();
-        bulletSpawnPoint = transform.FindChild("Weapon/BulletSpawnPoint");
+        bulletSpawnPoint = transform.FindChild("BulletSpawnPoint");
     }
 
     // Update is called once per frame
@@ -22,9 +22,13 @@ public class PlayerShooter : MonoBehaviour {
 
     //On click, get target of mouse click
     public Transform GetTargetOfClick() {
+        //target layers EXCLUDING layer 9 - obstacles
+        int layerMask = 1 << 9;
+        layerMask = ~layerMask;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Debug.DrawRay(ray.origin, ray.direction * 100, Color.green, 5.0f);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit)) {
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask)) {
             return hit.transform;
         } else return null;
     }
@@ -53,15 +57,24 @@ public class PlayerShooter : MonoBehaviour {
 
     public bool CheckValidLOS(Transform target) {
         //TODO LOS checking is spotty -- need layer mask?
-        Ray ray = new Ray(transform.position, target.position);
+        Ray ray = new Ray(transform.position, (target.position - transform.position));
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit)) {
-            if (hit.transform == target) return true;
+        //Check against colliders EXCEPT player layer (layer 8)
+        int layerMask = 1 << 8;
+        layerMask = ~layerMask;
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask)) { 
+            Debug.Log("Raycast hit " + hit.transform);
+            if (hit.transform.tag == "Obstacle") {
+                Debug.DrawRay(ray.origin, ray.direction*100, Color.red, 5.0f);
+                return false;
+            }
+            
+            Debug.DrawRay(ray.origin, ray.direction*100, Color.blue, 5.0f);
         }
-        //return false;
-        //HACK for now just return true
         return true;
+        //HACK for now just return true
+        //return true;
     }
 
     public void BeginShot() {
@@ -71,7 +84,6 @@ public class PlayerShooter : MonoBehaviour {
             pc.Input.allowInput = false;
             //shot is valid, shoot target
             transform.LookAt(target);
-            Debug.Log("Shooting " + target);
             pc.acting = false;
             pc.Shooter.Shoot(target);
         }

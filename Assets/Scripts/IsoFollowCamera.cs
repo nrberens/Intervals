@@ -4,7 +4,20 @@ using System.Collections;
 public class IsoFollowCamera : MonoBehaviour {
 
 	public Transform player;
+    public float sensitivity;
 	float x, z;
+
+    void Update()
+    {
+        //right click + drag to rotate camera
+        if (Input.GetMouseButton(1))
+        {
+            float mouseX = Input.GetAxis("Mouse X");
+
+            Vector3 currentAngle = transform.rotation.eulerAngles;
+            transform.rotation = Quaternion.Euler(new Vector3(currentAngle.x, currentAngle.y+(mouseX * sensitivity), currentAngle.z));
+        }
+    }
 
 	void LateUpdate() {
 		x = player.transform.position.x;

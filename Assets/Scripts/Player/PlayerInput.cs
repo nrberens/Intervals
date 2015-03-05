@@ -35,6 +35,12 @@ public class PlayerInput : MonoBehaviour
 				}
 
 				//IF PLAYER DOESN'T SHOOT, HANDLE MOVEMENT
+                // TODO reinterpret input based on camera rotation
+                //When camera rotation between 0-45 and 315-360, normal inputs
+                //45.1-135 a = up, w = right, d = down, s = left
+                //135.1-225, a = right, w = down, d = left, s = up 
+                //225.1 - 315, a = back, w = left, d = up, s = right
+                //need to change inputs, not directions
 	            moveX = Input.GetAxis("Horizontal");
 	            moveZ = Input.GetAxis("Vertical");
 

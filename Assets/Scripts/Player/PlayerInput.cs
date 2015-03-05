@@ -48,6 +48,7 @@ public class PlayerInput : MonoBehaviour {
                     pc.Mover.Move(moveDir, 1);
                 }
             }
+
                 //ACTION PHASE 
             else if (!allowInput && pc.acting) {
                 //wait for signal that movement or firing is done
@@ -86,7 +87,7 @@ public class PlayerInput : MonoBehaviour {
 
         value %= 4; //modulus clamps value between 0 and 3
 
-        Direction direction = (Direction) value;
+        Direction direction = (Direction)value;
 
         return direction;
     }

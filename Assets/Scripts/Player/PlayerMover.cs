@@ -7,10 +7,9 @@ using UnityEngineInternal;
 public class PlayerMover : MonoBehaviour, IMover {
 
     private PlayerController pc;
+    private Map map;
     public float MoveTime;
 
-
-	//TODO Check for player-bullet collision when moving on to a square
 
     //IMover properties
     public MoveNode[,] nodes { get; private set; }
@@ -22,8 +21,8 @@ public class PlayerMover : MonoBehaviour, IMover {
     void Start() {
         //Cache node grid
         //This is smelly code, I think -- relies on World class -- abstract out?
-        GameObject world = GameObject.Find("World");
-        nodes = world.GetComponent<Map>().Nodes;
+        map = GameObject.Find("World").GetComponent<Map>();
+        nodes = map.Nodes;
 
         pc = GetComponentInParent<PlayerController>();
     }
@@ -72,6 +71,8 @@ public class PlayerMover : MonoBehaviour, IMover {
                 }
 
 				if(hasBullet) pc.GameOver();
+
+                map.FlagNewLOSNodes();
             }
             else {
                 //TODO allow player to input again if he didn't actually move
@@ -217,6 +218,6 @@ public class PlayerMover : MonoBehaviour, IMover {
 			} 
 		} catch (IndexOutOfRangeException e) {}
 		throw new Exception("Invalid direction");
-		return null;
     }
+
 }

@@ -10,6 +10,7 @@ public class MoveNode : MonoBehaviour {
 
     public bool blocksMovement = false;
     public bool blocksLOS = false;
+    public bool LOSToPlayer = false;
 
     //TODO add flags for blocks that block movement or LOS
 	public List<GameObject> objectsOnNode;

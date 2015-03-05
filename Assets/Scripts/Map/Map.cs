@@ -49,7 +49,7 @@ public class Map : MonoBehaviour {
     }
 
     private void GenerateNodeArray() {
-        Nodes = new MoveNode[mapWidth,mapLength];
+        Nodes = new MoveNode[mapWidth, mapLength];
 
         GameObject[] unsortedNodeObjects = GameObject.FindGameObjectsWithTag("MoveNode");
 
@@ -69,5 +69,45 @@ public class Map : MonoBehaviour {
         int thisX = currentNode.x;
         int thisZ = currentNode.z;
         return Nodes[thisX + newX, thisZ + newZ];
+    }
+
+    public void FlagNewLOSNodes() {
+        //unflag all nodes
+        foreach (MoveNode node in Nodes) {
+            node.LOSToPlayer = false;
+        }
+
+        MoveNode currentNode = _pc.Mover.currentNode;
+        //flag player's node
+        currentNode.LOSToPlayer = true;
+
+        //find LOS nodes in each direction
+        //Check North, stop at first obstacle
+       for (int i = currentNode.z; i < mapLength; i++) {
+            MoveNode node = Nodes[currentNode.x, i];
+            if (node.blocksLOS) break;
+            node.LOSToPlayer = true;
+        }
+
+        //Check South
+        for (int i = currentNode.z; i >= 0; i--) {
+            MoveNode node = Nodes[currentNode.x, i];
+            if (node.blocksLOS) break;
+            node.LOSToPlayer = true; 
+        }
+
+        //Check East
+        for (int i = currentNode.x; i < mapWidth; i++) {
+            MoveNode node = Nodes[i, currentNode.z];
+            if (node.blocksLOS) break;
+            node.LOSToPlayer = true; 
+        }
+
+        //Check West 
+        for (int i = currentNode.x; i >= 0; i--) {
+            MoveNode node = Nodes[i, currentNode.z];
+            if (node.blocksLOS) break;
+            node.LOSToPlayer = true;
+        }
     }
 }

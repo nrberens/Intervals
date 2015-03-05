@@ -24,16 +24,16 @@ public class EnemyMover : MonoBehaviour, IMover {
 
     public void Move(Direction direction, int distance) {
         switch (direction) {
-            case Direction.Up:
+            case Direction.North:
                 _ec.Mover.MoveUp(distance);
                 break;
-            case Direction.Down:
+            case Direction.South:
                 _ec.Mover.MoveDown(distance);
                 break;
-            case Direction.Left:
+            case Direction.West:
                 _ec.Mover.MoveLeft(distance);
                 break;
-            case Direction.Right:
+            case Direction.East:
                 _ec.Mover.MoveRight(distance);
                 break;
         }
@@ -41,7 +41,7 @@ public class EnemyMover : MonoBehaviour, IMover {
 
     public void MoveUp(int distance) {
         try {
-            Debug.Log(gameObject.name + ": Moving Up");
+            Debug.Log(gameObject.name + ": Moving North");
             //throw new System.NotImplementedException();
             int x = currentNode.x;
             int z = currentNode.z;
@@ -70,7 +70,7 @@ public class EnemyMover : MonoBehaviour, IMover {
 
     public void MoveDown(int distance) {
         try {
-            Debug.Log(gameObject.name + ": Moving Down");
+            Debug.Log(gameObject.name + ": Moving South");
             //throw new System.NotImplementedException();
             int x = currentNode.x;
             int z = currentNode.z;
@@ -98,7 +98,7 @@ public class EnemyMover : MonoBehaviour, IMover {
 
     public void MoveLeft(int distance) {
         try {
-            Debug.Log(gameObject.name + ": Moving Left");
+            Debug.Log(gameObject.name + ": Moving West");
             //throw new System.NotImplementedException();
             int x = currentNode.x;
             int z = currentNode.z;
@@ -126,7 +126,7 @@ public class EnemyMover : MonoBehaviour, IMover {
 
     public void MoveRight(int distance) {
         try {
-            Debug.Log(gameObject.name + ": Moving Right");
+            Debug.Log(gameObject.name + ": Moving East");
             //throw new System.NotImplementedException();
             int x = currentNode.x;
             int z = currentNode.z;
@@ -181,19 +181,19 @@ public class EnemyMover : MonoBehaviour, IMover {
         MoveNode node;
         try {
             switch (dir) {
-                case Direction.Up:
+                case Direction.North:
                     node = nodes[currentNode.x, currentNode.z + 1];
                     if (node != null && !node.blocksMovement) return true;
                     break;
-                case Direction.Down:
+                case Direction.South:
                     node = nodes[currentNode.x, currentNode.z - 1];
                     if (node != null && !node.blocksMovement) return true;
                     break;
-                case Direction.Left:
+                case Direction.West:
                     node = nodes[currentNode.x - 1, currentNode.z];
                     if (node != null && !node.blocksMovement) return true;
                     break;
-                case Direction.Right:
+                case Direction.East:
                     node = nodes[currentNode.x + 1, currentNode.z];
                     if (node != null && !node.blocksMovement) return true;
                     break;

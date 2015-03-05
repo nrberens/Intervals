@@ -30,16 +30,16 @@ public class EnemyShooter : MonoBehaviour {
         if (CheckForValidShot(direction)) {
             // Look in direction
             switch (direction) {
-                case Direction.Down:
+                case Direction.South:
                     transform.forward = Vector3.back;
                     break;
-                case Direction.Up:
+                case Direction.North:
                     transform.forward = Vector3.forward;
                     break;
-                case Direction.Left:
+                case Direction.West:
                     transform.forward = Vector3.left;
                     break;
-                case Direction.Right:
+                case Direction.East:
                     transform.forward = Vector3.right;
                     break;
             }
@@ -65,16 +65,16 @@ public class EnemyShooter : MonoBehaviour {
         bool valid = false;
 
         switch (direction) {
-            case Direction.Down:
+            case Direction.South:
                 if (node.z > 0) valid = true;
                 break;
-            case Direction.Up:
+            case Direction.North:
                 if (node.z < mapLength) valid = true;
                 break;
-            case Direction.Left:
+            case Direction.West:
                 if (node.x > 0) valid = true;
                 break;
-            case Direction.Right:
+            case Direction.East:
                 if (node.x < mapWidth) valid = true;
                 break;
             default:

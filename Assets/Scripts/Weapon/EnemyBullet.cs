@@ -42,16 +42,16 @@ public class EnemyBullet : MonoBehaviour, IMover {
 
     public void Move(Direction direction, int distance) {
         switch (direction) {
-            case Direction.Up:
+            case Direction.North:
                 MoveUp(distance);
                 break;
-            case Direction.Down:
+            case Direction.South:
                 MoveDown(distance);
                 break;
-            case Direction.Left:
+            case Direction.West:
                 MoveLeft(distance);
                 break;
-            case Direction.Right:
+            case Direction.East:
                 MoveRight(distance);
                 break;
         }
@@ -59,7 +59,7 @@ public class EnemyBullet : MonoBehaviour, IMover {
 
     public void MoveUp(int distance) {
         try {
-            Debug.Log(gameObject.name + ": Moving Up");
+            Debug.Log(gameObject.name + ": Moving North");
             //throw new System.NotImplementedException();
             int x = currentNode.x;
             int z = currentNode.z;
@@ -87,7 +87,7 @@ public class EnemyBullet : MonoBehaviour, IMover {
 
     public void MoveDown(int distance) {
         try {
-            Debug.Log(gameObject.name + ": Moving Down");
+            Debug.Log(gameObject.name + ": Moving South");
             //throw new System.NotImplementedException();
             int x = currentNode.x;
             int z = currentNode.z;
@@ -114,7 +114,7 @@ public class EnemyBullet : MonoBehaviour, IMover {
 
     public void MoveLeft(int distance) {
         try {
-            Debug.Log(gameObject.name + ": Moving Left");
+            Debug.Log(gameObject.name + ": Moving West");
             //throw new System.NotImplementedException();
             int x = currentNode.x;
             int z = currentNode.z;
@@ -141,7 +141,7 @@ public class EnemyBullet : MonoBehaviour, IMover {
 
     public void MoveRight(int distance) {
         try {
-            Debug.Log(gameObject.name + ": Moving Right");
+            Debug.Log(gameObject.name + ": Moving East");
             //throw new System.NotImplementedException();
             int x = currentNode.x;
             int z = currentNode.z;

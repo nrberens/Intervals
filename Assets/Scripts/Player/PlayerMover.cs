@@ -57,16 +57,16 @@ public class PlayerMover : MonoBehaviour, IMover {
             if (!hasBlocking && !hasEnemy) {
 
                 switch (direction) {
-                    case Direction.Up:
+                    case Direction.North:
                         pc.Mover.MoveUp(distance);
                         break;
-                    case Direction.Down:
+                    case Direction.South:
                         pc.Mover.MoveDown(distance);
                         break;
-                    case Direction.Left:
+                    case Direction.West:
                         pc.Mover.MoveLeft(distance);
                         break;
-                    case Direction.Right:
+                    case Direction.East:
                         pc.Mover.MoveRight(distance);
                         break;
                 }
@@ -206,13 +206,13 @@ public class PlayerMover : MonoBehaviour, IMover {
     public MoveNode GetTargetNode(Direction dir, int distance) {
 		try {
         switch (dir) {
-            case Direction.Up:
+            case Direction.North:
                 return nodes[currentNode.x, currentNode.z + distance];
-            case Direction.Down:
+            case Direction.South:
                 return nodes[currentNode.x, currentNode.z - distance];
-            case Direction.Left:
+            case Direction.West:
                 return nodes[currentNode.x - distance, currentNode.z];
-            case Direction.Right:
+            case Direction.East:
                 return nodes[currentNode.x + distance, currentNode.z];
 			} 
 		} catch (IndexOutOfRangeException e) {}

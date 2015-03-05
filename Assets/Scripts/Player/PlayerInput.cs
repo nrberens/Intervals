@@ -35,14 +35,6 @@ public class PlayerInput : MonoBehaviour {
                 }
 
                 //IF PLAYER DOESN'T SHOOT, HANDLE MOVEMENT
-                // TODO reinterpret input based on camera rotation
-                //When camera rotation between 0-45 and 315-360, normal inputs
-                //45.1-135 a = up, w = right, d = down, s = left
-                //135.1-225, a = right, w = down, d = left, s = up 
-                //225.1 - 315, a = back, w = left, d = up, s = right
-                //need to change inputs, not directions
-
-                //Get direction, rotate direction
 
                 moveX = Input.GetAxis("Horizontal");
                 moveZ = Input.GetAxis("Vertical");
@@ -51,10 +43,10 @@ public class PlayerInput : MonoBehaviour {
                 if (moveX != 0 || moveZ != 0) {
                     pc.acting = true;
                     allowInput = false;
+                    //Adjust direction based on camera rotation
                     moveDir = GetAdjustedDirection(moveX, moveZ, Camera.main.transform.rotation);
                     pc.Mover.Move(moveDir, 1);
                 }
-
             }
                 //ACTION PHASE 
             else if (!allowInput && pc.acting) {
@@ -69,7 +61,7 @@ public class PlayerInput : MonoBehaviour {
 
     private Direction GetAdjustedDirection(float moveX, float moveZ, Quaternion rotation) {
         float yRot = rotation.eulerAngles.y;
-        int value = 0; //0 = Up, 1 = Right, 2 = Down, 3 = Left
+        int value = 0; //0 = North, 1 = East, 2 = South, 3 = West
         int offset = 0; //number of 90 deg turns clockwise
 
         if (moveX > 0) {

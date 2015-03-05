@@ -3,9 +3,9 @@ using System.Collections;
 
 public enum Direction {
 
-    Up,
-    Right,
-    Down,
-    Left,
+    North,
+    East,
+    South,
+    West,
 
 }

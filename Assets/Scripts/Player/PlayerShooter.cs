@@ -8,11 +8,15 @@ public class PlayerShooter : MonoBehaviour {
     public Transform bulletPrefab;
     public Transform weapon;
     public Transform bulletSpawnPoint;
+    public Transform muzzleFlash;
+    public Light muzzleFlashLight;
 
     // Use this for initialization
     void Start() {
         pc = GetComponentInParent<PlayerController>();
         bulletSpawnPoint = transform.FindChild("BulletSpawnPoint");
+        muzzleFlashLight = muzzleFlash.GetComponent<Light>();
+        muzzleFlashLight.enabled = false;
     }
 
     // Update is called once per frame
@@ -104,6 +108,19 @@ public class PlayerShooter : MonoBehaviour {
 		//enemy dies
 		Debug.Log (target + " killed!");
 		target.GetComponent<EnemyController>().TakeDamage();
+        StartCoroutine(MuzzleFlash());
+    }
+
+    public IEnumerator MuzzleFlash() {
+        float startTime = Time.time;
+        float flashTime = 0.1f;
+
+        while (Time.time < flashTime + startTime) {
+            muzzleFlashLight.enabled = true;
+
+            yield return null;
+        }
+        muzzleFlashLight.enabled = false;
     }
 
 }

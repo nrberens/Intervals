@@ -96,7 +96,7 @@ public class PlayerShooter : MonoBehaviour {
     public void Shoot(Transform target) {
         //spawn bullet
         Transform newBullet = (Transform) Instantiate(bulletPrefab);
-        newBullet.position = new Vector3(bulletSpawnPoint.position.x, 0, bulletSpawnPoint.position.z);
+        newBullet.position = bulletSpawnPoint.position;
         newBullet.rotation = transform.rotation;
         PlayerBullet newBulletScript = newBullet.GetComponent<PlayerBullet>();
         newBulletScript.pc = pc;

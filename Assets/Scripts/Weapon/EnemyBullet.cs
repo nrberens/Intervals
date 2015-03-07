@@ -21,6 +21,11 @@ public class EnemyBullet : MonoBehaviour, IMover {
         bc = FindObjectOfType<BulletsController>();
     }
 
+    public void Update() {
+        //rotate bullet
+        transform.Rotate(0, 0, 45*Time.deltaTime);
+    }
+
     public void UpdateBullet() {
         Move(Dir, distance);
 
@@ -167,8 +172,8 @@ public class EnemyBullet : MonoBehaviour, IMover {
     }
 
     public IEnumerator MoveToNode(MoveNode targetNode) {
-        Vector3 startPos = new Vector3(currentNode.transform.position.x, 0.05f, currentNode.transform.position.z);
-        Vector3 endPos = new Vector3(targetNode.transform.position.x, 0.05f, targetNode.transform.position.z);
+        Vector3 startPos = new Vector3(currentNode.transform.position.x, 1.085f, currentNode.transform.position.z);
+        Vector3 endPos = new Vector3(targetNode.transform.position.x, 1.085f, targetNode.transform.position.z);
         float startTime = Time.time;
 
         while (Time.time < MoveTime + startTime) {

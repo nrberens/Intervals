@@ -39,9 +39,15 @@ public class PlayerMover : MonoBehaviour, IMover {
 
     public void Move(Direction direction, int distance) {
         try {
-			MoveNode targetNode = GetTargetNode(direction, distance);
+            MoveNode targetNode = GetTargetNode(direction, distance);
 
-			bool hasBlocking = targetNode.blocksMovement;
+            if (targetNode == null) {
+                pc.acting = false;
+                pc.EndPhase();
+                return; //No node found, at edge of map
+            }
+
+            bool hasBlocking = targetNode.blocksMovement;
 			bool hasBullet = false;
 			bool hasEnemy = false;
 
@@ -217,7 +223,6 @@ public class PlayerMover : MonoBehaviour, IMover {
                 return nodes[currentNode.x + distance, currentNode.z];
 			} 
 		} catch (IndexOutOfRangeException e) {}
-		throw new Exception("Invalid direction");
+        return null;
     }
-
 }

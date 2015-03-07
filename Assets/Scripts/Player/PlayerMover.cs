@@ -49,11 +49,13 @@ public class PlayerMover : MonoBehaviour, IMover {
 
             bool hasBlocking = targetNode.blocksMovement;
 			bool hasBullet = false;
+            Transform bullet = null;
 			bool hasEnemy = false;
 
 			foreach(GameObject obj in targetNode.objectsOnNode) {
 				if(obj.tag == "Bullet") {
 					hasBullet = true;
+				    bullet = obj.transform;
 				} else if (obj.tag == "Enemy") {
 					hasEnemy = true;
 				}
@@ -76,7 +78,7 @@ public class PlayerMover : MonoBehaviour, IMover {
                         break;
                 }
 
-				if(hasBullet) pc.GameOver();
+				if(hasBullet) pc.GameOver(bullet);
 
                 map.FlagNewLOSNodes();
             }

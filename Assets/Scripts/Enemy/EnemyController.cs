@@ -40,15 +40,14 @@ public class EnemyController : MonoBehaviour, ITurnBased {
         
     }
 
-	public void TakeDamage() {
+	public void TakeDamage(Transform bullet) {
 		//kill enemy instantly
 		//remove from list of enemies
         Vector3 deathPrefabPosition = transform.FindChild("DeathPrefab").position;
-        Transform death = (Transform) Instantiate(deathPrefab, deathPrefabPosition, Quaternion.identity);
+        Transform death = (Transform) Instantiate(deathPrefab, deathPrefabPosition, Quaternion.Inverse(bullet.rotation));
         //TODO set rotation opposite to the bullet impact
 		_ec.Enemies.Remove(this);
         Mover.currentNode.RemoveFromNode(gameObject);
 		Destroy (gameObject);
-
 	}
 }

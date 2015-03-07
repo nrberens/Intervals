@@ -39,10 +39,10 @@ public class PlayerController : MonoBehaviour, ITurnBased {
         else Debug.Log("Calling AdvancePhase from the wrong object!");
     }
 
-    public void GameOver() {
+    public void GameOver(Transform bullet) {
         Debug.Log("Game over, man, game over!");
         Vector3 deathPrefabPosition = transform.FindChild("DeathPrefab").position;
-        Transform death = (Transform) Instantiate(deathPrefab, deathPrefabPosition, Quaternion.identity);
+        Transform death = (Transform) Instantiate(deathPrefab, deathPrefabPosition, Quaternion.Inverse(bullet.rotation));
         //TODO set rotation opposite to the bullet impact
     }
 }

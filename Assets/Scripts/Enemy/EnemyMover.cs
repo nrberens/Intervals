@@ -11,6 +11,7 @@ public class EnemyMover : MonoBehaviour, IMover {
     public float wobbleAmount;
     public float wobbleRotateAmount;
     public float wiggleTime;
+    public float rotateTime;
 
     // Use this for initialization
     void Start() {
@@ -161,8 +162,19 @@ public class EnemyMover : MonoBehaviour, IMover {
         Vector3 startPos = currentNode.transform.position;
         Vector3 endPos = targetNode.transform.position;
         Quaternion startRot = transform.rotation;
+        Quaternion endRot = Quaternion.LookRotation(transform.position - targetNode.transform.position);
         Vector3 bending = Vector3.up;
         float startTime = Time.time;
+
+        //TODO Rotate Object before moving
+        while (Time.time < rotateTime + startTime) {
+            //TODO object immediately snaps to final position?
+            Debug.Log(gameObject + " Rotating at " + transform.rotation.eulerAngles);
+            transform.rotation = Quaternion.Slerp(startRot, endRot, (Time.time - startTime) / MoveTime);
+            yield return null;
+        }
+
+        startTime = Time.time;
 
         //move
         while (Time.time < MoveTime + startTime) {
@@ -181,20 +193,11 @@ public class EnemyMover : MonoBehaviour, IMover {
         startTime = Time.time;
 
         //wiggle
-        while (Time.time < wiggleTime + startTime) {
-            float xWiggleOffset = (Mathf.Sin(Time.time*wobbleAmount)*0.05f)/2;// + (Random.Range(0,3)*.02f);
-            float zWiggleOffset = (Mathf.Cos(Time.time*wobbleAmount)*0.05f)/2;// + (Random.Range(0, 3) * .02f); 
-            Vector3 currentPos = new Vector3(centerPos.x + xWiggleOffset, centerPos.y, centerPos.z+zWiggleOffset);
-            transform.position = currentPos;
-            transform.Rotate(xWiggleOffset*wobbleRotateAmount, 0, zWiggleOffset*wobbleRotateAmount);
-
-            yield return null;
-        }
 
         StartCoroutine(ObjectWiggle(endPos));
 
         transform.position = endPos;
-        transform.rotation = startRot;
+        //transform.rotation = startRot;
 
         _ec.acting = false;
         _ec.EndPhase();

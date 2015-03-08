@@ -60,7 +60,6 @@ public class EnemyMover : MonoBehaviour, IMover {
                 return;
             }
 
-            transform.forward = Vector3.forward;
             MoveNode targetNode = nodes[x, z + distance];
             //remove from currentNode
             //add to targetNode
@@ -88,7 +87,6 @@ public class EnemyMover : MonoBehaviour, IMover {
                 return;
             }
 
-            transform.forward = Vector3.back;
             MoveNode targetNode = nodes[x, z - distance];
             //remove from currentNode
             //add to targetNode
@@ -116,7 +114,6 @@ public class EnemyMover : MonoBehaviour, IMover {
                 return;
             }
 
-            transform.forward = Vector3.left;
             MoveNode targetNode = nodes[x - distance, z];
             //remove from currentNode
             //add to targetNode
@@ -144,7 +141,6 @@ public class EnemyMover : MonoBehaviour, IMover {
                 return;
             }
 
-            transform.forward = Vector3.right;
             MoveNode targetNode = nodes[x + distance, z];
             //remove from currentNode
             //add to targetNode
@@ -162,15 +158,15 @@ public class EnemyMover : MonoBehaviour, IMover {
         Vector3 startPos = currentNode.transform.position;
         Vector3 endPos = targetNode.transform.position;
         Quaternion startRot = transform.rotation;
-        Quaternion endRot = Quaternion.LookRotation(transform.position - targetNode.transform.position);
+        Quaternion endRot = Quaternion.LookRotation(targetNode.transform.position - transform.position);
+        Debug.DrawRay(transform.position, targetNode.transform.position-transform.position, Color.black, 3.0f);
         Vector3 bending = Vector3.up;
         float startTime = Time.time;
 
-        //TODO Rotate Object before moving
+        //Rotate Object before moving
         while (Time.time < rotateTime + startTime) {
             //TODO object immediately snaps to final position?
-            Debug.Log(gameObject + " Rotating at " + transform.rotation.eulerAngles);
-            transform.rotation = Quaternion.Slerp(startRot, endRot, (Time.time - startTime) / MoveTime);
+            transform.rotation = Quaternion.Slerp(startRot, endRot, (Time.time - startTime) / rotateTime);
             yield return null;
         }
 

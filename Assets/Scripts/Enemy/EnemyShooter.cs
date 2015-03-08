@@ -8,6 +8,7 @@ public class EnemyShooter : MonoBehaviour {
     public Transform BulletTransform;
 
     private int mapLength, mapWidth;
+    public float rotateTime;
 
 	// Use this for initialization
 	void Start () {
@@ -31,16 +32,16 @@ public class EnemyShooter : MonoBehaviour {
             // Look in direction
             switch (direction) {
                 case Direction.South:
-                    transform.forward = Vector3.back;
+                    StartCoroutine(RotateToTarget(Vector3.back));
                     break;
                 case Direction.North:
-                    transform.forward = Vector3.forward;
+                    StartCoroutine(RotateToTarget(Vector3.forward));
                     break;
                 case Direction.West:
-                    transform.forward = Vector3.left;
+                    StartCoroutine(RotateToTarget(Vector3.left));
                     break;
                 case Direction.East:
-                    transform.forward = Vector3.right;
+                    StartCoroutine(RotateToTarget(Vector3.right));
                     break;
             }
 
@@ -87,5 +88,17 @@ public class EnemyShooter : MonoBehaviour {
         }
 
         return valid;
+    }
+
+    public IEnumerator RotateToTarget(Vector3 directionVector) {
+        float startTime = Time.time;
+        Quaternion startRot = transform.rotation;
+        Quaternion endRot = Quaternion.LookRotation(directionVector - transform.position);
+        
+        while (Time.time < rotateTime + startTime) {
+            //TODO object immediately snaps to final position?
+            transform.rotation = Quaternion.Slerp(startRot, endRot, (Time.time - startTime) / rotateTime);
+            yield return null;
+        }
     }
 }

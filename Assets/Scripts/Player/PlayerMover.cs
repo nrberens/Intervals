@@ -9,7 +9,9 @@ public class PlayerMover : MonoBehaviour, IMover {
     private PlayerController pc;
     private Map map;
     public float MoveTime;
-
+    public float wiggleTime;
+    public float wobbleAmount;
+    public float wobbleRotateAmount;
 
     //IMover properties
     public MoveNode[,] nodes { get; private set; }
@@ -193,6 +195,7 @@ public class PlayerMover : MonoBehaviour, IMover {
     public IEnumerator MoveToNode(MoveNode targetNode) {
         Vector3 startPos = currentNode.transform.position;
         Vector3 endPos = targetNode.transform.position;
+        Quaternion startRot = transform.rotation;
         //Vector3 bending = Vector3.up;
         float startTime = Time.time;
 
@@ -208,8 +211,29 @@ public class PlayerMover : MonoBehaviour, IMover {
             yield return null;
         }
 
+        StartCoroutine(ObjectWiggle(endPos));
+
+        transform.position = endPos;
+        transform.rotation = startRot;
+
         pc.acting = false;
         pc.EndPhase();
+    }
+
+    public IEnumerator ObjectWiggle(Vector3 centerPos) {
+        float startTime = Time.time;
+
+        //wiggle
+        while (Time.time < wiggleTime + startTime) {
+            float xWiggleOffset = (Mathf.Sin(Time.time*wobbleAmount)*0.05f)/2;// + (Random.Range(0,3)*.02f);
+            float zWiggleOffset = (Mathf.Cos(Time.time*wobbleAmount)*0.05f)/2;// + (Random.Range(0, 3) * .02f); 
+            Vector3 currentPos = new Vector3(centerPos.x + xWiggleOffset, centerPos.y, centerPos.z+zWiggleOffset);
+            transform.position = currentPos;
+            transform.Rotate(xWiggleOffset*wobbleRotateAmount, 0, zWiggleOffset*wobbleRotateAmount);
+
+            yield return null;
+        }
+
     }
 
     public MoveNode GetTargetNode(Direction dir, int distance) {

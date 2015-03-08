@@ -1,11 +1,16 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SocialPlatforms;
+using Random = UnityEngine.Random;
 
 public class EnemyMover : MonoBehaviour, IMover {
 
     private EnemyController _ec;
     public float MoveTime;
+    public float wobbleAmount;
+    public float wobbleRotateAmount;
+    public float wiggleTime;
 
     // Use this for initialization
     void Start() {
@@ -155,9 +160,11 @@ public class EnemyMover : MonoBehaviour, IMover {
     public IEnumerator MoveToNode(MoveNode targetNode) {
         Vector3 startPos = currentNode.transform.position;
         Vector3 endPos = targetNode.transform.position;
+        Quaternion startRot = transform.rotation;
         Vector3 bending = Vector3.up;
         float startTime = Time.time;
 
+        //move
         while (Time.time < MoveTime + startTime) {
             Vector3 currentPos = Vector3.Lerp(startPos, endPos, (Time.time - startTime) / MoveTime);
 
@@ -170,8 +177,43 @@ public class EnemyMover : MonoBehaviour, IMover {
             yield return null;
         }
 
+        Vector3 centerPos = endPos;
+        startTime = Time.time;
+
+        //wiggle
+        while (Time.time < wiggleTime + startTime) {
+            float xWiggleOffset = (Mathf.Sin(Time.time*wobbleAmount)*0.05f)/2;// + (Random.Range(0,3)*.02f);
+            float zWiggleOffset = (Mathf.Cos(Time.time*wobbleAmount)*0.05f)/2;// + (Random.Range(0, 3) * .02f); 
+            Vector3 currentPos = new Vector3(centerPos.x + xWiggleOffset, centerPos.y, centerPos.z+zWiggleOffset);
+            transform.position = currentPos;
+            transform.Rotate(xWiggleOffset*wobbleRotateAmount, 0, zWiggleOffset*wobbleRotateAmount);
+
+            yield return null;
+        }
+
+        StartCoroutine(ObjectWiggle(endPos));
+
+        transform.position = endPos;
+        transform.rotation = startRot;
+
         _ec.acting = false;
         _ec.EndPhase();
+    }
+
+    public IEnumerator ObjectWiggle(Vector3 centerPos) {
+        float startTime = Time.time;
+
+        //wiggle
+        while (Time.time < wiggleTime + startTime) {
+            float xWiggleOffset = (Mathf.Sin(Time.time*wobbleAmount)*0.05f)/2;// + (Random.Range(0,3)*.02f);
+            float zWiggleOffset = (Mathf.Cos(Time.time*wobbleAmount)*0.05f)/2;// + (Random.Range(0, 3) * .02f); 
+            Vector3 currentPos = new Vector3(centerPos.x + xWiggleOffset, centerPos.y, centerPos.z+zWiggleOffset);
+            transform.position = currentPos;
+            transform.Rotate(xWiggleOffset*wobbleRotateAmount, 0, zWiggleOffset*wobbleRotateAmount);
+
+            yield return null;
+        }
+
     }
 
     public void DetectCurrentNode() {

@@ -95,6 +95,7 @@ public class PlayerShooter : MonoBehaviour {
 
     public void Shoot(Transform target) {
         //spawn bullet
+        StartCoroutine(pc.Mover.ObjectWiggle(transform.position));
         Transform newBullet = (Transform) Instantiate(bulletPrefab);
         newBullet.position = bulletSpawnPoint.position;
         newBullet.rotation = transform.rotation;

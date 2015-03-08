@@ -44,6 +44,9 @@ public class EnemyShooter : MonoBehaviour {
                     break;
             }
 
+            //HACK enemies don't wobble when shooting
+            //StartCoroutine(_ec.Mover.ObjectWiggle(transform.position));
+
             // Instantiate EnemyBullet prefab and set direction
             Transform bullet = (Transform) Instantiate(BulletTransform);
             EnemyBullet enemyBulletScript = bullet.GetComponent<EnemyBullet>();

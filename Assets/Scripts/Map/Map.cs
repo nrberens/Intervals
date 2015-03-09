@@ -56,6 +56,7 @@ public class Map : MonoBehaviour {
         foreach (GameObject o in unsortedNodeObjects) {
             MoveNode node = o.GetComponent<MoveNode>();
             Nodes[node.x, node.z] = node;
+            node.parentBlock.name = "WorldBlock (" + node.x + "," + node.z + ")";
         }
     }
 
@@ -83,7 +84,7 @@ public class Map : MonoBehaviour {
 
         //find LOS nodes in each direction
         //Check North, stop at first obstacle
-       for (int i = currentNode.z; i < mapLength; i++) {
+        for (int i = currentNode.z; i < mapLength; i++) {
             MoveNode node = Nodes[currentNode.x, i];
             if (node.blocksLOS) break;
             node.LOSToPlayer = true;
@@ -93,14 +94,14 @@ public class Map : MonoBehaviour {
         for (int i = currentNode.z; i >= 0; i--) {
             MoveNode node = Nodes[currentNode.x, i];
             if (node.blocksLOS) break;
-            node.LOSToPlayer = true; 
+            node.LOSToPlayer = true;
         }
 
         //Check East
         for (int i = currentNode.x; i < mapWidth; i++) {
             MoveNode node = Nodes[i, currentNode.z];
             if (node.blocksLOS) break;
-            node.LOSToPlayer = true; 
+            node.LOSToPlayer = true;
         }
 
         //Check West 
@@ -109,5 +110,102 @@ public class Map : MonoBehaviour {
             if (node.blocksLOS) break;
             node.LOSToPlayer = true;
         }
+    }
+
+    public MoveNode FindClosestLOSNode(Transform t) {
+        MoveNode currentNode = t.GetComponent<EnemyMover>().currentNode;
+        MoveNode closestNode = null;
+        int closestDistance = Mathf.Max(mapWidth, mapLength);
+        //Check North, stop at first obstacle
+        for (int i = currentNode.z+1; i < mapLength; i++) {
+            bool breakTopLoop = false;
+            MoveNode node = Nodes[currentNode.x, i];
+
+            foreach (GameObject o in node.objectsOnNode) {
+                if (o.tag == "Obstacle" || o.tag == "Enemy") {
+                    breakTopLoop = true;
+                    break;
+                }
+            }
+
+            if (breakTopLoop) break;
+
+            if (node.LOSToPlayer) {
+                closestNode = node;
+                closestDistance = node.z - currentNode.z;
+                break;
+            }
+        }
+
+        //Check South
+        for (int i = currentNode.z-1; i >= 0; i--) {
+            bool breakTopLoop = false;
+            MoveNode node = Nodes[currentNode.x, i];
+
+            foreach (GameObject o in node.objectsOnNode) {
+                if (o.tag == "Obstacle" || o.tag == "Enemy") {
+                    breakTopLoop = true;
+                    break;
+                }
+            }
+
+            if (breakTopLoop) break;
+
+            if (node.LOSToPlayer) {
+                int distance = currentNode.z - node.z;
+                if (distance < closestDistance) {
+                    closestNode = node;
+                }
+                break;
+            }
+        }
+
+        //Check East
+        for (int i = currentNode.x + 1; i < mapWidth; i++) {
+            bool breakTopLoop = false;
+            MoveNode node = Nodes[i, currentNode.z];
+
+            foreach (GameObject o in node.objectsOnNode) {
+                if (o.tag == "Obstacle" || o.tag == "Enemy") {
+                    breakTopLoop = true;
+                    break;
+                }
+            }
+
+            if (breakTopLoop) break;
+
+            if (node.LOSToPlayer) {
+                int distance = node.x - currentNode.x;
+                if (distance < closestDistance) {
+                    closestNode = node;
+                }
+                break;
+            }
+        }
+
+        //Check West 
+        for (int i = currentNode.x - 1; i >= 0; i--) {
+            bool breakTopLoop = false;
+            MoveNode node = Nodes[i, currentNode.z];
+
+            foreach (GameObject o in node.objectsOnNode) {
+                if (o.tag == "Obstacle" || o.tag == "Enemy") {
+                    breakTopLoop = true;
+                    break;
+                }
+            }
+
+            if (breakTopLoop) break;
+
+            if (node.LOSToPlayer) {
+                int distance = currentNode.x - node.x;
+                if (distance < closestDistance) {
+                    closestNode = node;
+                }
+                break;
+            }
+        }
+
+        return closestNode;
     }
 }

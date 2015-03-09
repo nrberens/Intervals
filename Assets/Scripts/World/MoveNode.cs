@@ -42,4 +42,27 @@ public class MoveNode : MonoBehaviour {
 		else Debug.Log (obj + " isn't on " + gameObject);
 	}
 
+    public static Direction DirectionToNode(MoveNode startNode, MoveNode targetNode) {
+        int absX = Mathf.Abs(startNode.x - targetNode.x);
+        int absZ = Mathf.Abs(startNode.z - targetNode.z);
+
+        if (absX > absZ) { //East or West
+            if (startNode.x > targetNode.x) //East
+                return Direction.East;
+            else if (targetNode.x > startNode.x) 
+                return Direction.West;
+            else Debug.Log("On the same row!");
+        } else if (absZ > absX) {
+            //North or South
+            if (startNode.z > targetNode.z) //South
+                return Direction.South;
+            else if (targetNode.z > startNode.z) {
+                return Direction.North;
+            }
+            else Debug.Log("On the same column!");
+        }
+        else Debug.Log("Same distance either way!");
+        throw new NotImplementedException();
+    }
+
 }

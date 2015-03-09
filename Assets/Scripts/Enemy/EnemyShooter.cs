@@ -25,28 +25,32 @@ public class EnemyShooter : MonoBehaviour {
 	
 	}
 
-    public void Shoot(Direction direction) {
+    public IEnumerator Shoot(Direction direction) {
         //TODO Check for valid shot
         //Check for node in that direction
         if (CheckForValidShot(direction)) {
             // Look in direction
             switch (direction) {
                 case Direction.South:
-                    StartCoroutine(RotateToTarget(Vector3.back));
+                    Debug.Log("Current rotation: " + transform.rotation.eulerAngles + " Target Rotation: " + Vector3.back);
+                    yield return StartCoroutine(RotateToTarget(Vector3.back));
                     break;
                 case Direction.North:
-                    StartCoroutine(RotateToTarget(Vector3.forward));
+                    Debug.Log("Current rotation: " + transform.rotation.eulerAngles + " Target Rotation: " + Vector3.forward);
+                    yield return StartCoroutine(RotateToTarget(Vector3.forward));
                     break;
                 case Direction.West:
-                    StartCoroutine(RotateToTarget(Vector3.left));
+                    Debug.Log("Current rotation: " + transform.rotation.eulerAngles + " Target Rotation: " + Vector3.left);
+                    yield return StartCoroutine(RotateToTarget(Vector3.left));
                     break;
                 case Direction.East:
-                    StartCoroutine(RotateToTarget(Vector3.right));
+                    Debug.Log("Current rotation: " + transform.rotation.eulerAngles + " Target Rotation: " + Vector3.right);
+                    yield return StartCoroutine(RotateToTarget(Vector3.right));
                     break;
             }
 
             //HACK enemies don't wobble when shooting
-            //StartCoroutine(_ec.Mover.ObjectWiggle(transform.position));
+            StartCoroutine(_ec.Mover.ObjectWiggle(transform.position));
 
             // Instantiate EnemyBullet prefab and set direction
             Transform bullet = (Transform) Instantiate(BulletTransform);
@@ -93,7 +97,8 @@ public class EnemyShooter : MonoBehaviour {
     public IEnumerator RotateToTarget(Vector3 directionVector) {
         float startTime = Time.time;
         Quaternion startRot = transform.rotation;
-        Quaternion endRot = Quaternion.LookRotation(directionVector - transform.position);
+        Quaternion endRot = Quaternion.LookRotation(directionVector);
+        Debug.DrawRay(transform.position, directionVector, Color.red, 3.0f);
         
         while (Time.time < rotateTime + startTime) {
             //TODO object immediately snaps to final position?

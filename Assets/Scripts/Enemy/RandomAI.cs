@@ -66,7 +66,7 @@ public class RandomAI : FSM {
         if (shootCoin == 0) {
             randomDir = GetRandomDirection();
             Debug.Log("Shooting in " + randomDir);
-            _ec.Shooter.Shoot(randomDir);
+            StartCoroutine(_ec.Shooter.Shoot(randomDir));
         } else {
             bool directionValid = false;
 

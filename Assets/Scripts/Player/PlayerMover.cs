@@ -12,6 +12,7 @@ public class PlayerMover : MonoBehaviour, IMover {
     public float wiggleTime;
     public float wobbleAmount;
     public float wobbleRotateAmount;
+    public float rotateTime;
 
     //IMover properties
     public MoveNode[,] nodes { get; private set; }
@@ -108,7 +109,6 @@ public class PlayerMover : MonoBehaviour, IMover {
             return;
         }
 
-        transform.forward = Vector3.forward;
         MoveNode targetNode = nodes[x, z + distance];
         //remove from currentNode
         //add to targetNode
@@ -131,7 +131,6 @@ public class PlayerMover : MonoBehaviour, IMover {
             return;
         }
 
-        transform.forward = Vector3.back;
         MoveNode targetNode = nodes[x, z - distance];
         //remove from currentNode
         //add to targetNode
@@ -154,7 +153,6 @@ public class PlayerMover : MonoBehaviour, IMover {
             return;
         }
 
-        transform.forward = Vector3.left;
         MoveNode targetNode = nodes[x - distance, z];
         //remove from currentNode
         //add to targetNode
@@ -177,7 +175,6 @@ public class PlayerMover : MonoBehaviour, IMover {
             return;
         }
 
-        transform.forward = Vector3.right;
         MoveNode targetNode = nodes[x + distance, z];
         //remove from currentNode
         //add to targetNode
@@ -196,8 +193,17 @@ public class PlayerMover : MonoBehaviour, IMover {
         Vector3 startPos = currentNode.transform.position;
         Vector3 endPos = targetNode.transform.position;
         Quaternion startRot = transform.rotation;
+        Quaternion endRot = Quaternion.LookRotation(targetNode.transform.position - transform.position);
         //Vector3 bending = Vector3.up;
         float startTime = Time.time;
+
+        //Rotate Object before moving
+        while (Time.time < rotateTime + startTime) {
+            transform.rotation = Quaternion.Slerp(startRot, endRot, (Time.time - startTime)/MoveTime);
+            yield return null;
+        }
+
+        startTime = Time.time;
 
         while (Time.time < MoveTime + startTime) {
             Vector3 currentPos = Vector3.Lerp(startPos, endPos, (Time.time - startTime) / MoveTime);
@@ -214,7 +220,6 @@ public class PlayerMover : MonoBehaviour, IMover {
         StartCoroutine(ObjectWiggle(endPos));
 
         transform.position = endPos;
-        transform.rotation = startRot;
 
         pc.acting = false;
         pc.EndPhase();

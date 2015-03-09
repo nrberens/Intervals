@@ -58,7 +58,6 @@ public class EnemyShooter : MonoBehaviour {
             EnemyBullet.totalBullets++;
             bullet.name = "EnemyBullet " + EnemyBullet.totalBullets;
             enemyBulletScript.currentNode = _ec.Mover.currentNode;
-            //TODO move bullet one square in direction
             enemyBulletScript.Dir = direction;
             bullet.position = bulletSpawnPoint.transform.position;
             bullet.rotation = transform.rotation;

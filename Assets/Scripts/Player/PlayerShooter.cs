@@ -10,6 +10,7 @@ public class PlayerShooter : MonoBehaviour {
     public Transform bulletSpawnPoint;
     public Transform muzzleFlash;
     public Light muzzleFlashLight;
+    public float rotateTime;
 
     // Use this for initialization
     void Start() {
@@ -87,13 +88,16 @@ public class PlayerShooter : MonoBehaviour {
         if (target != null && pc.Shooter.CheckValidTarget(target)) {
             pc.Input.allowInput = false;
             //shot is valid, shoot target
-            transform.LookAt(target);
+            //transform.LookAt(target);
             pc.acting = false;
-            pc.Shooter.Shoot(target);
+            StartCoroutine(pc.Shooter.Shoot(target));
         }
     }
 
-    public void Shoot(Transform target) {
+    public IEnumerator Shoot(Transform target) {
+        // Look in direction
+        yield return StartCoroutine(RotateToTarget(target));
+
         //spawn bullet
         StartCoroutine(pc.Mover.ObjectWiggle(transform.position));
         Transform newBullet = (Transform) Instantiate(bulletPrefab);
@@ -124,4 +128,17 @@ public class PlayerShooter : MonoBehaviour {
         muzzleFlashLight.enabled = false;
     }
 
+
+    public IEnumerator RotateToTarget(Transform target) {
+        float startTime = Time.time;
+        Quaternion startRot = transform.rotation;
+        Quaternion endRot = Quaternion.LookRotation(target.position - transform.position);
+        Debug.DrawRay(transform.position, target.position-transform.position, Color.red, 3.0f);
+        
+        while (Time.time < rotateTime + startTime) {
+            //TODO object immediately snaps to final position?
+            transform.rotation = Quaternion.Slerp(startRot, endRot, (Time.time - startTime) / rotateTime);
+            yield return null;
+        }
+    }
 }

@@ -4,6 +4,9 @@ using UnityEngineInternal;
 
 public class EnemyController : MonoBehaviour, ITurnBased {
     public Transform deathPrefab;
+    public GameObject lowReadyMesh;
+    public GameObject firingMesh;
+    public GameObject meleeMesh;
 
 	private EnemiesController _ec;
     public EnemyMover Mover;
@@ -22,6 +25,9 @@ public class EnemyController : MonoBehaviour, ITurnBased {
         Shooter = GetComponentInParent<EnemyShooter>();
         CurrentTurn = FindObjectOfType<Turn>();
 
+        //meshes
+        firingMesh.SetActive(false);
+        meleeMesh.SetActive(false);
         acting = false;
     }
 

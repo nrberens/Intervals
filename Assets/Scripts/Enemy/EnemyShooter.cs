@@ -6,29 +6,35 @@ public class EnemyShooter : MonoBehaviour {
     private EnemyController _ec;
     private Transform bulletSpawnPoint;
     public Transform BulletTransform;
+    public Transform muzzleFlash;
+    public Light muzzleFlashLight;
 
     private int mapLength, mapWidth;
     public float rotateTime;
 
-	// Use this for initialization
-	void Start () {
-	    _ec = GetComponentInParent<EnemyController>();
-	    bulletSpawnPoint = transform.FindChild("BulletSpawnPoint");
+    // Use this for initialization
+    void Start() {
+        _ec = GetComponentInParent<EnemyController>();
+        bulletSpawnPoint = transform.FindChild("BulletSpawnPoint");
+        muzzleFlashLight = muzzleFlash.GetComponent<Light>();
+        muzzleFlashLight.enabled = false;
 
-	    Map map = FindObjectOfType<Map>();
-	    mapLength = map.mapLength;
-	    mapWidth = map.mapWidth;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+        Map map = FindObjectOfType<Map>();
+        mapLength = map.mapLength;
+        mapWidth = map.mapWidth;
+    }
+
+    // Update is called once per frame
+    void Update() {
+
+    }
 
     public IEnumerator Shoot(Direction direction) {
         //TODO Check for valid shot
         //Check for node in that direction
         if (CheckForValidShot(direction)) {
+            _ec.lowReadyMesh.SetActive(false);
+            _ec.firingMesh.SetActive(true);
             // Look in direction
             switch (direction) {
                 case Direction.South:
@@ -53,7 +59,7 @@ public class EnemyShooter : MonoBehaviour {
             StartCoroutine(_ec.Mover.ObjectWiggle(transform.position));
 
             // Instantiate EnemyBullet prefab and set direction
-            Transform bullet = (Transform) Instantiate(BulletTransform);
+            Transform bullet = (Transform)Instantiate(BulletTransform);
             EnemyBullet enemyBulletScript = bullet.GetComponent<EnemyBullet>();
             EnemyBullet.totalBullets++;
             bullet.name = "EnemyBullet " + EnemyBullet.totalBullets;
@@ -64,6 +70,10 @@ public class EnemyShooter : MonoBehaviour {
             enemyBulletScript.bc.Bullets.Add(enemyBulletScript);
             enemyBulletScript.currentNode.AddToNode(bullet.gameObject);
             enemyBulletScript.UpdateBullet();
+            yield return StartCoroutine(MuzzleFlash());
+            yield return new WaitForSeconds(0.5f);
+            _ec.firingMesh.SetActive(false);
+            _ec.lowReadyMesh.SetActive(true);
         }
     }
 
@@ -93,12 +103,24 @@ public class EnemyShooter : MonoBehaviour {
         return valid;
     }
 
+    public IEnumerator MuzzleFlash() {
+        float startTime = Time.time;
+        float flashTime = 0.1f;
+
+        while (Time.time < flashTime + startTime) {
+            muzzleFlashLight.enabled = true;
+
+            yield return null;
+        }
+        muzzleFlashLight.enabled = false;
+    }
+
     public IEnumerator RotateToTarget(Vector3 directionVector) {
         float startTime = Time.time;
         Quaternion startRot = transform.rotation;
         Quaternion endRot = Quaternion.LookRotation(directionVector);
         Debug.DrawRay(transform.position, directionVector, Color.red, 3.0f);
-        
+
         while (Time.time < rotateTime + startTime) {
             //TODO object immediately snaps to final position?
             transform.rotation = Quaternion.Slerp(startRot, endRot, (Time.time - startTime) / rotateTime);

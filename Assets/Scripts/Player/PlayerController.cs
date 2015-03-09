@@ -26,9 +26,6 @@ public class PlayerController : MonoBehaviour, ITurnBased {
 	    CurrentTurn = FindObjectOfType<Turn>();
 
         //meshes
-        //lowReadyMesh = transform.FindChild("shooter_geo_completeMesh/shooter_geo_lowReadyMesh").GetComponent<Renderer>();
-        //firingMesh = transform.FindChild("shooter_geo_completeMesh/shooter_geo_firingMesh").GetComponent<Renderer>();
-        //meleeMesh = transform.FindChild("shooter_geo_completeMesh/shooter_geo_meleeMesh").GetComponent<Renderer>();
         firingMesh.SetActive(false);
         meleeMesh.SetActive(false);
 

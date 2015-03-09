@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using System.Collections.Generic;
+using Random = UnityEngine.Random;
 
 /**
  * 1. Enemy Spawns
@@ -59,7 +61,8 @@ public class RandomAI : FSM {
 
         //random chance of shooting, otherwise get randomDir and move
         int shootCoin = UnityEngine.Random.Range(0, 5);
-        Direction randomDir;
+        //HACK default direction is north
+        Direction randomDir = Direction.North;
 
         if (shootCoin == 0) {
             randomDir = GetRandomDirection();
@@ -67,14 +70,24 @@ public class RandomAI : FSM {
             StartCoroutine(_ec.Shooter.Shoot(randomDir));
         } else {
             bool directionValid = false;
+            List<Direction> potentialDirs = new List<Direction> { Direction.North, Direction.South, Direction.East, Direction.West };
 
             do {
-				//TODO track attempted directions -- if no directions work, just end turn
-                randomDir = GetRandomDirection();
+                //TODO track attempted directions -- if no directions work, just end turn
+                if (potentialDirs.Count == 0) {
+                    Debug.Log("No valid directions, just staying put.");
+                    _ec.acting = false;
+                    _ec.EndPhase();
+                    break;
+                }
+                randomDir = potentialDirs[Random.Range(0, potentialDirs.Count - 1)];
+                potentialDirs.Remove(randomDir);
                 directionValid = _ec.Mover.CheckForValidMovement(randomDir, Distance);
             } while (!directionValid);
 
-            _ec.Mover.Move(randomDir, Distance);
+            if (directionValid) {
+                    _ec.Mover.Move(randomDir, Distance);
+            }
         }
     }
 

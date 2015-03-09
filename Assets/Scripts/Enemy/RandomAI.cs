@@ -24,9 +24,7 @@ public class RandomAI : FSM {
     private EnemyController _ec;
 
     public FSMState CurState;
-    private Transform _target;
     public GameObject Bullet;
-    private bool _bDead;
     public int Health;
     public float AttackDistance;
     public float AggroDistance;
@@ -71,6 +69,7 @@ public class RandomAI : FSM {
             bool directionValid = false;
 
             do {
+				//TODO track attempted directions -- if no directions work, just end turn
                 randomDir = GetRandomDirection();
                 directionValid = _ec.Mover.CheckForValidMovement(randomDir, Distance);
             } while (!directionValid);

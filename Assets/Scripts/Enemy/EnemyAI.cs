@@ -33,9 +33,7 @@ public class EnemyAI : FSM {
     private EnemyController _ec;
 
     public FSMState CurState;
-    private Transform _target;
     public GameObject Bullet;
-    private bool _bDead;
     public int Health;
     public float AttackDistance;
     public float AggroDistance;

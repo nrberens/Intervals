@@ -124,7 +124,7 @@ public class PlayerShooter : MonoBehaviour {
 
     public IEnumerator MuzzleFlash() {
         float startTime = Time.time;
-        float flashTime = 0.1f;
+        const float flashTime = 0.1f;
 
         while (Time.time < flashTime + startTime) {
             muzzleFlashLight.enabled = true;

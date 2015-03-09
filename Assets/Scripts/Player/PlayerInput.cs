@@ -38,13 +38,12 @@ public class PlayerInput : MonoBehaviour {
 
                 moveX = Input.GetAxis("Horizontal");
                 moveZ = Input.GetAxis("Vertical");
-                Direction moveDir;
 
                 if (moveX != 0 || moveZ != 0) {
                     pc.acting = true;
                     allowInput = false;
                     //Adjust direction based on camera rotation
-                    moveDir = GetAdjustedDirection(moveX, moveZ, Camera.main.transform.rotation);
+                    var moveDir = GetAdjustedDirection(moveX, moveZ, Camera.main.transform.rotation);
                     pc.Mover.Move(moveDir, 1);
                 }
             }

@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Schema;
 
 public class EnemiesController : MonoBehaviour, ITurnBased {
     public List<EnemyController> Enemies; 
 
     public Turn CurrentTurn { get; set; }
     public bool acting { get; set; }
+    public int totalCurrentEnemies;
 
 	// Use this for initialization
 	void Start () {
@@ -16,7 +18,7 @@ public class EnemiesController : MonoBehaviour, ITurnBased {
 	
 	// Update is called once per frame
 	void Update () {
-	
+	    totalCurrentEnemies = Enemies.Count;
 	}
 
     public void BeginPhase() {

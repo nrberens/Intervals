@@ -27,9 +27,7 @@ public class SmartAI : FSM {
     private Map map;
 
     public FSMState CurState;
-    private Transform _target;
     public GameObject Bullet;
-    private bool _bDead;
     public int Health;
     public float AttackDistance;
     public float AggroDistance;

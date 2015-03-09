@@ -13,7 +13,7 @@ public class EnemyShooter : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 	    _ec = GetComponentInParent<EnemyController>();
-	    bulletSpawnPoint = transform.FindChild("Weapon/BulletSpawnPoint");
+	    bulletSpawnPoint = transform.FindChild("BulletSpawnPoint");
 
 	    Map map = FindObjectOfType<Map>();
 	    mapLength = map.mapLength;

@@ -16,11 +16,13 @@ public class Turn : MonoBehaviour {
     private PlayerController _pc;
     private EnemiesController _ec;
 	private BulletsController _bc;
+    private Map map;
 
     public void Start() {
         _pc = FindObjectOfType<PlayerController>();
         _ec = FindObjectOfType<EnemiesController>(); 
 		_bc = FindObjectOfType<BulletsController>();
+        map = FindObjectOfType<Map>();
         CurrentPhase = Phase.Player;
         TurnNumber = 1;
         //HACK player starts automatically
@@ -29,7 +31,6 @@ public class Turn : MonoBehaviour {
 
     public void AdvancePhase() {
         Debug.Log("End of " + TurnNumber + " " + CurrentPhase);
-        TurnNumber++;
         switch (CurrentPhase) {
             case Phase.Player:
                 CurrentPhase = Phase.Bullet;
@@ -41,6 +42,8 @@ public class Turn : MonoBehaviour {
 				break;
             case Phase.Enemy:
                 CurrentPhase = Phase.Player;
+                map.turnsUntilNextSpawn--;
+                TurnNumber++;
                 _pc.BeginPhase();
                 break;
         }

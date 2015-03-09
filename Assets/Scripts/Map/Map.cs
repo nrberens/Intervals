@@ -10,7 +10,12 @@ public class Map : MonoBehaviour {
     public Transform EnemyTransform;
     public int mapWidth, mapLength;
 
+    public Turn currentTurn { get; set; }
+    public int turnsBetweenSpawns;
+    public int turnsUntilNextSpawn;
+
     public MoveNode[,] Nodes;
+    public List<MoveNode> SpawnPoints;
 
     void Awake() {
         GenerateNodeArray();
@@ -46,6 +51,8 @@ public class Map : MonoBehaviour {
             enemy.name = "Enemy " + EnemyController.totalEnemies;
             Nodes[enemyX, enemyZ].AddToNode(enemy);
         }
+
+        turnsUntilNextSpawn = turnsBetweenSpawns;
     }
 
     private void GenerateNodeArray() {
@@ -58,11 +65,24 @@ public class Map : MonoBehaviour {
             Nodes[node.x, node.z] = node;
             node.parentBlock.name = "WorldBlock (" + node.x + "," + node.z + ")";
         }
+
+        //Grab all spawn points
+        foreach (MoveNode n in Nodes) {
+            if (n.enemySpawnPoint == true) {
+                SpawnPoints.Add(n);
+            } 
+        }
     }
 
     // Update is called once per frame
     void Update() {
 
+        if (turnsUntilNextSpawn <= 0) {
+            int index = Random.Range(0, SpawnPoints.Count - 1);
+            MoveNode spawnPoint = SpawnPoints[index];
+            SpawnEnemy(spawnPoint.x, spawnPoint.z);
+            turnsUntilNextSpawn = turnsBetweenSpawns;
+        }
     }
 
     //HELPER METHODS
@@ -208,4 +228,19 @@ public class Map : MonoBehaviour {
 
         return closestNode;
     }
+
+    public void SpawnEnemy(int nodeX, int nodeZ) {
+            GameObject enemy = (GameObject)Instantiate(EnemyTransform.gameObject);
+            int enemyX = nodeX;
+            int enemyZ = nodeZ;
+            enemy.GetComponent<EnemyMover>().currentNode = Nodes[enemyX, enemyZ];
+
+            _ec.Enemies.Add(enemy.GetComponent<EnemyController>());
+            enemy.transform.position = Nodes[enemyX, enemyZ].transform.position;
+            EnemyController.totalEnemies++;
+            enemy.name = "Enemy " + EnemyController.totalEnemies;
+            Nodes[enemyX, enemyZ].AddToNode(enemy);
+
+    }
+
 }

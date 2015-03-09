@@ -40,16 +40,19 @@ public class Map : MonoBehaviour {
         //instantiate enemy at random position
         //TODO check for valid spawn point for enemies
         for (int i = 1; i <= 3; i++) {
-            GameObject enemy = (GameObject)Instantiate(EnemyTransform.gameObject);
             int enemyX = Random.Range(0, mapWidth);
             int enemyZ = Random.Range(0, mapLength);
-            enemy.GetComponent<EnemyMover>().currentNode = Nodes[enemyX, enemyZ];
 
-            _ec.Enemies.Add(enemy.GetComponent<EnemyController>());
-            enemy.transform.position = Nodes[enemyX, enemyZ].transform.position;
-            EnemyController.totalEnemies++;
-            enemy.name = "Enemy " + EnemyController.totalEnemies;
-            Nodes[enemyX, enemyZ].AddToNode(enemy);
+            if (Nodes[enemyX, enemyZ].objectsOnNode.Count == 0) {
+                GameObject enemy = (GameObject) Instantiate(EnemyTransform.gameObject);
+                enemy.GetComponent<EnemyMover>().currentNode = Nodes[enemyX, enemyZ];
+
+                _ec.Enemies.Add(enemy.GetComponent<EnemyController>());
+                enemy.transform.position = Nodes[enemyX, enemyZ].transform.position;
+                EnemyController.totalEnemies++;
+                enemy.name = "Enemy " + EnemyController.totalEnemies;
+                Nodes[enemyX, enemyZ].AddToNode(enemy);
+            }
         }
 
         turnsUntilNextSpawn = turnsBetweenSpawns;
@@ -230,7 +233,10 @@ public class Map : MonoBehaviour {
     }
 
     public void SpawnEnemy(int nodeX, int nodeZ) {
-            GameObject enemy = (GameObject)Instantiate(EnemyTransform.gameObject);
+        MoveNode node = Nodes[nodeX, nodeZ];
+
+        if (node.objectsOnNode.Count == 0) {
+            GameObject enemy = (GameObject) Instantiate(EnemyTransform.gameObject);
             int enemyX = nodeX;
             int enemyZ = nodeZ;
             enemy.GetComponent<EnemyMover>().currentNode = Nodes[enemyX, enemyZ];
@@ -240,7 +246,10 @@ public class Map : MonoBehaviour {
             EnemyController.totalEnemies++;
             enemy.name = "Enemy " + EnemyController.totalEnemies;
             Nodes[enemyX, enemyZ].AddToNode(enemy);
-
+        }
+        else {
+            Debug.Log("Node (" + nodeX + "," +  nodeZ +") full, can't spawn here!");
+        }
     }
 
 }

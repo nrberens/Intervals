@@ -89,6 +89,9 @@ public class PlayerShooter : MonoBehaviour {
             pc.Input.allowInput = false;
             //shot is valid, shoot target
             //transform.LookAt(target);
+            //switch to firing mesh
+            pc.lowReadyMesh.SetActive(false);
+            pc.firingMesh.SetActive(true);
             pc.acting = false;
             StartCoroutine(pc.Shooter.Shoot(target));
         }
@@ -113,7 +116,10 @@ public class PlayerShooter : MonoBehaviour {
 		//enemy dies
 		Debug.Log (target + " killed!");
 		target.GetComponent<EnemyController>().TakeDamage(newBullet);
-        StartCoroutine(MuzzleFlash());
+        yield return StartCoroutine(MuzzleFlash());
+        yield return new WaitForSeconds(0.5f);
+        pc.firingMesh.SetActive(false);
+        pc.lowReadyMesh.SetActive(true);
     }
 
     public IEnumerator MuzzleFlash() {

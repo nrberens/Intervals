@@ -9,6 +9,7 @@ public class Map : MonoBehaviour {
     private EnemiesController _ec;
     public Transform EnemyTransform;
     public int mapWidth, mapLength;
+	public float fallTime;
 
     public Turn currentTurn { get; set; }
     public int turnsBetweenSpawns;
@@ -52,6 +53,11 @@ public class Map : MonoBehaviour {
                 EnemyController.totalEnemies++;
                 enemy.name = "Enemy " + EnemyController.totalEnemies;
                 Nodes[enemyX, enemyZ].AddToNode(enemy);
+				enemy.AddComponent<FallingSpawn>();
+				FallingSpawn fs = enemy.GetComponent<FallingSpawn>();
+				fs.fallTime = fallTime;
+				fs.finalY = 0f;
+				StartCoroutine(fs.FallIntoPlace());
             }
         }
 

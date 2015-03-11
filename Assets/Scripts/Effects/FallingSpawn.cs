@@ -10,29 +10,18 @@ public class FallingSpawn : MonoBehaviour {
     public float wobbleAmount = 50.0f;
     public float wobbleRotateAmount = 40.0f;
 
-    // Use this for initialization
-    void Start() {
-        //when added to a script, start falling into place
-
-    }
-
-    // Update is called once per frame
-    void Update() {
-
-
-    }
-
     public IEnumerator FallIntoPlace() {
         float startTime = Time.time;
-        startPos = new Vector3(transform.position.x, 6.0f, transform.position.z);
+        startPos = new Vector3(transform.position.x, 8.0f, transform.position.z);
         finalPos = new Vector3(transform.position.x, finalY, transform.position.z);
         transform.position = startPos;
-        float fallOffset = Random.Range(0, 20) * 0.15f;
+        float fallOffset = Random.Range(0, 20) * 0.05f;
 
         Renderer renderer = GetComponent<Renderer>();
         if (renderer != null) {
             renderer.enabled = true;
         }
+
         foreach (Transform t in transform) {
             Renderer[] renderers = t.GetComponentsInChildren<Renderer>();
             foreach (Renderer r in renderers) {
@@ -40,7 +29,6 @@ public class FallingSpawn : MonoBehaviour {
             }
         }
 
-        //TODO add random offset to speed of lerp
         while (Time.time < startTime + fallTime || transform.position.y > finalPos.y) {
             Vector3 currentPosition = Vector3.Lerp(startPos, finalPos, (Time.time - startTime) / fallTime + fallOffset);
             transform.position = currentPosition;

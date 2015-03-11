@@ -18,9 +18,7 @@ public class SpawnWorld : MonoBehaviour {
     public IEnumerator ManageSpawnTiming() {
         yield return new WaitForSeconds(1.0f);
         StartCoroutine(SpawnInWorldBlocks());
-        yield return new WaitForSeconds(1.0f);
         StartCoroutine(SpawnInPlayer());
-        yield return new WaitForSeconds(1.0f);
         StartCoroutine(SpawnInEnemies());
         yield return new WaitForSeconds(1.0f);
     }
@@ -43,6 +41,8 @@ public class SpawnWorld : MonoBehaviour {
         map.pc.transform.position = spawnPoint.transform.position;
         map.pc.Mover.currentNode = spawnPoint;
         map.pc.Mover.currentNode.AddToNode(map.pc.gameObject);
+        FallingSpawn fs = map.pc.GetComponent<FallingSpawn>();
+        StartCoroutine(fs.FallIntoPlace());
         yield return null;
     }
 
@@ -68,8 +68,8 @@ public class SpawnWorld : MonoBehaviour {
 				//fs.fallTime = fallTime;
 				//fs.finalY = 0f;
 				StartCoroutine(fs.FallIntoPlace());
+                yield return null;
             }
         }
-        yield return null;
     }
 }

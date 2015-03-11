@@ -236,6 +236,14 @@ public class Map : MonoBehaviour {
             EnemyController.totalEnemies++;
             enemy.name = "Enemy " + EnemyController.totalEnemies;
             Nodes[enemyX, enemyZ].AddToNode(enemy);
+            foreach (Transform t in enemy.transform) {
+                Renderer[] renderers = t.GetComponentsInChildren<Renderer>();
+                foreach (Renderer r in renderers) {
+                    r.enabled = false;
+                }
+            }
+            FallingSpawn fs = enemy.GetComponent<FallingSpawn>();
+			StartCoroutine(fs.FallIntoPlace());
         }
         else {
             Debug.Log("Node (" + nodeX + "," +  nodeZ +") full, can't spawn here!");

@@ -57,23 +57,28 @@ public class RandomAI : FSM {
         }
     }
 
-    protected void UpdateWanderState() {  //Choose random new position
+    protected void UpdateWanderState() {
+        //Choose random new position
 
-        //random chance of shooting, otherwise get randomDir and move
-        int shootCoin = UnityEngine.Random.Range(0, 5);
-        //HACK default direction is north
-        Direction randomDir = Direction.North;
+        //Check for LOS to player
+        Direction? shootDir = CheckLOSToPlayer();
 
-        if (shootCoin == 0) {
-            randomDir = GetRandomDirection();
-            Debug.Log("Shooting in " + randomDir);
-            StartCoroutine(_ec.Shooter.Shoot(randomDir));
+        if (shootDir != null) {
+            StartCoroutine(_ec.Shooter.Shoot((Direction)shootDir));
+            _ec.acting = false;
+            _ec.EndPhase();
         } else {
+            //HACK default direction is North
+            Direction randomDir = Direction.North;
             bool directionValid = false;
-            List<Direction> potentialDirs = new List<Direction> { Direction.North, Direction.South, Direction.East, Direction.West };
+            List<Direction> potentialDirs = new List<Direction> {
+                Direction.North,
+                Direction.South,
+                Direction.East,
+                Direction.West
+            };
 
             do {
-                //TODO track attempted directions -- if no directions work, just end turn
                 if (potentialDirs.Count == 0) {
                     Debug.Log("No valid directions, just staying put.");
                     _ec.acting = false;
@@ -86,7 +91,7 @@ public class RandomAI : FSM {
             } while (!directionValid);
 
             if (directionValid) {
-                    _ec.Mover.Move(randomDir, Distance);
+                _ec.Mover.Move(randomDir, Distance);
             }
         }
     }
@@ -113,6 +118,42 @@ transform.position - new Vector3(rndX, 10.0f, rndZ), 40.0f, 10.0f);
         Array dirArray = Enum.GetValues(typeof(Direction));
         Direction dir = (Direction)dirArray.GetValue(UnityEngine.Random.Range(0, dirArray.Length));
         return dir;
+    }
+
+    private Direction? CheckLOSToPlayer() {
+        Vector3 rayOrigin = new Vector3(transform.position.x, 1.0f, transform.position.z);
+        Ray ray = new Ray(rayOrigin, Vector3.forward);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity)) {
+            Debug.Log(gameObject + " ray hit " + hit.transform.name);
+            if (hit.transform.tag == "Player") {
+                return Direction.North;
+            }
+        }
+
+        ray = new Ray(rayOrigin, Vector3.back);
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity)) {
+            if (hit.transform.tag == "Player") {
+                return Direction.South;
+            }
+        }
+
+        ray = new Ray(rayOrigin, Vector3.left);
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity)) {
+            if (hit.transform.tag == "Player") {
+                return Direction.West;
+            }
+        }
+
+        ray = new Ray(rayOrigin, Vector3.right);
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity)) {
+            if (hit.transform.tag == "Player") {
+                return Direction.East;
+            }
+        }
+
+        return null;
     }
 
 }

@@ -4,7 +4,7 @@ using System.Collections;
 public class EnemyShooter : MonoBehaviour {
 
     private EnemyController _ec;
-    private Transform bulletSpawnPoint;
+    public Transform bulletSpawnPoint;
     public Transform BulletTransform;
     public Transform muzzleFlash;
     public Light muzzleFlashLight;

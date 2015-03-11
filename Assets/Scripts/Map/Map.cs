@@ -30,6 +30,12 @@ public class Map : MonoBehaviour {
 
         //PLACE OBJECTS
         //turn off renderers -- world blocks are in final position when spawned
+        foreach (Transform t in pc.transform) {
+            Renderer[] renderers = t.GetComponentsInChildren<Renderer>();
+            foreach (Renderer r in renderers) {
+                r.enabled = false;
+            }
+        }
         foreach (Transform t in transform) {
             Renderer[] renderers = t.GetComponentsInChildren<Renderer>();
             foreach (Renderer r in renderers) {

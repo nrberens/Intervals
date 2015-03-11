@@ -5,8 +5,8 @@ using System.Collections;
 using UnityEngine.SocialPlatforms;
 
 public class World : MonoBehaviour {
-    //private PlayerController _pc;
-    //private EnemiesController _ec;
+    //private PlayerController pc;
+    //private EnemiesController ec;
     //public Transform EnemyTransform;
 
     //public const int NODES_PER_BLOCK = 7;
@@ -24,8 +24,8 @@ public class World : MonoBehaviour {
     //// Use this for initialization
     //void Start () { 
     //    //CACHE CONTROLLER SCRIPTS
-    //    _pc = FindObjectOfType<PlayerController>();
-    //    _ec = FindObjectOfType<EnemiesController>();
+    //    pc = FindObjectOfType<PlayerController>();
+    //    ec = FindObjectOfType<EnemiesController>();
 
     //    //GENERATE WORLD
     //    //GenerateInitialWorld();
@@ -36,8 +36,8 @@ public class World : MonoBehaviour {
     //    //FOR NOW HARDCODE IN 0,0
     //    MoveNode spawnPoint = Nodes[0, 0];
     //    //instantiate player at spawn point
-    //    _pc.transform.position = spawnPoint.transform.position;
-    //    _pc.Mover.currentNode = spawnPoint;
+    //    pc.transform.position = spawnPoint.transform.position;
+    //    pc.Mover.currentNode = spawnPoint;
 
     //    //instantiate enemy at random position
     //    for (int i = 1; i <= 3; i++) {
@@ -46,7 +46,7 @@ public class World : MonoBehaviour {
     //        int enemyZ = Random.Range(0, WORLD_LENGTH);
     //        enemy.GetComponent<EnemyMover>().currentNode = Nodes[enemyX, enemyZ];
 
-    //        _ec.Enemies.Add(enemy.GetComponent<EnemyController>());
+    //        ec.Enemies.Add(enemy.GetComponent<EnemyController>());
     //    }
     //}
 

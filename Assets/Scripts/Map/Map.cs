@@ -29,6 +29,13 @@ public class Map : MonoBehaviour {
 
 
         //PLACE OBJECTS
+
+		//spawn in world
+		foreach(Transform t in transform) {
+			FallingSpawn fs = t.GetComponent<FallingSpawn>();
+			if(fs != null)StartCoroutine(fs.FallIntoPlace());
+		}
+
         //find spawn point
         //FOR NOW HARDCODE IN 0,0
         MoveNode spawnPoint = Nodes[0, 0];
@@ -53,10 +60,10 @@ public class Map : MonoBehaviour {
                 EnemyController.totalEnemies++;
                 enemy.name = "Enemy " + EnemyController.totalEnemies;
                 Nodes[enemyX, enemyZ].AddToNode(enemy);
-				enemy.AddComponent<FallingSpawn>();
+				//enemy.AddComponent<FallingSpawn>();
 				FallingSpawn fs = enemy.GetComponent<FallingSpawn>();
-				fs.fallTime = fallTime;
-				fs.finalY = 0f;
+				//fs.fallTime = fallTime;
+				//fs.finalY = 0f;
 				StartCoroutine(fs.FallIntoPlace());
             }
         }

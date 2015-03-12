@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using JetBrains.Annotations;
 
 public class WorldFallAway : MonoBehaviour {
 
@@ -9,6 +10,7 @@ public class WorldFallAway : MonoBehaviour {
     public Transform player;
     public float finalY;
     public float fallTime;
+    public bool fallingComplete;
 
 	// Use this for initialization
 	void Start () {
@@ -16,6 +18,7 @@ public class WorldFallAway : MonoBehaviour {
 	    ec = FindObjectOfType<EnemiesController>();
 	    bc = FindObjectOfType<BulletsController>();
 	    player = GameObject.FindGameObjectWithTag("Player").transform;
+	    fallingComplete = false;
 	}
 	
 	// Update is called once per frame
@@ -42,6 +45,7 @@ public class WorldFallAway : MonoBehaviour {
         }
         //player falls away?
         StartCoroutine(ObjectFallAway(player));
+        yield return new WaitForSeconds(1.5f);
     }
 
     public IEnumerator ObjectFallAway(Transform t) {

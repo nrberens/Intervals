@@ -53,9 +53,15 @@ public class PlayerController : MonoBehaviour, ITurnBased {
         Score score = FindObjectOfType<Score>();
         Debug.Log("Died with a score of " + score.currentScore);
         score.CheckForHighScore();
-        score.currentScore = 0;
         //TODO world falls away? show score, restart button
         WorldFallAway wfa = FindObjectOfType<WorldFallAway>();
         StartCoroutine(wfa.ManageFallAwayTiming());
+        GameOverScreen gameOverScreen = FindObjectOfType<GameOverScreen>();
+        gameOverScreen.DisplayGameOverUI();
+        score.currentScore = 0;
+    }
+
+    public void RestartLevel() {
+        Application.LoadLevel(1);
     }
 }

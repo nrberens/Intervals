@@ -137,7 +137,7 @@ transform.position - new Vector3 (rndX, 10.0f, rndZ), 40.0f, 10.0f);
                 return Direction.North;
             }
         }        
-
+        
         ray = new Ray(transform.position, Vector3.back);
         if (Physics.Raycast(ray, out hit, Mathf.Infinity)) {
 			Debug.DrawRay (transform.position, Vector3.back*100, Color.red, 5.0f);
@@ -157,6 +157,42 @@ transform.position - new Vector3 (rndX, 10.0f, rndZ), 40.0f, 10.0f);
         ray = new Ray(transform.position, Vector3.right);
         if (Physics.Raycast(ray, out hit, Mathf.Infinity)) {
 			Debug.DrawRay (transform.position, Vector3.right*100, Color.red, 5.0f);
+            if (hit.transform.tag == "Player") {
+                return Direction.East;
+            }
+        }
+
+        return null;
+    }
+
+    private Direction? CheckLOSToPlayer() {
+        Vector3 rayOrigin = new Vector3(transform.position.x, 1.0f, transform.position.z);
+        Ray ray = new Ray(rayOrigin, Vector3.forward);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity)) {
+            Debug.Log(gameObject + " ray hit " + hit.transform.name);
+            if (hit.transform.tag == "Player") {
+                return Direction.North;
+            }
+        }
+
+        ray = new Ray(rayOrigin, Vector3.back);
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity)) {
+            if (hit.transform.tag == "Player") {
+                return Direction.South;
+            }
+        }
+
+        ray = new Ray(rayOrigin, Vector3.left);
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity)) {
+            if (hit.transform.tag == "Player") {
+                return Direction.West;
+            }
+        }
+
+        ray = new Ray(rayOrigin, Vector3.right);
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity)) {
             if (hit.transform.tag == "Player") {
                 return Direction.East;
             }

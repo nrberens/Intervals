@@ -59,6 +59,7 @@ public class EnemyShooter : MonoBehaviour {
             StartCoroutine(_ec.Mover.ObjectWiggle(transform.position));
 
             // Instantiate EnemyBullet prefab and set direction
+			//TODO shots from adjacent squares don't cause collision
             Transform bullet = (Transform)Instantiate(BulletTransform);
             EnemyBullet enemyBulletScript = bullet.GetComponent<EnemyBullet>();
             EnemyBullet.totalBullets++;

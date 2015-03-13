@@ -126,5 +126,6 @@ public class EnemyShooter : MonoBehaviour {
             transform.rotation = Quaternion.Slerp(startRot, endRot, (Time.time - startTime) / rotateTime);
             yield return null;
         }
+		transform.rotation = endRot;
     }
 }

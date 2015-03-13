@@ -75,6 +75,7 @@ public class EnemyShooter : MonoBehaviour {
             _ec.firingMesh.SetActive(false);
             _ec.lowReadyMesh.SetActive(true);
         }
+		_ec.EndPhase();
     }
 
     public bool CheckForValidShot(Direction direction) {

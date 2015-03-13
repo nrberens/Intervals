@@ -48,18 +48,7 @@ public class RandomAI : FSM
 	public override void UpdateAI ()
 	{
 
-		switch (CurState) {
-		case FSMState.Wander:
 			UpdateWanderState ();
-			break;
-		case FSMState.Dead:
-			UpdateDeadState ();
-			break;
-		}
-
-		if (Health <= 0) {
-			CurState = FSMState.Dead;
-		}
 	}
 
 	protected void UpdateWanderState ()
@@ -83,7 +72,6 @@ public class RandomAI : FSM
 				//TODO track attempted directions -- if no directions work, just end turn
 				if (potentialDirs.Count == 0) {
 					Debug.Log ("No valid directions, just staying put.");
-					_ec.acting = false;
 					_ec.EndPhase ();
 					break;
 				}
@@ -96,22 +84,6 @@ public class RandomAI : FSM
 				_ec.Mover.Move (randomDir, Distance);
 			}
 		}
-	}
-
-	protected void UpdateDeadState ()
-	{
-	}
-
-	private void Explode ()
-	{
-		float rndX = UnityEngine.Random.Range (10.0f, 30.0f);
-		float rndZ = UnityEngine.Random.Range (10.0f, 30.0f);
-		for (int i = 0; i < 3; i++) {
-			GetComponent<Rigidbody> ().AddExplosionForce (10000.0f,
-transform.position - new Vector3 (rndX, 10.0f, rndZ), 40.0f, 10.0f);
-			GetComponent<Rigidbody> ().velocity = transform.TransformDirection (new Vector3 (rndX, 20.0f, rndZ));
-		}
-		Destroy (gameObject, 1.5f);
 	}
 
 	private Direction GetRandomDirection ()

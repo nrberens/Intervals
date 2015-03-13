@@ -19,15 +19,22 @@ public class EnemiesController : MonoBehaviour, ITurnBased {
 	// Update is called once per frame
 	void Update () {
 	    totalCurrentEnemies = Enemies.Count;
+
+		bool allTurnsFinished = true;
+		foreach(EnemyController enemy in Enemies) {
+			if(!enemy.turnFinished) allTurnsFinished = false;
+		}
+
+		// only trigger this when all enemies have gone
+		if(allTurnsFinished) EndPhase ();
 	}
 
     public void BeginPhase() {
         //Cycle through each enemies turn
-        foreach (EnemyController enemy in Enemies) {
-            enemy.BeginPhase();
-        }
-
-        EndPhase();
+		for(int i = Enemies.Count-1; i >= 0; i--) {
+			EnemyController enemy = Enemies[i];
+			enemy.BeginPhase();
+		}
     }
 
     public void EndPhase() {

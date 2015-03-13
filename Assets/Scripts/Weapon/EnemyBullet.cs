@@ -11,6 +11,7 @@ public class EnemyBullet : MonoBehaviour, IMover {
     public int distance;
     public float MoveTime;
     public static int totalBullets;
+	public bool finished;
 
     public MoveNode[,] nodes { get; private set; }
 
@@ -26,7 +27,18 @@ public class EnemyBullet : MonoBehaviour, IMover {
         transform.Rotate(0, 0, 45*Time.deltaTime);
     }
 
+    public void BeginPhase() {
+		finished = false;
+        UpdateBullet();
+    }
+
+    public void EndPhase() {
+		finished = true;
+		Debug.Log("Done updating " + gameObject.name);
+    }
+
     public void UpdateBullet() {
+		Debug.Log ("Updating "+ gameObject.name);
         Move(Dir, distance);
 
         if (gameObject != null) {
@@ -42,7 +54,12 @@ public class EnemyBullet : MonoBehaviour, IMover {
             //}
         }
 
-        EndPhase();
+    }
+
+    public void DestroyBullet() {
+        bc.Bullets.Remove(this);
+        currentNode.RemoveFromNode(gameObject);
+        Destroy(gameObject);
     }
 
     public void Move(Direction direction, int distance) {
@@ -187,18 +204,6 @@ public class EnemyBullet : MonoBehaviour, IMover {
         EndPhase();
     }
 
-    public void BeginPhase() {
-        UpdateBullet();
-    }
-
-    public void EndPhase() {
-    }
-
-    public void DestroyBullet() {
-        bc.Bullets.Remove(this);
-        currentNode.RemoveFromNode(gameObject);
-        Destroy(gameObject);
-    }
 
     public void DetectCurrentNode() {
     }

@@ -114,11 +114,6 @@ transform.position - new Vector3 (rndX, 10.0f, rndZ), 40.0f, 10.0f);
 		Destroy (gameObject, 1.5f);
 	}
 
-	void TakeDamage (int damage)
-	{
-		Health -= damage;
-	}
-
 	private Direction GetRandomDirection ()
 	{
 		Array dirArray = Enum.GetValues (typeof(Direction));

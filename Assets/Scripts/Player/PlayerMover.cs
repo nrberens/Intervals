@@ -40,6 +40,13 @@ public class PlayerMover : MonoBehaviour, IMover {
         //DetectCurrentNode();
     }
 
+	void OnCollisionEnter(Collision collision) {
+		if(collision.transform.tag == "Bullet") {
+			//TODO move GameOver() to GameController?
+			pc.GameOver(collision.transform);
+		}
+	}
+
     public void Move(Direction direction, int distance) {
         try {
             MoveNode targetNode = GetTargetNode(direction, distance);
@@ -56,10 +63,12 @@ public class PlayerMover : MonoBehaviour, IMover {
 			bool hasEnemy = false;
 
 			foreach(GameObject obj in targetNode.objectsOnNode) {
-				if(obj.tag == "Bullet") {
-					hasBullet = true;
-				    bullet = obj.transform;
-				} else if (obj.tag == "Enemy") {
+				//if(obj.tag == "Bullet") {
+				//	hasBullet = true;
+				//    bullet = obj.transform;
+				//TODO Add OnCollisionEnter for EnemyBullets
+				//} else if (obj.tag == "Enemy") {
+				if(obj.tag == "Enemy") {
 					hasEnemy = true;
 				}
 			}

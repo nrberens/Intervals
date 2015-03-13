@@ -115,7 +115,7 @@ public class PlayerShooter : MonoBehaviour {
         newBulletScript.TranslateBullet(newBulletScript.targetNode);
 		//enemy dies
 		Debug.Log (target + " killed!");
-		target.GetComponent<EnemyController>().TakeDamage(newBullet);
+		//target.GetComponent<EnemyController>().TakeDamage(newBullet);
         yield return StartCoroutine(MuzzleFlash());
         yield return new WaitForSeconds(0.5f);
         pc.firingMesh.SetActive(false);

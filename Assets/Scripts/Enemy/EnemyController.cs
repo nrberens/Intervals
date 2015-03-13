@@ -35,6 +35,13 @@ public class EnemyController : MonoBehaviour, ITurnBased {
 
     }
 
+	void OnCollisionEnter(Collision collision) {
+		if(collision.transform.tag == "PlayerBullet") {
+			TakeDamage (collision.transform);
+			collision.transform.GetComponent<PlayerBullet>().EndPhase ();
+		}
+	}
+
     public void BeginPhase() {
         //AI DECISION PHASE
         //Debug.Log("Updating AI");
@@ -45,6 +52,7 @@ public class EnemyController : MonoBehaviour, ITurnBased {
     public void EndPhase() {
         
     }
+
 
 	public void TakeDamage(Transform bullet) {
 		//kill enemy instantly

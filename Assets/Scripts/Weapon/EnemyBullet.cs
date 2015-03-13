@@ -35,11 +35,11 @@ public class EnemyBullet : MonoBehaviour, IMover {
             }
 
             //check for other characters on node
-            foreach (GameObject obj in currentNode.objectsOnNode) {
-                if (obj.tag == "Player") {
-                    obj.GetComponent<PlayerController>().GameOver(transform);
-                }
-            }
+            //foreach (GameObject obj in currentNode.objectsOnNode) {
+            //    if (obj.tag == "Player") {
+            //        obj.GetComponent<PlayerController>().GameOver(transform);
+            //    }
+            //}
         }
 
         EndPhase();

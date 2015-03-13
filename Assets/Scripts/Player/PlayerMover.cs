@@ -90,8 +90,6 @@ public class PlayerMover : MonoBehaviour, IMover {
                         break;
                 }
 
-				if(hasBullet) pc.GameOver(bullet);
-
                 map.FlagNewLOSNodes();
             }
             else {

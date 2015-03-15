@@ -50,15 +50,15 @@ public class PlayerController : MonoBehaviour, ITurnBased {
         Debug.Log("Game over, man, game over!");
         Vector3 deathPrefabPosition = transform.FindChild("DeathPrefab").position;
         Transform death = (Transform) Instantiate(deathPrefab, deathPrefabPosition, Quaternion.Inverse(bullet.rotation));
-        Score score = FindObjectOfType<Score>();
-        Debug.Log("Died with a score of " + score.currentScore);
-        score.CheckForHighScore();
+        Debug.Log("Died with a score of " + GameControl.gc.currentScore);
+        GameControl.gc.CheckForHighScore();
         //TODO world falls away? show score, restart button
         WorldFallAway wfa = FindObjectOfType<WorldFallAway>();
         StartCoroutine(wfa.ManageFallAwayTiming());
         GameOverScreen gameOverScreen = FindObjectOfType<GameOverScreen>();
         gameOverScreen.DisplayGameOverUI();
-        score.currentScore = 0;
+        GameControl.gc.currentScore = 0;
+        GameControl.gc.Save();
     }
 
     public void RestartLevel() {

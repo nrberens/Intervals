@@ -7,12 +7,10 @@ public class GameOverScreen : MonoBehaviour {
     public Canvas gameOverCanvas;
     public Transform gameOverPanel;
     public Text gameOverText;
-    public Score score;
 
 	// Use this for initialization
 	void Start () {
 	    gameOverCanvas.enabled = false;
-	    score = FindObjectOfType<Score>();
 	}
 	
 	// Update is called once per frame
@@ -22,6 +20,6 @@ public class GameOverScreen : MonoBehaviour {
 
     public void DisplayGameOverUI() {
         gameOverCanvas.enabled = true;
-        gameOverText.text = "GAME OVER\n SCORE " + score.currentScore + "\nHIGH SCORE " + score.highScore;
+        gameOverText.text = "GAME OVER\n SCORE " + GameControl.gc.currentScore + "\nHIGH SCORE " + GameControl.gc.highScore;
     }
 }

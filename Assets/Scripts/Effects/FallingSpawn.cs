@@ -41,6 +41,11 @@ public class FallingSpawn : MonoBehaviour {
         Vector3 centerPos = finalPos;
 
         yield return StartCoroutine(ObjectWiggle(centerPos));
+
+		if(transform.tag == "Enemy") {
+			EnemyController ec = transform.GetComponent<EnemyController>();
+			ec.turnFinished = true;
+		}
     }
 
     public IEnumerator ObjectWiggle(Vector3 centerPos) {

@@ -69,6 +69,7 @@ public class SpawnWorld : MonoBehaviour {
 				//fs.finalY = 0f;
 				StartCoroutine(fs.FallIntoPlace());
                 yield return null;
+				enemy.GetComponent<EnemyController>().turnFinished = true;
             }
         }
     }

@@ -59,22 +59,24 @@ public class EnemyShooter : MonoBehaviour {
             StartCoroutine(_ec.Mover.ObjectWiggle(transform.position));
 
             // Instantiate EnemyBullet prefab and set direction
+			//TODO shots from adjacent squares don't cause collision
             Transform bullet = (Transform)Instantiate(BulletTransform);
             EnemyBullet enemyBulletScript = bullet.GetComponent<EnemyBullet>();
             EnemyBullet.totalBullets++;
+            enemyBulletScript.bc.Bullets.Add(enemyBulletScript);
             bullet.name = "EnemyBullet " + EnemyBullet.totalBullets;
             enemyBulletScript.currentNode = _ec.Mover.currentNode;
+            enemyBulletScript.currentNode.AddToNode(bullet.gameObject);
             enemyBulletScript.Dir = direction;
             bullet.position = bulletSpawnPoint.transform.position;
             bullet.rotation = transform.rotation;
-            enemyBulletScript.bc.Bullets.Add(enemyBulletScript);
-            enemyBulletScript.currentNode.AddToNode(bullet.gameObject);
             enemyBulletScript.UpdateBullet();
             yield return StartCoroutine(MuzzleFlash());
             yield return new WaitForSeconds(0.5f);
             _ec.firingMesh.SetActive(false);
             _ec.lowReadyMesh.SetActive(true);
         }
+		_ec.EndPhase();
     }
 
     public bool CheckForValidShot(Direction direction) {

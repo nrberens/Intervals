@@ -59,7 +59,6 @@ public class EnemyMover : MonoBehaviour, IMover
 
 			if (z >= nodes.GetUpperBound (1)) { //bust out early if you're at the top of the map
 				Debug.Log ("You hit the top! node_id= " + x + " z = " + z);
-				_ec.acting = false;
 				_ec.EndPhase ();
 				return;
 			}
@@ -87,7 +86,6 @@ public class EnemyMover : MonoBehaviour, IMover
 
 			if (z <= 0) {
 				Debug.Log ("You hit the bottom! node_id= " + x + " z = " + z);
-				_ec.acting = false;
 				_ec.EndPhase ();
 				return;
 			}
@@ -115,7 +113,6 @@ public class EnemyMover : MonoBehaviour, IMover
 
 			if (x <= 0) {
 				Debug.Log ("You hit the left! node_id= " + x + " z = " + z);
-				_ec.acting = false;
 				_ec.EndPhase ();
 				return;
 			}
@@ -143,7 +140,6 @@ public class EnemyMover : MonoBehaviour, IMover
 
 			if (x >= nodes.GetUpperBound (0)) {
 				Debug.Log ("You hit the right! node_id= " + x + " z = " + z);
-				_ec.acting = false;
 				_ec.EndPhase ();
 				return;
 			}
@@ -203,7 +199,6 @@ public class EnemyMover : MonoBehaviour, IMover
 		transform.position = endPos;
 		//transform.rotation = startRot;
 
-		_ec.acting = false;
 		_ec.EndPhase ();
 	}
 

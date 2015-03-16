@@ -14,22 +14,29 @@ public class BulletsController : MonoBehaviour, ITurnBased {
 		Bullets = new List<EnemyBullet>();
 		CurrentTurn = FindObjectOfType<Turn>();
 	}
+
+	void Update() {
+		//only end phase when all bullets have reported finished
+		bool allBulletsFinished = true;
+		foreach (EnemyBullet bullet in Bullets) {
+			if(!bullet.finished) allBulletsFinished = false;
+		}
+
+		if(allBulletsFinished) EndPhase ();
+	}
 	
 	public void BeginPhase() {
 		//Cycle through each enemies turn
+		Debug.Log ("Begin Bullets Phase");
 		for(int i = Bullets.Count-1; i >= 0; i--) {
 			EnemyBullet enemyBullet = Bullets[i];
 			enemyBullet.BeginPhase();
 		}
 
-//		foreach (EnemyBullet bullet in Bullets) {
-//			bullet.BeginPhase();
-//		}
-		
-		EndPhase();
 	}
 	
 	public void EndPhase() {
+		Debug.Log ("All bullets finished, ending bullet phase.");
 		if (CurrentTurn.CurrentPhase == Turn.Phase.Bullet)
 			CurrentTurn.AdvancePhase();
 	}

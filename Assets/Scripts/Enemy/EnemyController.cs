@@ -15,6 +15,7 @@ public class EnemyController : MonoBehaviour, ITurnBased {
 
     public Turn CurrentTurn { get; set; }
     public bool acting { get; set; }
+	public bool turnFinished;
     public static int totalEnemies;
 
     // Use this for initialization
@@ -43,6 +44,7 @@ public class EnemyController : MonoBehaviour, ITurnBased {
 	}
 
     public void BeginPhase() {
+		turnFinished = false;
         //AI DECISION PHASE
         //Debug.Log("Updating AI");
         AI.UpdateAI();
@@ -50,7 +52,7 @@ public class EnemyController : MonoBehaviour, ITurnBased {
     }
 
     public void EndPhase() {
-        
+		turnFinished = true;
     }
 
 

@@ -120,6 +120,7 @@ public class PlayerShooter : MonoBehaviour {
         yield return new WaitForSeconds(0.5f);
         pc.firingMesh.SetActive(false);
         pc.lowReadyMesh.SetActive(true);
+		pc.EndPhase();
     }
 
     public IEnumerator MuzzleFlash() {

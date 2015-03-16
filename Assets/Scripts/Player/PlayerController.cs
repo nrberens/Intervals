@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour, ITurnBased {
 
     public Turn CurrentTurn { get; set; }
     public bool acting { get; set; }
+	public bool turnFinished;
 
 	// Use this for initialization
 	void Start () {

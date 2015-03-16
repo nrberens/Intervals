@@ -24,27 +24,28 @@ public class Turn : MonoBehaviour {
 		_bc = FindObjectOfType<BulletsController>();
         map = FindObjectOfType<Map>();
         CurrentPhase = Phase.Player;
-        TurnNumber = 1;
+        TurnNumber = 0;
         //HACK player starts automatically
         _pc.BeginPhase();
     }
 
     public void AdvancePhase() {
-        Debug.Log("End of " + TurnNumber + " " + CurrentPhase);
+		//Turn order: Bullet, Enemy, Player
         switch (CurrentPhase) {
+            case Phase.Bullet:
+                CurrentPhase = Phase.Enemy;
+                _ec.BeginPhase();
+                break;
+			case Phase.Enemy:
+				CurrentPhase = Phase.Player;
+		        Debug.Log("End of " + TurnNumber + " " + CurrentPhase);
+                map.turnsUntilNextSpawn--;
+                TurnNumber++;
+				_pc.BeginPhase();
+				break;
             case Phase.Player:
                 CurrentPhase = Phase.Bullet;
                 _bc.BeginPhase();
-                break;
-			case Phase.Bullet:
-				CurrentPhase = Phase.Enemy;
-				_ec.BeginPhase();
-				break;
-            case Phase.Enemy:
-                CurrentPhase = Phase.Player;
-                map.turnsUntilNextSpawn--;
-                TurnNumber++;
-                _pc.BeginPhase();
                 break;
         }
 

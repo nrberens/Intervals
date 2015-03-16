@@ -12,6 +12,8 @@ public class Turn : MonoBehaviour {
 
     public Phase CurrentPhase { get; set; }
     public static int TurnNumber { get; set; }
+    public int turnsBetweenSpawns;
+    public int turnsUntilNextSpawn;
 
     private PlayerController _pc;
     private EnemiesController _ec;
@@ -23,11 +25,22 @@ public class Turn : MonoBehaviour {
         _ec = FindObjectOfType<EnemiesController>(); 
 		_bc = FindObjectOfType<BulletsController>();
         map = FindObjectOfType<Map>();
+        turnsUntilNextSpawn = turnsBetweenSpawns;
         CurrentPhase = Phase.Player;
         TurnNumber = 0;
         //HACK player starts automatically
         _pc.BeginPhase();
     }
+
+	public void Update() {
+	if (turnsUntilNextSpawn <= 0) {
+		int index = Random.Range(0, map.SpawnPoints.Count - 1);
+		MoveNode spawnPoint = map.SpawnPoints[index];
+		map.SpawnEnemy(spawnPoint.x, spawnPoint.z);
+		turnsUntilNextSpawn = turnsBetweenSpawns;
+	}
+	}
+
 
     public void AdvancePhase() {
 		//Turn order: Bullet, Enemy, Player
@@ -39,7 +52,7 @@ public class Turn : MonoBehaviour {
 			case Phase.Enemy:
 				CurrentPhase = Phase.Player;
 		        Debug.Log("End of " + TurnNumber + " " + CurrentPhase);
-                map.turnsUntilNextSpawn--;
+                turnsUntilNextSpawn--;
                 TurnNumber++;
 				_pc.BeginPhase();
 				break;

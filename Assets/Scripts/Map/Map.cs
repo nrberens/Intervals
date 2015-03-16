@@ -12,8 +12,6 @@ public class Map : MonoBehaviour {
 	public float fallTime;
 
     public Turn currentTurn { get; set; }
-    public int turnsBetweenSpawns;
-    public int turnsUntilNextSpawn;
 
     public MoveNode[,] Nodes;
     public List<MoveNode> SpawnPoints;
@@ -45,7 +43,6 @@ public class Map : MonoBehaviour {
         SpawnWorld sw = GetComponent<SpawnWorld>();
         StartCoroutine(sw.ManageSpawnTiming());
 
-        turnsUntilNextSpawn = turnsBetweenSpawns;
     }
 
     private void GenerateNodeArray() {
@@ -70,12 +67,6 @@ public class Map : MonoBehaviour {
     // Update is called once per frame
     void Update() {
 
-        if (turnsUntilNextSpawn <= 0) {
-            int index = Random.Range(0, SpawnPoints.Count - 1);
-            MoveNode spawnPoint = SpawnPoints[index];
-            SpawnEnemy(spawnPoint.x, spawnPoint.z);
-            turnsUntilNextSpawn = turnsBetweenSpawns;
-        }
     }
 
     //HELPER METHODS

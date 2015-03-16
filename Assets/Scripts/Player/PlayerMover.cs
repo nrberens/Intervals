@@ -230,7 +230,6 @@ public class PlayerMover : MonoBehaviour, IMover {
         transform.position = endPos;
 
         pc.acting = false;
-        pc.EndPhase();
     }
 
     public IEnumerator ObjectWiggle(Vector3 centerPos) {

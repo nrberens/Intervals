@@ -60,10 +60,14 @@ public class PlayerInput : MonoBehaviour
 						Debug.Log ("MouseUp - Target = " + target);
 						if (target != null) {
 							if (target.tag == "Enemy") {
+								pc.acting = true;
+								allowInput = false;
 								pc.Shooter.BeginShot (target);
 							} else if (target.tag == "WorldBlock") {
 								Direction? dir = pc.Mover.GetTargetDirection (target.Find ("MoveNode").GetComponent<MoveNode> ());
 								if (dir != null) {
+									pc.acting = true;
+									allowInput = false;
 									Direction moveDir = (Direction)dir;
 									pc.Mover.Move (moveDir, 1);
 								}
@@ -74,6 +78,7 @@ public class PlayerInput : MonoBehaviour
 				}
 			}
             //END OF TURN
+			//TODO find another way of marking end of turn
             else if (!allowInput && !pc.acting) {
 				pc.EndPhase ();
 			}

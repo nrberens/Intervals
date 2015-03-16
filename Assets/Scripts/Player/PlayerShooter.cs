@@ -99,6 +99,7 @@ public class PlayerShooter : MonoBehaviour {
     }
 
     public IEnumerator Shoot(Transform target) {
+		//TODO make sure that the enemy struck with the bullet dies and is removed, not the enemy clicked on, if both are in LOS
         // Look in direction
         yield return StartCoroutine(RotateToTarget(target));
 
@@ -121,7 +122,7 @@ public class PlayerShooter : MonoBehaviour {
         yield return new WaitForSeconds(0.5f);
         pc.firingMesh.SetActive(false);
         pc.lowReadyMesh.SetActive(true);
-		pc.EndPhase();
+		pc.acting = false;
     }
 
     public IEnumerator MuzzleFlash() {

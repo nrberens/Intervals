@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngineInternal;
 
-public class PlayerController : MonoBehaviour, ITurnBased {
+public class PlayerController : MonoBehaviour {
 
     public Transform deathPrefab;
     public GameObject lowReadyMesh;
@@ -15,8 +15,8 @@ public class PlayerController : MonoBehaviour, ITurnBased {
 	public PlayerShooter Shooter;
 
     public Turn CurrentTurn { get; set; }
-    public bool acting { get; set; }
-	public bool turnFinished;
+	public bool acting; 
+	//public bool turnFinished;
 
 	// Use this for initialization
 	void Start () {

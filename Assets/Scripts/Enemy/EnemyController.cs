@@ -37,11 +37,11 @@ public class EnemyController : MonoBehaviour, ITurnBased {
 
     void Update() {
         //TODO nope, this doesn't work -- sets mat color for all uses of the material
-        if (shootable) {
-            mat.color = Color.magenta;
-        } else if (!shootable) {
-            mat.color = Color.red;
-        }
+//        if (shootable) {
+//            mat.color = Color.magenta;
+//        } else if (!shootable) {
+//            mat.color = Color.red;
+//        }
 
     }
 

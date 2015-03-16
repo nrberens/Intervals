@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerShooter : MonoBehaviour {
 
@@ -11,6 +12,8 @@ public class PlayerShooter : MonoBehaviour {
     public Transform muzzleFlash;
     public Light muzzleFlashLight;
     public float rotateTime;
+
+    public List<EnemyController> shootableEnemies { get; set; }
 
     // Use this for initialization
     void Start() {
@@ -61,7 +64,6 @@ public class PlayerShooter : MonoBehaviour {
     }
 
     public bool CheckValidLOS(Transform target) {
-        //TODO LOS checking is spotty -- need layer mask?
         Ray ray = new Ray(transform.position, (target.position - transform.position));
         RaycastHit hit;
 
@@ -83,7 +85,7 @@ public class PlayerShooter : MonoBehaviour {
     }
 
     public void BeginShot() {
-        Transform target = GetTargetOfClick();
+        Transform target = pc.Input.GetTargetOfClick();
         // TODO player can only shoot target with line of sight
         if (target != null && pc.Shooter.CheckValidTarget(target)) {
             pc.Input.allowInput = false;
@@ -146,6 +148,58 @@ public class PlayerShooter : MonoBehaviour {
             //TODO object immediately snaps to final position?
             transform.rotation = Quaternion.Slerp(startRot, endRot, (Time.time - startTime) / rotateTime);
             yield return null;
+        }
+    }
+
+    public void TagShootableEnemies() {
+        shootableEnemies = new List<EnemyController>();
+
+        Vector3 rayOrigin = new Vector3(transform.position.x, 1.0f, transform.position.z);
+        Ray ray = new Ray(rayOrigin, Vector3.forward);
+        RaycastHit hit;
+        Debug.DrawRay(rayOrigin, Vector3.forward*10, Color.blue, 5.0f);
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity)) {
+            if (hit.transform.tag == "Enemy") {
+                EnemyController ec = hit.transform.GetComponent<EnemyController>();
+                ec.shootable = true;
+                shootableEnemies.Add(ec);
+            }
+        }
+
+        ray = new Ray(rayOrigin, Vector3.back);
+        Debug.DrawRay(rayOrigin, Vector3.back*10, Color.blue, 5.0f);
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity)) {
+            if (hit.transform.tag == "Enemy") {
+                EnemyController ec = hit.transform.GetComponent<EnemyController>();
+                ec.shootable = true;
+                shootableEnemies.Add(ec);
+            }
+        }
+
+        ray = new Ray(rayOrigin, Vector3.left);
+        Debug.DrawRay(rayOrigin, Vector3.left*10, Color.blue, 5.0f);
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity)) {
+            if (hit.transform.tag == "Enemy") {
+                EnemyController ec = hit.transform.GetComponent<EnemyController>();
+                ec.shootable = true;
+                shootableEnemies.Add(ec);
+            }
+        }
+
+        ray = new Ray(rayOrigin, Vector3.right);
+        Debug.DrawRay(rayOrigin, Vector3.right*10, Color.blue, 5.0f);
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity)) {
+            if (hit.transform.tag == "Enemy") {
+                EnemyController ec = hit.transform.GetComponent<EnemyController>();
+                ec.shootable = true;
+                shootableEnemies.Add(ec);
+            }
+        }
+    }
+
+    public void UnTagShootableEnemies() {
+        foreach (EnemyController ec in shootableEnemies) {
+            ec.shootable = false;
         }
     }
 }

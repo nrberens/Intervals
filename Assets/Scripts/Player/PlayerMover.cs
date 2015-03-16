@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngineInternal;
 
@@ -16,6 +17,7 @@ public class PlayerMover : MonoBehaviour, IMover {
 
     //IMover properties
     public MoveNode[,] nodes { get; private set; }
+    public List<MoveNode> movableNodes { get; set; }
     public MoveNode currentNode { get; set; }
 
     //---------------------------------------------//
@@ -40,12 +42,12 @@ public class PlayerMover : MonoBehaviour, IMover {
         //DetectCurrentNode();
     }
 
-	void OnCollisionEnter(Collision collision) {
-		if(collision.transform.tag == "Bullet") {
-			//TODO move GameOver() to GameController?
-			pc.GameOver(collision.transform);
-		}
-	}
+    void OnCollisionEnter(Collision collision) {
+        if (collision.transform.tag == "Bullet") {
+            //TODO move GameOver() to GameController?
+            pc.GameOver(collision.transform);
+        }
+    }
 
     public void Move(Direction direction, int distance) {
         try {
@@ -58,20 +60,20 @@ public class PlayerMover : MonoBehaviour, IMover {
             }
 
             bool hasBlocking = targetNode.blocksMovement;
-			bool hasBullet = false;
+            bool hasBullet = false;
             Transform bullet = null;
-			bool hasEnemy = false;
+            bool hasEnemy = false;
 
-			foreach(GameObject obj in targetNode.objectsOnNode) {
-				//if(obj.tag == "Bullet") {
-				//	hasBullet = true;
-				//    bullet = obj.transform;
-				//TODO Add OnCollisionEnter for EnemyBullets
-				//} else if (obj.tag == "Enemy") {
-				if(obj.tag == "Enemy") {
-					hasEnemy = true;
-				}
-			}
+            foreach (GameObject obj in targetNode.objectsOnNode) {
+                //if(obj.tag == "Bullet") {
+                //	hasBullet = true;
+                //    bullet = obj.transform;
+                //TODO Add OnCollisionEnter for EnemyBullets
+                //} else if (obj.tag == "Enemy") {
+                if (obj.tag == "Enemy") {
+                    hasEnemy = true;
+                }
+            }
 
             if (!hasBlocking && !hasEnemy) {
 
@@ -91,8 +93,7 @@ public class PlayerMover : MonoBehaviour, IMover {
                 }
 
                 map.FlagNewLOSNodes();
-            }
-            else {
+            } else {
                 //TODO allow player to input again if he didn't actually move
                 pc.acting = false;
                 pc.EndPhase();
@@ -206,7 +207,7 @@ public class PlayerMover : MonoBehaviour, IMover {
 
         //Rotate Object before moving
         while (Time.time < rotateTime + startTime) {
-            transform.rotation = Quaternion.Slerp(startRot, endRot, (Time.time - startTime)/MoveTime);
+            transform.rotation = Quaternion.Slerp(startRot, endRot, (Time.time - startTime) / MoveTime);
             yield return null;
         }
 
@@ -237,11 +238,11 @@ public class PlayerMover : MonoBehaviour, IMover {
 
         //wiggle
         while (Time.time < wiggleTime + startTime) {
-            float xWiggleOffset = (Mathf.Sin(Time.time*wobbleAmount)*0.05f)/2;// + (Random.Range(0,3)*.02f);
-            float zWiggleOffset = (Mathf.Cos(Time.time*wobbleAmount)*0.05f)/2;// + (Random.Range(0, 3) * .02f); 
-            Vector3 currentPos = new Vector3(centerPos.x + xWiggleOffset, centerPos.y, centerPos.z+zWiggleOffset);
+            float xWiggleOffset = (Mathf.Sin(Time.time * wobbleAmount) * 0.05f) / 2;// + (Random.Range(0,3)*.02f);
+            float zWiggleOffset = (Mathf.Cos(Time.time * wobbleAmount) * 0.05f) / 2;// + (Random.Range(0, 3) * .02f); 
+            Vector3 currentPos = new Vector3(centerPos.x + xWiggleOffset, centerPos.y, centerPos.z + zWiggleOffset);
             transform.position = currentPos;
-            transform.Rotate(xWiggleOffset*wobbleRotateAmount, 0, zWiggleOffset*wobbleRotateAmount);
+            transform.Rotate(xWiggleOffset * wobbleRotateAmount, 0, zWiggleOffset * wobbleRotateAmount);
 
             yield return null;
         }
@@ -249,18 +250,61 @@ public class PlayerMover : MonoBehaviour, IMover {
     }
 
     public MoveNode GetTargetNode(Direction dir, int distance) {
-		try {
-        switch (dir) {
-            case Direction.North:
-                return nodes[currentNode.x, currentNode.z + distance];
-            case Direction.South:
-                return nodes[currentNode.x, currentNode.z - distance];
-            case Direction.West:
-                return nodes[currentNode.x - distance, currentNode.z];
-            case Direction.East:
-                return nodes[currentNode.x + distance, currentNode.z];
-			} 
-		} catch (IndexOutOfRangeException e) {}
+        try {
+            switch (dir) {
+                case Direction.North:
+                    return nodes[currentNode.x, currentNode.z + distance];
+                case Direction.South:
+                    return nodes[currentNode.x, currentNode.z - distance];
+                case Direction.West:
+                    return nodes[currentNode.x - distance, currentNode.z];
+                case Direction.East:
+                    return nodes[currentNode.x + distance, currentNode.z];
+            }
+        } catch (IndexOutOfRangeException e) { }
         return null;
+    }
+
+    public void TagMovableNodes() {
+        movableNodes = new List<MoveNode>();
+        MoveNode node = GetTargetNode(Direction.North, 1);
+        if (node != null) {
+            if (!node.blocksMovement) {
+                node.movable = true;
+                movableNodes.Add(node);
+            }
+        }
+
+        node = GetTargetNode(Direction.South, 1);
+        if (node != null) {
+            if (!node.blocksMovement) {
+                node.movable = true;
+                movableNodes.Add(node);
+            }
+        }
+
+        node = GetTargetNode(Direction.East, 1);
+        if (node != null) {
+            if (!node.blocksMovement) {
+                node.movable = true;
+                movableNodes.Add(node);
+            }
+        }
+
+        node = GetTargetNode(Direction.West, 1);
+        if (node != null) {
+            if (!node.blocksMovement) {
+                node.movable = true;
+                movableNodes.Add(node);
+            }
+        }
+    }
+
+    public void UnTagMovableNodes() {
+        for (int i = 0; i < movableNodes.Count; i++) {
+            MoveNode node = movableNodes[i];
+            node.movable = false;
+        }
+        movableNodes.Clear();
     }
 }

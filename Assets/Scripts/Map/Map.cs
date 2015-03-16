@@ -231,11 +231,8 @@ public class Map : MonoBehaviour {
             int enemyZ = nodeZ;
             enemy.GetComponent<EnemyMover>().currentNode = Nodes[enemyX, enemyZ];
 
-            ec.Enemies.Add(enemy.GetComponent<EnemyController>());
             enemy.transform.position = Nodes[enemyX, enemyZ].transform.position;
-            EnemyController.totalEnemies++;
             enemy.name = "Enemy " + EnemyController.totalEnemies;
-            Nodes[enemyX, enemyZ].AddToNode(enemy);
             foreach (Transform t in enemy.transform) {
                 Renderer[] renderers = t.GetComponentsInChildren<Renderer>();
                 foreach (Renderer r in renderers) {
@@ -244,6 +241,9 @@ public class Map : MonoBehaviour {
             }
             FallingSpawn fs = enemy.GetComponent<FallingSpawn>();
 			StartCoroutine(fs.FallIntoPlace());
+            EnemyController.totalEnemies++;
+            Nodes[enemyX, enemyZ].AddToNode(enemy);
+            ec.Enemies.Add(enemy.GetComponent<EnemyController>());
         }
         else {
             Debug.Log("Node (" + nodeX + "," +  nodeZ +") full, can't spawn here!");

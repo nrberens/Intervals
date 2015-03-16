@@ -36,7 +36,7 @@ public class BulletsController : MonoBehaviour, ITurnBased {
 	}
 	
 	public void EndPhase() {
-		Debug.Log ("All bullets finished, ending bullet phase.");
+		//Debug.Log ("All bullets finished, ending bullet phase.");
 		if (CurrentTurn.CurrentPhase == Turn.Phase.Bullet)
 			CurrentTurn.AdvancePhase();
 	}

@@ -265,6 +265,17 @@ public class PlayerMover : MonoBehaviour, IMover {
         return null;
     }
 
+	public Direction? GetTargetDirection(MoveNode node) {
+		int x = currentNode.x;
+		int z = currentNode.z;
+
+		if(node.x == x && node.z == z+1) return Direction.North;
+		else if (node.x == x && node.z == z-1) return Direction.South;
+		else if (node.x == x+1 && node.z == z) return Direction.East;
+		else if (node.x == x-1 && node.z == z) return Direction.West;
+		else return null;
+	}
+
     public void TagMovableNodes() {
         movableNodes = new List<MoveNode>();
         MoveNode node = GetTargetNode(Direction.North, 1);

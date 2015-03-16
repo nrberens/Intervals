@@ -44,10 +44,7 @@ public class PlayerShooter : MonoBehaviour {
     public bool CheckValidTarget(Transform target) {
         if (target.tag == "Enemy") {
             MoveNode targetNode = target.GetComponent<EnemyMover>().currentNode;
-            //Check for correct positioning
             bool validPosition = CheckValidPosition(targetNode);
-            //Check for line of sight
-            //TODO implement LOS -- use raycast?
             bool validLOS = CheckValidLOS(target);
 
             if (validPosition && validLOS) return true; 
@@ -64,13 +61,16 @@ public class PlayerShooter : MonoBehaviour {
     }
 
     public bool CheckValidLOS(Transform target) {
-        Ray ray = new Ray(transform.position, (target.position - transform.position));
+		Vector3 rayOrigin = new Vector3(transform.position.x, 1.0f, transform.position.z);
+		Vector3 rayTarget = new Vector3(target.position.x, 1.0f, target.position.z);
+        Ray ray = new Ray(rayOrigin, (rayTarget - rayOrigin));
         RaycastHit hit;
 
         //Check against colliders EXCEPT player layer (layer 8)
-        int layerMask = 1 << 8;
-        layerMask = ~layerMask;
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask)) { 
+        //int layerMask = 1 << 8;
+        //layerMask = ~layerMask;
+        //if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask)) { 
+		if(Physics.Raycast (ray, out hit, Mathf.Infinity)) {
             Debug.Log("Raycast hit " + hit.transform);
             if (hit.transform.tag == "Obstacle") {
                 Debug.DrawRay(ray.origin, ray.direction*100, Color.red, 5.0f);
@@ -84,8 +84,7 @@ public class PlayerShooter : MonoBehaviour {
         //return true;
     }
 
-    public void BeginShot() {
-        Transform target = pc.Input.GetTargetOfClick();
+    public void BeginShot(Transform target) {
         // TODO player can only shoot target with line of sight
         if (target != null && pc.Shooter.CheckValidTarget(target)) {
             pc.Input.allowInput = false;
@@ -157,8 +156,9 @@ public class PlayerShooter : MonoBehaviour {
         Vector3 rayOrigin = new Vector3(transform.position.x, 1.0f, transform.position.z);
         Ray ray = new Ray(rayOrigin, Vector3.forward);
         RaycastHit hit;
-        Debug.DrawRay(rayOrigin, Vector3.forward*10, Color.blue, 5.0f);
+        //Debug.DrawRay(rayOrigin, Vector3.forward*10, Color.blue, 5.0f);
         if (Physics.Raycast(ray, out hit, Mathf.Infinity)) {
+			Debug.Log ("North Ray hit " + hit.transform);
             if (hit.transform.tag == "Enemy") {
                 EnemyController ec = hit.transform.GetComponent<EnemyController>();
                 ec.shootable = true;
@@ -167,8 +167,9 @@ public class PlayerShooter : MonoBehaviour {
         }
 
         ray = new Ray(rayOrigin, Vector3.back);
-        Debug.DrawRay(rayOrigin, Vector3.back*10, Color.blue, 5.0f);
+        //Debug.DrawRay(rayOrigin, Vector3.back*10, Color.blue, 5.0f);
         if (Physics.Raycast(ray, out hit, Mathf.Infinity)) {
+			Debug.Log ("South Ray hit " + hit.transform);
             if (hit.transform.tag == "Enemy") {
                 EnemyController ec = hit.transform.GetComponent<EnemyController>();
                 ec.shootable = true;
@@ -177,8 +178,9 @@ public class PlayerShooter : MonoBehaviour {
         }
 
         ray = new Ray(rayOrigin, Vector3.left);
-        Debug.DrawRay(rayOrigin, Vector3.left*10, Color.blue, 5.0f);
+        //Debug.DrawRay(rayOrigin, Vector3.left*10, Color.blue, 5.0f);
         if (Physics.Raycast(ray, out hit, Mathf.Infinity)) {
+			Debug.Log ("East Ray hit " + hit.transform);
             if (hit.transform.tag == "Enemy") {
                 EnemyController ec = hit.transform.GetComponent<EnemyController>();
                 ec.shootable = true;
@@ -187,9 +189,10 @@ public class PlayerShooter : MonoBehaviour {
         }
 
         ray = new Ray(rayOrigin, Vector3.right);
-        Debug.DrawRay(rayOrigin, Vector3.right*10, Color.blue, 5.0f);
+        //Debug.DrawRay(rayOrigin, Vector3.right*10, Color.blue, 5.0f);
         if (Physics.Raycast(ray, out hit, Mathf.Infinity)) {
             if (hit.transform.tag == "Enemy") {
+			Debug.Log ("West Ray hit " + hit.transform);
                 EnemyController ec = hit.transform.GetComponent<EnemyController>();
                 ec.shootable = true;
                 shootableEnemies.Add(ec);

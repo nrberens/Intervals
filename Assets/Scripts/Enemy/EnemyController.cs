@@ -7,6 +7,7 @@ public class EnemyController : MonoBehaviour, ITurnBased {
     public GameObject lowReadyMesh;
     public GameObject firingMesh;
     public GameObject meleeMesh;
+    public Material mat;
 
 	private EnemiesController _ec;
     public EnemyMover Mover;
@@ -15,6 +16,7 @@ public class EnemyController : MonoBehaviour, ITurnBased {
 
     public Turn CurrentTurn { get; set; }
     public bool acting { get; set; }
+    public bool shootable { get; set; }
     public static int totalEnemies;
 
     // Use this for initialization
@@ -29,9 +31,16 @@ public class EnemyController : MonoBehaviour, ITurnBased {
         firingMesh.SetActive(false);
         meleeMesh.SetActive(false);
         acting = false;
+
     }
 
     void Update() {
+        //TODO nope, this doesn't work -- sets mat color for all uses of the material
+        if (shootable) {
+            mat.color = Color.magenta;
+        } else if (!shootable) {
+            mat.color = Color.red;
+        }
 
     }
 

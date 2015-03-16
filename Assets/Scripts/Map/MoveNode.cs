@@ -11,36 +11,48 @@ public class MoveNode : MonoBehaviour {
     public bool blocksMovement = false;
     public bool blocksLOS = false;
     public bool LOSToPlayer = false;
+    public bool movable = false;
+    public Material mat;
 
     //TODO add flags for blocks that block movement or LOS
-	public List<GameObject> objectsOnNode;
+    public List<GameObject> objectsOnNode;
 
     public Transform parentBlock;
 
     public int x, z;
 
-	// Use this for initialization
-	void Awake() {
-	    parentBlock = transform.parent;
-		objectsOnNode = new List<GameObject>();
+    // Use this for initialization
+    void Awake() {
+        parentBlock = transform.parent;
+        objectsOnNode = new List<GameObject>();
 
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	}
+    }
 
-	public void AddToNode(GameObject obj) {
-		if(objectsOnNode.Contains (obj))
-			Debug.Log (gameObject + " already contains " + obj);
-		else objectsOnNode.Add (obj);
-	}
+    void Start() {
+        mat = transform.parent.GetComponent<Renderer>().material;
+    }
 
-	public void RemoveFromNode(GameObject obj) {
-		if(objectsOnNode.Contains (obj))
-			objectsOnNode.Remove (obj);
-		else Debug.Log (obj + " isn't on " + gameObject);
-	}
+    // Update is called once per frame
+    void Update() {
+        if (movable) {
+            mat.color = Color.blue;
+        }
+        else if (!movable) {
+            mat.color = Color.white;
+        }
+    }
+
+    public void AddToNode(GameObject obj) {
+        if (objectsOnNode.Contains(obj))
+            Debug.Log(gameObject + " already contains " + obj);
+        else objectsOnNode.Add(obj);
+    }
+
+    public void RemoveFromNode(GameObject obj) {
+        if (objectsOnNode.Contains(obj))
+            objectsOnNode.Remove(obj);
+        else Debug.Log(obj + " isn't on " + gameObject);
+    }
 
     public static Direction DirectionToNode(MoveNode startNode, MoveNode targetNode) {
         int absX = Mathf.Abs(startNode.x - targetNode.x);
@@ -49,7 +61,7 @@ public class MoveNode : MonoBehaviour {
         if (absX > absZ) { //East or West
             if (startNode.x > targetNode.x) //East
                 return Direction.East;
-            else if (targetNode.x > startNode.x) 
+            else if (targetNode.x > startNode.x)
                 return Direction.West;
             else Debug.Log("On the same row!");
         } else if (absZ > absX) {
@@ -58,10 +70,8 @@ public class MoveNode : MonoBehaviour {
                 return Direction.South;
             else if (targetNode.z > startNode.z) {
                 return Direction.North;
-            }
-            else Debug.Log("On the same column!");
-        }
-        else Debug.Log("Same distance either way!");
+            } else Debug.Log("On the same column!");
+        } else Debug.Log("Same distance either way!");
         throw new NotImplementedException();
     }
 

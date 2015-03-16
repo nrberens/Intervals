@@ -8,7 +8,7 @@ public class PlayerInput : MonoBehaviour {
 
     private PlayerController pc;
 
-    public bool allowInput;
+    public bool allowInput, playerSelected;
 
     //public Vector3 crosshairPos;
 
@@ -27,36 +27,45 @@ public class PlayerInput : MonoBehaviour {
             //INPUT PHASE 
             //TODO track time between inputs, only allow input every half second or so
             if (allowInput && !pc.acting) {
-
-                //SHOOTING
-                if (Input.GetMouseButtonDown(0)) {
-                    Debug.Log("Registered click");
-                    pc.Shooter.BeginShot();
-                }
-
-                //IF PLAYER DOESN'T SHOOT, HANDLE MOVEMENT
-
-                moveX = Input.GetAxis("Horizontal");
-                moveZ = Input.GetAxis("Vertical");
-
-                if (moveX != 0 || moveZ != 0) {
-                    pc.acting = true;
-                    allowInput = false;
-                    //Adjust direction based on camera rotation
-                    var moveDir = GetAdjustedDirection(moveX, moveZ, Camera.main.transform.rotation);
-                    pc.Mover.Move(moveDir, 1);
+                if (!playerSelected) {
+                    if (Input.GetMouseButtonDown(0)) {
+                        Transform target = GetTargetOfClick();
+                        //If target is player
+                        if (target.tag == "Player") {
+                            playerSelected = true;
+                            pc.Mover.TagMovableNodes();
+                            pc.Shooter.TagShootableEnemies();
+                        }
+                    }
+                } else if (playerSelected) {
+                    if (Input.GetMouseButton(0)) {
+                        //show moveable nodes
+                        //show shootable enemies
+                    } else if (Input.GetMouseButtonUp(0)) {
+                        playerSelected = false;
+                        pc.Mover.UnTagMovableNodes();
+                        pc.Shooter.UnTagShootableEnemies();
+                    }
                 }
             }
-
-                //ACTION PHASE 
-            else if (!allowInput && pc.acting) {
-                //wait for signal that movement or firing is done
-            }
-                //END OF TURN
+            //END OF TURN
             else if (!allowInput && !pc.acting) {
                 pc.EndPhase();
             }
         }
+    }
+
+    //On click, get target of mouse click
+    public Transform GetTargetOfClick() {
+        //target layers EXCLUDING layer 9 - obstacles
+        int layerMask = 1 << 9;
+        layerMask = ~layerMask;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Debug.DrawRay(ray.origin, ray.direction * 100, Color.green, 5.0f);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask)) {
+            return hit.transform;
+        } else return null;
     }
 
     private Direction GetAdjustedDirection(float moveX, float moveZ, Quaternion rotation) {

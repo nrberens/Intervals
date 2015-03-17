@@ -4,10 +4,22 @@ using System.Collections.Generic;
 
 public class BulletsController : MonoBehaviour, ITurnBased {
 
+	public static BulletsController bc;
+
 	public Turn CurrentTurn { get; set; }
 	public bool acting { get; set; }
 
 	public List<EnemyBullet> Bullets;
+
+
+	void Awake() {
+		if (bc == null) {
+			DontDestroyOnLoad(gameObject);
+			bc = this;
+		} else if (bc != this) {
+			Destroy(gameObject);
+		}
+	}
 
 	// Use this for initialization
 	void Start () {

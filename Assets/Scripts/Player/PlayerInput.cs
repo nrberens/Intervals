@@ -6,7 +6,6 @@ public class PlayerInput : MonoBehaviour
 {
 
 	private float moveX, moveZ;
-	private PlayerController pc;
 	public bool allowInput, playerSelected;
 
 	//public Vector3 crosshairPos;
@@ -15,7 +14,6 @@ public class PlayerInput : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		pc = GetComponentInParent<PlayerController> ();
 	}
 
 	// Update is called once per frame
@@ -24,10 +22,10 @@ public class PlayerInput : MonoBehaviour
 
 		//crosshairPos = Crosshair.GetCrosshairInWorld();
 
-		if (pc.CurrentTurn.CurrentPhase == Turn.Phase.Player) {
+		if (PlayerController.pc.CurrentTurn.CurrentPhase == Turn.Phase.Player) {
 			//INPUT PHASE 
 			//TODO track time between inputs, only allow input every half second or so
-			if (allowInput && !pc.acting) {
+			if (allowInput && !PlayerController.pc.acting) {
 				if (!playerSelected) {
 					if (Input.GetMouseButtonDown (0)) {
 						//TODO create layerMask - test only player layer = 8
@@ -37,9 +35,9 @@ public class PlayerInput : MonoBehaviour
 						//If target is player
 						if (target.tag == "Player") {
 							playerSelected = true;
-							pc.Mover.TagMovableNodes ();
+							PlayerController.pc.Mover.TagMovableNodes ();
 							//TODO doesn't seem to work
-							pc.Shooter.TagShootableEnemies ();
+							PlayerController.pc.Shooter.TagShootableEnemies ();
 						} else if(target == null) {
 							//Do nothing
 						}
@@ -49,8 +47,8 @@ public class PlayerInput : MonoBehaviour
 						//drag to node or enemy
 					} else if (Input.GetMouseButtonUp (0)) {
 						playerSelected = false;
-						pc.Mover.UnTagMovableNodes ();
-						pc.Shooter.UnTagShootableEnemies ();
+						PlayerController.pc.Mover.UnTagMovableNodes ();
+						PlayerController.pc.Shooter.UnTagShootableEnemies ();
 
 						//TODO create layerMask = test enemies and world layer
 						int enemyLayer = 10;
@@ -60,16 +58,16 @@ public class PlayerInput : MonoBehaviour
 						Debug.Log ("MouseUp - Target = " + target);
 						if (target != null) {
 							if (target.tag == "Enemy") {
-								pc.acting = true;
+								PlayerController.pc.acting = true;
 								allowInput = false;
-								pc.Shooter.BeginShot (target);
+								PlayerController.pc.Shooter.BeginShot (target);
 							} else if (target.tag == "WorldBlock") {
-								Direction? dir = pc.Mover.GetTargetDirection (target.Find ("MoveNode").GetComponent<MoveNode> ());
+								Direction? dir = PlayerController.pc.Mover.GetTargetDirection (target.Find ("MoveNode").GetComponent<MoveNode> ());
 								if (dir != null) {
-									pc.acting = true;
+									PlayerController.pc.acting = true;
 									allowInput = false;
 									Direction moveDir = (Direction)dir;
-									pc.Mover.Move (moveDir, 1);
+									PlayerController.pc.Mover.Move (moveDir, 1);
 								}
 
 							}
@@ -79,8 +77,8 @@ public class PlayerInput : MonoBehaviour
 			}
             //END OF TURN
 			//TODO find another way of marking end of turn
-            else if (!allowInput && !pc.acting) {
-				pc.EndPhase ();
+            else if (!allowInput && !PlayerController.pc.acting) {
+				PlayerController.pc.EndPhase ();
 			}
 		}
 	}

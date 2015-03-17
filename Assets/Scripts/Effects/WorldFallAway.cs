@@ -5,8 +5,6 @@ using JetBrains.Annotations;
 public class WorldFallAway : MonoBehaviour {
 
     public Transform world;
-    public EnemiesController ec;
-    public BulletsController bc;
     public Transform player;
     public float finalY;
     public float fallTime;
@@ -15,8 +13,6 @@ public class WorldFallAway : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 	    world = GameObject.Find("World").transform;
-	    ec = FindObjectOfType<EnemiesController>();
-	    bc = FindObjectOfType<BulletsController>();
 	    player = GameObject.FindGameObjectWithTag("Player").transform;
 	    fallingComplete = false;
 	}
@@ -34,12 +30,12 @@ public class WorldFallAway : MonoBehaviour {
         }
         yield return null;
         //bullets fall away
-        foreach (EnemyBullet b in bc.Bullets) {
+        foreach (EnemyBullet b in BulletsController.bc.Bullets) {
             Transform t = b.transform;
             StartCoroutine(ObjectFallAway(t));
         }
         //enemies fall away
-        foreach (EnemyController e in ec.Enemies) {
+        foreach (EnemyController e in EnemiesController.ec.Enemies) {
             Transform t = e.transform;
             StartCoroutine(ObjectFallAway(t));
         }

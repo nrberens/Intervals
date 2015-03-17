@@ -4,8 +4,6 @@ using System.Collections;
 
 public class EnemyBullet : MonoBehaviour, IMover {
 
-    public BulletsController bc;
-
     public Direction Dir;
 
     public int distance;
@@ -19,7 +17,6 @@ public class EnemyBullet : MonoBehaviour, IMover {
 
     public void Awake() {
         nodes = GameObject.Find("World").GetComponent<Map>().Nodes;
-        bc = FindObjectOfType<BulletsController>();
     }
 
     public void Update() {
@@ -46,18 +43,12 @@ public class EnemyBullet : MonoBehaviour, IMover {
                 DestroyBullet();
             }
 
-            //check for other characters on node
-            //foreach (GameObject obj in currentNode.objectsOnNode) {
-            //    if (obj.tag == "Player") {
-            //        obj.GetComponent<PlayerController>().GameOver(transform);
-            //    }
-            //}
         }
 
     }
 
     public void DestroyBullet() {
-        bc.Bullets.Remove(this);
+        BulletsController.bc.Bullets.Remove(this);
         currentNode.RemoveFromNode(gameObject);
         Destroy(gameObject);
     }

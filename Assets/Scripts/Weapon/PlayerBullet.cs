@@ -3,8 +3,6 @@ using System.Collections;
 
 public class PlayerBullet : MonoBehaviour {
 
-    public PlayerController pc;
-
     public Transform spawnPoint;
     public MoveNode currentNode { get; set; }
     public MoveNode targetNode { get; set; }
@@ -34,7 +32,7 @@ public class PlayerBullet : MonoBehaviour {
 
     public void EndPhase() {
         Debug.Log("Bullet reached target");
-        pc.acting = false;
+        PlayerController.pc.acting = false;
         currentNode.RemoveFromNode(gameObject);
 		Destroy(gameObject);
     }

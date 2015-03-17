@@ -38,10 +38,10 @@ public class SpawnWorld : MonoBehaviour {
         MoveNode spawnPoint = map.Nodes[0, 0];
         //instantiate player at spawn point
         //TODO make random spawn point
-        map.pc.transform.position = spawnPoint.transform.position;
-        map.pc.Mover.currentNode = spawnPoint;
-        map.pc.Mover.currentNode.AddToNode(map.pc.gameObject);
-        FallingSpawn fs = map.pc.GetComponent<FallingSpawn>();
+        PlayerController.pc.transform.position = spawnPoint.transform.position;
+		PlayerController.pc.Mover.currentNode = spawnPoint;
+        PlayerController.pc.Mover.currentNode.AddToNode(PlayerController.pc.gameObject);
+        FallingSpawn fs = PlayerController.pc.GetComponent<FallingSpawn>();
         StartCoroutine(fs.FallIntoPlace());
         yield return null;
     }
@@ -57,7 +57,7 @@ public class SpawnWorld : MonoBehaviour {
                 GameObject enemy = (GameObject) Instantiate(map.EnemyTransform.gameObject);
                 enemy.GetComponent<EnemyMover>().currentNode = map.Nodes[enemyX, enemyZ];
 
-                map.ec.Enemies.Add(enemy.GetComponent<EnemyController>());
+                EnemiesController.ec.Enemies.Add(enemy.GetComponent<EnemyController>());
                 enemy.transform.position = map.Nodes[enemyX, enemyZ].transform.position;
                 EnemyController.totalEnemies++;
                 enemy.name = "Enemy " + EnemyController.totalEnemies;

@@ -4,8 +4,6 @@ using System.Collections.Generic;
 
 public class PlayerShooter : MonoBehaviour {
 
-    private PlayerController pc;
-
     public Transform bulletPrefab;
     public Transform weapon;
     public Transform bulletSpawnPoint;
@@ -17,7 +15,6 @@ public class PlayerShooter : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
-        pc = GetComponentInParent<PlayerController>();
         bulletSpawnPoint = transform.FindChild("BulletSpawnPoint");
         muzzleFlashLight = muzzleFlash.GetComponent<Light>();
         muzzleFlashLight.enabled = false;
@@ -53,7 +50,7 @@ public class PlayerShooter : MonoBehaviour {
     }
 
     public bool CheckValidPosition(MoveNode targetNode) {
-        MoveNode playerNode = pc.Mover.currentNode;
+        MoveNode playerNode = PlayerController.pc.Mover.currentNode;
 
         //if player is in same row or column
         if (playerNode.x == targetNode.x || playerNode.z == targetNode.z) return true;
@@ -86,15 +83,15 @@ public class PlayerShooter : MonoBehaviour {
 
     public void BeginShot(Transform target) {
         // TODO player can only shoot target with line of sight
-        if (target != null && pc.Shooter.CheckValidTarget(target)) {
-            pc.Input.allowInput = false;
+        if (target != null && PlayerController.pc.Shooter.CheckValidTarget(target)) {
+            PlayerController.pc.Input.allowInput = false;
             //shot is valid, shoot target
             //transform.LookAt(target);
             //switch to firing mesh
-            pc.lowReadyMesh.SetActive(false);
-            pc.firingMesh.SetActive(true);
-            pc.acting = false;
-            StartCoroutine(pc.Shooter.Shoot(target));
+            PlayerController.pc.lowReadyMesh.SetActive(false);
+            PlayerController.pc.firingMesh.SetActive(true);
+            PlayerController.pc.acting = false;
+            StartCoroutine(PlayerController.pc.Shooter.Shoot(target));
         }
     }
 
@@ -104,14 +101,13 @@ public class PlayerShooter : MonoBehaviour {
         yield return StartCoroutine(RotateToTarget(target));
 
         //spawn bullet
-        StartCoroutine(pc.Mover.ObjectWiggle(transform.position));
+        StartCoroutine(PlayerController.pc.Mover.ObjectWiggle(transform.position));
         Transform newBullet = (Transform) Instantiate(bulletPrefab);
         newBullet.position = bulletSpawnPoint.position;
         newBullet.rotation = transform.rotation;
         PlayerBullet newBulletScript = newBullet.GetComponent<PlayerBullet>();
-        newBulletScript.pc = pc;
         newBulletScript.spawnPoint = bulletSpawnPoint;
-        newBulletScript.currentNode = pc.Mover.currentNode;
+        newBulletScript.currentNode = PlayerController.pc.Mover.currentNode;
         newBulletScript.targetNode = target.GetComponent<EnemyMover>().currentNode;
         //bullet travels to enemy
         newBulletScript.TranslateBullet(newBulletScript.targetNode);
@@ -120,9 +116,9 @@ public class PlayerShooter : MonoBehaviour {
 		//target.GetComponent<EnemyController>().TakeDamage(newBullet);
         yield return StartCoroutine(MuzzleFlash());
         yield return new WaitForSeconds(0.5f);
-        pc.firingMesh.SetActive(false);
-        pc.lowReadyMesh.SetActive(true);
-		pc.acting = false;
+        PlayerController.pc.firingMesh.SetActive(false);
+        PlayerController.pc.lowReadyMesh.SetActive(true);
+		PlayerController.pc.acting = false;
     }
 
     public IEnumerator MuzzleFlash() {

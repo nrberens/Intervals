@@ -4,6 +4,8 @@ using UnityEngineInternal;
 
 public class PlayerController : MonoBehaviour {
 
+	public static PlayerController pc;
+
     public Transform deathPrefab;
     public GameObject lowReadyMesh;
     public GameObject firingMesh;
@@ -17,6 +19,15 @@ public class PlayerController : MonoBehaviour {
     public Turn CurrentTurn { get; set; }
 	public bool acting; 
 	//public bool turnFinished;
+
+	void Awake() {
+		if (pc == null) {
+			DontDestroyOnLoad(gameObject);
+			pc = this;
+		} else if (pc != this) {
+			Destroy(gameObject);
+		}
+	}
 
 	// Use this for initialization
 	void Start () {

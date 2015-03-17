@@ -8,7 +8,6 @@ public class EnemyController : MonoBehaviour, ITurnBased {
     public GameObject firingMesh;
     public GameObject meleeMesh;
 
-	private EnemiesController _ec;
     public EnemyMover Mover;
     public FSM AI;
     public EnemyShooter Shooter;
@@ -21,7 +20,6 @@ public class EnemyController : MonoBehaviour, ITurnBased {
 
     // Use this for initialization
     void Start() {
-		_ec = FindObjectOfType<EnemiesController>();
         Mover = GetComponentInParent<EnemyMover>();
         AI = GetComponentInParent<FSM>();
         Shooter = GetComponentInParent<EnemyShooter>();
@@ -64,7 +62,7 @@ public class EnemyController : MonoBehaviour, ITurnBased {
         Vector3 deathPrefabPosition = transform.FindChild("DeathPrefab").position;
         Transform death = (Transform) Instantiate(deathPrefab, deathPrefabPosition, bullet.rotation);
         //TODO set rotation opposite to the bullet impact
-		_ec.Enemies.Remove(this);
+		EnemiesController.ec.Enemies.Remove(this);
         Mover.currentNode.RemoveFromNode(gameObject);
 		Destroy (gameObject);
 	}

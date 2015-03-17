@@ -4,11 +4,21 @@ using System.Collections.Generic;
 using System.Xml.Schema;
 
 public class EnemiesController : MonoBehaviour, ITurnBased {
+	public static EnemiesController ec;
     public List<EnemyController> Enemies; 
 
     public Turn CurrentTurn { get; set; }
     public bool acting { get; set; }
     public int totalCurrentEnemies;
+
+	void Awake() {
+		if (ec == null) {
+			DontDestroyOnLoad(gameObject);
+			ec = this;
+		} else if (ec != this) {
+			Destroy(gameObject);
+		}
+	}
 
 	// Use this for initialization
 	void Start () {

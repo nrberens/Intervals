@@ -7,7 +7,6 @@ using UnityEngineInternal;
 
 public class PlayerMover : MonoBehaviour, IMover {
 
-    private PlayerController pc;
     private Map map;
     public float MoveTime;
     public float wiggleTime;
@@ -29,7 +28,6 @@ public class PlayerMover : MonoBehaviour, IMover {
         map = GameObject.Find("World").GetComponent<Map>();
         nodes = map.Nodes;
 
-        pc = GetComponentInParent<PlayerController>();
     }
 
     // Update is called once per frame
@@ -45,7 +43,7 @@ public class PlayerMover : MonoBehaviour, IMover {
     void OnCollisionEnter(Collision collision) {
         if (collision.transform.tag == "Bullet") {
             //TODO move GameOver() to GameController?
-            pc.GameOver(collision.transform);
+            PlayerController.pc.GameOver(collision.transform);
         }
     }
 
@@ -54,8 +52,8 @@ public class PlayerMover : MonoBehaviour, IMover {
             MoveNode targetNode = GetTargetNode(direction, distance);
 
             if (targetNode == null) {
-                pc.acting = false;
-                pc.EndPhase();
+                PlayerController.pc.acting = false;
+                PlayerController.pc.EndPhase();
                 return; //No node found, at edge of map
             }
 
@@ -79,24 +77,24 @@ public class PlayerMover : MonoBehaviour, IMover {
 
                 switch (direction) {
                     case Direction.North:
-                        pc.Mover.MoveUp(distance);
+                        PlayerController.pc.Mover.MoveUp(distance);
                         break;
                     case Direction.South:
-                        pc.Mover.MoveDown(distance);
+                        PlayerController.pc.Mover.MoveDown(distance);
                         break;
                     case Direction.West:
-                        pc.Mover.MoveLeft(distance);
+                        PlayerController.pc.Mover.MoveLeft(distance);
                         break;
                     case Direction.East:
-                        pc.Mover.MoveRight(distance);
+                        PlayerController.pc.Mover.MoveRight(distance);
                         break;
                 }
 
                 map.FlagNewLOSNodes();
             } else {
                 //TODO allow player to input again if he didn't actually move
-                pc.acting = false;
-                pc.EndPhase();
+                PlayerController.pc.acting = false;
+                PlayerController.pc.EndPhase();
             }
         } catch (NullReferenceException e) {
             Debug.Log(gameObject + " threw a NullReferenceException.");
@@ -112,8 +110,7 @@ public class PlayerMover : MonoBehaviour, IMover {
         if (z >= nodes.GetUpperBound(1)) //bust out early if you're at the top of the map
         {
             Debug.Log("You hit the top! node_id= " + x + " z = " + z);
-            pc.acting = false;
-            pc.EndPhase();
+            PlayerController.pc.acting = false;
             return;
         }
 
@@ -134,8 +131,7 @@ public class PlayerMover : MonoBehaviour, IMover {
 
         if (z <= 0) {
             Debug.Log("You hit the bottom! node_id= " + x + " z = " + z);
-            pc.acting = false;
-            pc.EndPhase();
+            PlayerController.pc.acting = false;
             return;
         }
 
@@ -156,8 +152,7 @@ public class PlayerMover : MonoBehaviour, IMover {
 
         if (x <= 0) {
             Debug.Log("You hit the left! node_id= " + x + " z = " + z);
-            pc.acting = false;
-            pc.EndPhase();
+            PlayerController.pc.acting = false;
             return;
         }
 
@@ -178,8 +173,7 @@ public class PlayerMover : MonoBehaviour, IMover {
 
         if (x >= nodes.GetUpperBound(0)) {
             Debug.Log("You hit the right! node_id= " + x + " z = " + z);
-            pc.acting = false;
-            pc.EndPhase();
+            PlayerController.pc.acting = false;
             return;
         }
 
@@ -229,7 +223,7 @@ public class PlayerMover : MonoBehaviour, IMover {
 
         transform.position = endPos;
 
-        pc.acting = false;
+        PlayerController.pc.acting = false;
     }
 
     public IEnumerator ObjectWiggle(Vector3 centerPos) {

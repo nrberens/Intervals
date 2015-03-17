@@ -63,7 +63,7 @@ public class EnemyShooter : MonoBehaviour {
             Transform bullet = (Transform)Instantiate(BulletTransform);
             EnemyBullet enemyBulletScript = bullet.GetComponent<EnemyBullet>();
             EnemyBullet.totalBullets++;
-            enemyBulletScript.bc.Bullets.Add(enemyBulletScript);
+            BulletsController.bc.Bullets.Add(enemyBulletScript);
             bullet.name = "EnemyBullet " + EnemyBullet.totalBullets;
             enemyBulletScript.currentNode = _ec.Mover.currentNode;
             enemyBulletScript.currentNode.AddToNode(bullet.gameObject);

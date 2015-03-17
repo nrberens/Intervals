@@ -5,8 +5,6 @@ using System.Collections;
 using UnityEngine.SocialPlatforms;
 
 public class Map : MonoBehaviour {
-    public PlayerController pc;
-    public EnemiesController ec;
     public Transform EnemyTransform;
     public int mapWidth, mapLength;
 	public float fallTime;
@@ -21,14 +19,10 @@ public class Map : MonoBehaviour {
     }
     // Use this for initialization
     void Start() {
-        //CACHE CONTROLLER SCRIPTS -- causes circular dependency
-        pc = FindObjectOfType<PlayerController>();
-        ec = FindObjectOfType<EnemiesController>();
-
 
         //PLACE OBJECTS
         //turn off renderers -- world blocks are in final position when spawned
-        foreach (Transform t in pc.transform) {
+        foreach (Transform t in PlayerController.pc.transform) {
             Renderer[] renderers = t.GetComponentsInChildren<Renderer>();
             foreach (Renderer r in renderers) {
                 r.enabled = false;
@@ -82,7 +76,7 @@ public class Map : MonoBehaviour {
             node.LOSToPlayer = false;
         }
 
-        MoveNode currentNode = pc.Mover.currentNode;
+        MoveNode currentNode = PlayerController.pc.Mover.currentNode;
         //flag player's node
         currentNode.LOSToPlayer = true;
 
@@ -223,7 +217,7 @@ public class Map : MonoBehaviour {
             enemy.GetComponent<EnemyMover>().currentNode = Nodes[enemyX, enemyZ];
             EnemyController.totalEnemies++;
             Nodes[enemyX, enemyZ].AddToNode(enemy);
-            ec.Enemies.Add(enemy.GetComponent<EnemyController>());
+            EnemiesController.ec.Enemies.Add(enemy.GetComponent<EnemyController>());
             enemy.transform.position = Nodes[enemyX, enemyZ].transform.position;
             enemy.name = "Enemy " + EnemyController.totalEnemies;
             foreach (Transform t in enemy.transform) {

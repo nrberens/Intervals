@@ -137,16 +137,21 @@ public class PlayerShooter : MonoBehaviour {
     }
 
 	public IEnumerator Melee(Transform target) {
+		EnemyController enemy = target.GetComponent<EnemyController>();
+		MoveNode targetNode = enemy.Mover.currentNode;
 		yield return StartCoroutine(RotateToTarget (target));
 		PlayerController.pc.lowReadyMesh.SetActive(false);
 		PlayerController.pc.meleeMesh.SetActive(true);
-		yield return new WaitForSeconds(0.2f);
 		Debug.Log (target + " killed!");
-		target.GetComponent<EnemyController>().TakeDamage(transform);
-		yield return new WaitForSeconds(0.5f);
+		enemy.TakeDamage(transform);
+		//TODO move player to target node
+        PlayerController.pc.Mover.currentNode.RemoveFromNode(gameObject);
+        targetNode.AddToNode(gameObject);
+
+        StartCoroutine(PlayerController.pc.Mover.MoveToNode(targetNode));
+        PlayerController.pc.Mover.currentNode = targetNode;
 		PlayerController.pc.meleeMesh.SetActive(false);
 		PlayerController.pc.lowReadyMesh.SetActive (true);
-		PlayerController.pc.acting = false;
 	}
 
     public IEnumerator MuzzleFlash() {

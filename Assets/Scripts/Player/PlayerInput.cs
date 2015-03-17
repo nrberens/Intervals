@@ -44,7 +44,22 @@ public class PlayerInput : MonoBehaviour
 					}
 				} else if (playerSelected) {
 					if (Input.GetMouseButton (0)) {
+						//TODO figure out how to unselect node when mouse is held down but not on node
 						//drag to node or enemy
+						//create layerMask = test enemies and world layer
+						int enemyLayer = 10;
+						int worldLayer = 11;
+						int layerMask = 1 << enemyLayer | 1 << worldLayer;
+						Transform target = GetTargetOfClick(layerMask);
+						if(target != null) {
+							if(target.tag == "WorldBlock") {
+								MoveNode node = target.GetComponentInChildren<MoveNode>();
+								if(node.movable) {
+									MovableNode nodeController = target.GetComponentInChildren<MovableNode>();
+									nodeController.currentState = MovableNode.NodeState.MovableSelected;
+								}
+							}
+						}
 					} else if (Input.GetMouseButtonUp (0)) {
 						playerSelected = false;
 						PlayerController.pc.Mover.UnTagMovableNodes ();

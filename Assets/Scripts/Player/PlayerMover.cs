@@ -275,6 +275,8 @@ public class PlayerMover : MonoBehaviour, IMover {
         if (node != null) {
             if (!node.blocksMovement) {
                 node.movable = true;
+				MovableNode nodeController = node.transform.parent.GetComponentInChildren<MovableNode>();
+				nodeController.currentState = MovableNode.NodeState.MovableUnselected;
                 movableNodes.Add(node);
             }
         }
@@ -283,6 +285,8 @@ public class PlayerMover : MonoBehaviour, IMover {
         if (node != null) {
             if (!node.blocksMovement) {
                 node.movable = true;
+				MovableNode nodeController = node.transform.parent.GetComponentInChildren<MovableNode>();
+				nodeController.currentState = MovableNode.NodeState.MovableUnselected;
                 movableNodes.Add(node);
             }
         }
@@ -291,6 +295,8 @@ public class PlayerMover : MonoBehaviour, IMover {
         if (node != null) {
             if (!node.blocksMovement) {
                 node.movable = true;
+				MovableNode nodeController = node.transform.parent.GetComponentInChildren<MovableNode>();
+				nodeController.currentState = MovableNode.NodeState.MovableUnselected;
                 movableNodes.Add(node);
             }
         }
@@ -299,6 +305,8 @@ public class PlayerMover : MonoBehaviour, IMover {
         if (node != null) {
             if (!node.blocksMovement) {
                 node.movable = true;
+				MovableNode nodeController = node.transform.parent.GetComponentInChildren<MovableNode>();
+				nodeController.currentState = MovableNode.NodeState.MovableUnselected;
                 movableNodes.Add(node);
             }
         }
@@ -307,6 +315,8 @@ public class PlayerMover : MonoBehaviour, IMover {
     public void UnTagMovableNodes() {
         for (int i = 0; i < movableNodes.Count; i++) {
             MoveNode node = movableNodes[i];
+			MovableNode nodeController = node.transform.parent.GetComponentInChildren<MovableNode>();
+			nodeController.currentState = MovableNode.NodeState.Off;
             node.movable = false;
         }
         movableNodes.Clear();

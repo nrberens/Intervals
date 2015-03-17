@@ -34,12 +34,6 @@ public class MoveNode : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        if (movable) {
-            mat.color = Color.blue;
-        }
-        else if (!movable) {
-            mat.color = Color.white;
-        }
     }
 
     public void AddToNode(GameObject obj) {

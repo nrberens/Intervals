@@ -81,18 +81,33 @@ public class PlayerShooter : MonoBehaviour {
         //return true;
     }
 
+	public bool CheckMeleeRange(Transform target) {
+		//TODO only accept EnemyControllers
+		EnemyController enemy = target.GetComponent<EnemyController>();
+		int xDistance = Mathf.Abs (PlayerController.pc.Mover.currentNode.x - enemy.Mover.currentNode.x);
+		int zDistance = Mathf.Abs (PlayerController.pc.Mover.currentNode.z - enemy.Mover.currentNode.z);
+
+		if(xDistance == 1 && zDistance == 0) return true;
+		else if(xDistance == 0 && zDistance == 1) return true;
+		else return false;
+
+	}
+
     public void BeginShot(Transform target) {
-        // TODO player can only shoot target with line of sight
+		//TODO change method to only except EnemyControllers
         if (target != null && PlayerController.pc.Shooter.CheckValidTarget(target)) {
             PlayerController.pc.Input.allowInput = false;
-            //shot is valid, shoot target
-            //transform.LookAt(target);
-            //switch to firing mesh
-            PlayerController.pc.lowReadyMesh.SetActive(false);
-            PlayerController.pc.firingMesh.SetActive(true);
-            PlayerController.pc.acting = false;
-            StartCoroutine(PlayerController.pc.Shooter.Shoot(target));
-        }
+			//TODO add melee, if target is one square away
+			if(CheckMeleeRange(target)){
+				//switch to melee mesh
+				StartCoroutine(Melee (target));
+			} else {
+	            //switch to firing mesh
+	            PlayerController.pc.lowReadyMesh.SetActive(false);
+	            PlayerController.pc.firingMesh.SetActive(true);
+	            StartCoroutine(Shoot(target));
+			}
+		}
     }
 
     public IEnumerator Shoot(Transform target) {
@@ -120,6 +135,19 @@ public class PlayerShooter : MonoBehaviour {
         PlayerController.pc.lowReadyMesh.SetActive(true);
 		PlayerController.pc.acting = false;
     }
+
+	public IEnumerator Melee(Transform target) {
+		yield return StartCoroutine(RotateToTarget (target));
+		PlayerController.pc.lowReadyMesh.SetActive(false);
+		PlayerController.pc.meleeMesh.SetActive(true);
+		yield return new WaitForSeconds(0.2f);
+		Debug.Log (target + " killed!");
+		target.GetComponent<EnemyController>().TakeDamage(transform);
+		yield return new WaitForSeconds(0.5f);
+		PlayerController.pc.meleeMesh.SetActive(false);
+		PlayerController.pc.lowReadyMesh.SetActive (true);
+		PlayerController.pc.acting = false;
+	}
 
     public IEnumerator MuzzleFlash() {
         float startTime = Time.time;

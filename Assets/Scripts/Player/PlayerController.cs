@@ -69,8 +69,8 @@ public class PlayerController : MonoBehaviour {
         //world falls away? show score, restart button
         WorldFallAway wfa = FindObjectOfType<WorldFallAway>();
         StartCoroutine(wfa.ManageFallAwayTiming());
-        GameOverScreen gameOverScreen = FindObjectOfType<GameOverScreen>();
-        gameOverScreen.DisplayGameOverUI();
+        UIController ui = FindObjectOfType<UIController>();
+        ui.DisplayGameOverUI();
         //GameControl.gc.Save();
     }
 
@@ -89,6 +89,5 @@ public class PlayerController : MonoBehaviour {
     }
 
 	public static void ResetPlayerController() {
-		//TODO
 	}
 }

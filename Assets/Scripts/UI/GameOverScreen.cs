@@ -20,6 +20,6 @@ public class GameOverScreen : MonoBehaviour {
 
     public void DisplayGameOverUI() {
         gameOverCanvas.enabled = true;
-        gameOverText.text = "GAME OVER\n SCORE " + GameControl.gc.currentScore + "\nHIGH SCORE " + GameControl.gc.highScore;
+        //gameOverText.text = "GAME OVER\n SCORE " + GameControl.gc.currentScore + "\nHIGH SCORE " + GameControl.gc.highScore;
     }
 }

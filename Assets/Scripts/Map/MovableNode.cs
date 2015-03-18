@@ -11,6 +11,8 @@ public class MovableNode : MonoBehaviour {
         Off
 	}
 
+	public ShootableNode shootableNode;
+
 	public Renderer selectedRenderer;
 	public Renderer unselectedRenderer;
 
@@ -21,6 +23,7 @@ public class MovableNode : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		shootableNode = transform.GetComponent<ShootableNode>();
 		currentState = NodeState.Off;
 		selectedRenderer.enabled = false;
 		unselectedRenderer.enabled = false;
@@ -54,6 +57,11 @@ public class MovableNode : MonoBehaviour {
 			selectedRenderer.enabled = false;
 			unselectedRenderer.enabled = false;
 			break;
+		}
+	}
+
+	void LateUpdate() {
+		if(currentState == NodeState.MeleeableSelected || currentState == NodeState.MeleeableUnselected) {
 		}
 	}
 }

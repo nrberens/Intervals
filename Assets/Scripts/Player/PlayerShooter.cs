@@ -30,7 +30,7 @@ public class PlayerShooter : MonoBehaviour {
         for (int i = 0; i < shootableEnemies.Count; i++) {
             EnemyController enemy = shootableEnemies[i];
             MovableNode movableNode = enemy.Mover.currentNode.transform.parent.GetComponentInChildren<MovableNode>();
-            ShootableNode shootableNode = enemy.Mover.currentNode.transform.parent.GetComponentInChildren<ShootableNode>();
+			ShootableNode shootableNode = enemy.Mover.currentNode.transform.parent.GetComponentInChildren<ShootableNode>();
             if (movableNode.currentState == MovableNode.NodeState.MovableSelected) {
                 movableNode.currentState = MovableNode.NodeState.MeleeableSelected;
             } else if (movableNode.currentState == MovableNode.NodeState.MovableUnselected) {

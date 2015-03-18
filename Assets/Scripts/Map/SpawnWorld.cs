@@ -4,6 +4,7 @@ using System.Collections;
 public class SpawnWorld : MonoBehaviour {
 
     private Map map;
+	public int numberOfEnemies;
 
 	// Use this for initialization
 	void Start () {
@@ -49,7 +50,7 @@ public class SpawnWorld : MonoBehaviour {
     public IEnumerator SpawnInEnemies() {
         //instantiate enemy at random position
         //TODO check for valid spawn point for enemies
-        for (int i = 1; i <= 3; i++) {
+        for (int i = 1; i <= numberOfEnemies; i++) {
             int enemyX = Random.Range(0, map.mapWidth);
             int enemyZ = Random.Range(0, map.mapLength);
 

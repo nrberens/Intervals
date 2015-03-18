@@ -25,6 +25,20 @@ public class PlayerShooter : MonoBehaviour {
 
     }
 
+    void LateUpdate() {
+        //HACK I don't like this but i'm not sure where else to put it
+        for (int i = 0; i < shootableEnemies.Count; i++) {
+            EnemyController enemy = shootableEnemies[i];
+            MovableNode movableNode = enemy.Mover.currentNode.transform.parent.GetComponentInChildren<MovableNode>();
+            ShootableNode shootableNode = enemy.Mover.currentNode.transform.parent.GetComponentInChildren<ShootableNode>();
+            if (movableNode.currentState == MovableNode.NodeState.MovableSelected) {
+                movableNode.currentState = MovableNode.NodeState.MeleeableSelected;
+            } else if (movableNode.currentState == MovableNode.NodeState.MovableUnselected) {
+                movableNode.currentState = MovableNode.NodeState.MeleeableUnselected;
+            }
+        }
+    }
+
     //On click, get target of mouse click
     public Transform GetTargetOfClick() {
         //target layers EXCLUDING layer 9 - obstacles
@@ -44,7 +58,7 @@ public class PlayerShooter : MonoBehaviour {
             bool validPosition = CheckValidPosition(targetNode);
             bool validLOS = CheckValidLOS(target);
 
-            if (validPosition && validLOS) return true; 
+            if (validPosition && validLOS) return true;
         }
         return false;
     }
@@ -58,8 +72,8 @@ public class PlayerShooter : MonoBehaviour {
     }
 
     public bool CheckValidLOS(Transform target) {
-		Vector3 rayOrigin = new Vector3(transform.position.x, 1.0f, transform.position.z);
-		Vector3 rayTarget = new Vector3(target.position.x, 1.0f, target.position.z);
+        Vector3 rayOrigin = new Vector3(transform.position.x, 1.0f, transform.position.z);
+        Vector3 rayTarget = new Vector3(target.position.x, 1.0f, target.position.z);
         Ray ray = new Ray(rayOrigin, (rayTarget - rayOrigin));
         RaycastHit hit;
 
@@ -67,57 +81,57 @@ public class PlayerShooter : MonoBehaviour {
         //int layerMask = 1 << 8;
         //layerMask = ~layerMask;
         //if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask)) { 
-		if(Physics.Raycast (ray, out hit, Mathf.Infinity)) {
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity)) {
             Debug.Log("Raycast hit " + hit.transform);
             if (hit.transform.tag == "Obstacle") {
-                Debug.DrawRay(ray.origin, ray.direction*100, Color.red, 5.0f);
+                Debug.DrawRay(ray.origin, ray.direction * 100, Color.red, 5.0f);
                 return false;
             }
-            
-            Debug.DrawRay(ray.origin, ray.direction*100, Color.blue, 5.0f);
+
+            Debug.DrawRay(ray.origin, ray.direction * 100, Color.blue, 5.0f);
         }
         return true;
         //HACK for now just return true
         //return true;
     }
 
-	public bool CheckMeleeRange(Transform target) {
-		//TODO only accept EnemyControllers
-		EnemyController enemy = target.GetComponent<EnemyController>();
-		int xDistance = Mathf.Abs (PlayerController.pc.Mover.currentNode.x - enemy.Mover.currentNode.x);
-		int zDistance = Mathf.Abs (PlayerController.pc.Mover.currentNode.z - enemy.Mover.currentNode.z);
+    public bool CheckMeleeRange(Transform target) {
+        //TODO only accept EnemyControllers
+        EnemyController enemy = target.GetComponent<EnemyController>();
+        int xDistance = Mathf.Abs(PlayerController.pc.Mover.currentNode.x - enemy.Mover.currentNode.x);
+        int zDistance = Mathf.Abs(PlayerController.pc.Mover.currentNode.z - enemy.Mover.currentNode.z);
 
-		if(xDistance == 1 && zDistance == 0) return true;
-		else if(xDistance == 0 && zDistance == 1) return true;
-		else return false;
+        if (xDistance == 1 && zDistance == 0) return true;
+        else if (xDistance == 0 && zDistance == 1) return true;
+        else return false;
 
-	}
+    }
 
     public void BeginShot(Transform target) {
-		//TODO change method to only except EnemyControllers
+        //TODO change method to only except EnemyControllers
         if (target != null && PlayerController.pc.Shooter.CheckValidTarget(target)) {
             PlayerController.pc.Input.allowInput = false;
-			//TODO add melee, if target is one square away
-			if(CheckMeleeRange(target)){
-				//switch to melee mesh
-				StartCoroutine(Melee (target));
-			} else {
-	            //switch to firing mesh
-	            PlayerController.pc.lowReadyMesh.SetActive(false);
-	            PlayerController.pc.firingMesh.SetActive(true);
-	            StartCoroutine(Shoot(target));
-			}
-		}
+            //TODO add melee, if target is one square away
+            if (CheckMeleeRange(target)) {
+                //switch to melee mesh
+                StartCoroutine(Melee(target));
+            } else {
+                //switch to firing mesh
+                PlayerController.pc.lowReadyMesh.SetActive(false);
+                PlayerController.pc.firingMesh.SetActive(true);
+                StartCoroutine(Shoot(target));
+            }
+        }
     }
 
     public IEnumerator Shoot(Transform target) {
-		//TODO make sure that the enemy struck with the bullet dies and is removed, not the enemy clicked on, if both are in LOS
+        //TODO make sure that the enemy struck with the bullet dies and is removed, not the enemy clicked on, if both are in LOS
         // Look in direction
         yield return StartCoroutine(RotateToTarget(target));
 
         //spawn bullet
         StartCoroutine(PlayerController.pc.Mover.ObjectWiggle(transform.position));
-        Transform newBullet = (Transform) Instantiate(bulletPrefab);
+        Transform newBullet = (Transform)Instantiate(bulletPrefab);
         newBullet.position = bulletSpawnPoint.position;
         newBullet.rotation = transform.rotation;
         PlayerBullet newBulletScript = newBullet.GetComponent<PlayerBullet>();
@@ -126,33 +140,33 @@ public class PlayerShooter : MonoBehaviour {
         newBulletScript.targetNode = target.GetComponent<EnemyMover>().currentNode;
         //bullet travels to enemy
         newBulletScript.TranslateBullet(newBulletScript.targetNode);
-		//enemy dies
-		Debug.Log (target + " killed!");
-		//target.GetComponent<EnemyController>().TakeDamage(newBullet);
+        //enemy dies
+        Debug.Log(target + " killed!");
+        //target.GetComponent<EnemyController>().TakeDamage(newBullet);
         yield return StartCoroutine(MuzzleFlash());
         yield return new WaitForSeconds(0.5f);
         PlayerController.pc.firingMesh.SetActive(false);
         PlayerController.pc.lowReadyMesh.SetActive(true);
-		PlayerController.pc.acting = false;
+        PlayerController.pc.acting = false;
     }
 
-	public IEnumerator Melee(Transform target) {
-		EnemyController enemy = target.GetComponent<EnemyController>();
-		MoveNode targetNode = enemy.Mover.currentNode;
-		yield return StartCoroutine(RotateToTarget (target));
-		PlayerController.pc.lowReadyMesh.SetActive(false);
-		PlayerController.pc.meleeMesh.SetActive(true);
-		Debug.Log (target + " killed!");
-		enemy.TakeDamage(transform);
-		//TODO move player to target node
+    public IEnumerator Melee(Transform target) {
+        EnemyController enemy = target.GetComponent<EnemyController>();
+        MoveNode targetNode = enemy.Mover.currentNode;
+        yield return StartCoroutine(RotateToTarget(target));
+        PlayerController.pc.lowReadyMesh.SetActive(false);
+        PlayerController.pc.meleeMesh.SetActive(true);
+        Debug.Log(target + " killed!");
+        enemy.TakeDamage(transform);
+        //TODO move player to target node
         PlayerController.pc.Mover.currentNode.RemoveFromNode(gameObject);
         targetNode.AddToNode(gameObject);
 
         StartCoroutine(PlayerController.pc.Mover.MoveToNode(targetNode));
         PlayerController.pc.Mover.currentNode = targetNode;
-		PlayerController.pc.meleeMesh.SetActive(false);
-		PlayerController.pc.lowReadyMesh.SetActive (true);
-	}
+        PlayerController.pc.meleeMesh.SetActive(false);
+        PlayerController.pc.lowReadyMesh.SetActive(true);
+    }
 
     public IEnumerator MuzzleFlash() {
         float startTime = Time.time;
@@ -171,8 +185,8 @@ public class PlayerShooter : MonoBehaviour {
         float startTime = Time.time;
         Quaternion startRot = transform.rotation;
         Quaternion endRot = Quaternion.LookRotation(target.position - transform.position);
-        Debug.DrawRay(transform.position, target.position-transform.position, Color.red, 3.0f);
-        
+        Debug.DrawRay(transform.position, target.position - transform.position, Color.red, 3.0f);
+
         while (Time.time < rotateTime + startTime) {
             //TODO object immediately snaps to final position?
             transform.rotation = Quaternion.Slerp(startRot, endRot, (Time.time - startTime) / rotateTime);
@@ -188,7 +202,7 @@ public class PlayerShooter : MonoBehaviour {
         RaycastHit hit;
         //Debug.DrawRay(rayOrigin, Vector3.forward*10, Color.blue, 5.0f);
         if (Physics.Raycast(ray, out hit, Mathf.Infinity)) {
-			Debug.Log ("North Ray hit " + hit.transform);
+            Debug.Log("North Ray hit " + hit.transform);
             if (hit.transform.tag == "Enemy") {
                 EnemyController ec = hit.transform.GetComponent<EnemyController>();
                 ec.shootable = true;
@@ -199,7 +213,7 @@ public class PlayerShooter : MonoBehaviour {
         ray = new Ray(rayOrigin, Vector3.back);
         //Debug.DrawRay(rayOrigin, Vector3.back*10, Color.blue, 5.0f);
         if (Physics.Raycast(ray, out hit, Mathf.Infinity)) {
-			Debug.Log ("South Ray hit " + hit.transform);
+            Debug.Log("South Ray hit " + hit.transform);
             if (hit.transform.tag == "Enemy") {
                 EnemyController ec = hit.transform.GetComponent<EnemyController>();
                 ec.shootable = true;
@@ -210,7 +224,7 @@ public class PlayerShooter : MonoBehaviour {
         ray = new Ray(rayOrigin, Vector3.left);
         //Debug.DrawRay(rayOrigin, Vector3.left*10, Color.blue, 5.0f);
         if (Physics.Raycast(ray, out hit, Mathf.Infinity)) {
-			Debug.Log ("East Ray hit " + hit.transform);
+            Debug.Log("East Ray hit " + hit.transform);
             if (hit.transform.tag == "Enemy") {
                 EnemyController ec = hit.transform.GetComponent<EnemyController>();
                 ec.shootable = true;
@@ -222,7 +236,7 @@ public class PlayerShooter : MonoBehaviour {
         //Debug.DrawRay(rayOrigin, Vector3.right*10, Color.blue, 5.0f);
         if (Physics.Raycast(ray, out hit, Mathf.Infinity)) {
             if (hit.transform.tag == "Enemy") {
-			Debug.Log ("West Ray hit " + hit.transform);
+                Debug.Log("West Ray hit " + hit.transform);
                 EnemyController ec = hit.transform.GetComponent<EnemyController>();
                 ec.shootable = true;
                 shootableEnemies.Add(ec);
@@ -231,8 +245,12 @@ public class PlayerShooter : MonoBehaviour {
     }
 
     public void UnTagShootableEnemies() {
-        foreach (EnemyController ec in shootableEnemies) {
+        for (int i = 0; i < shootableEnemies.Count; i++) {
+            EnemyController ec = shootableEnemies[i];
+            MoveNode node = ec.Mover.currentNode;
             ec.shootable = false;
+            ShootableNode nodeController = node.transform.parent.GetComponentInChildren<ShootableNode>();
+            nodeController.currentState = ShootableNode.NodeState.Off;
         }
     }
 }

@@ -43,6 +43,13 @@ public class PlayerInput : MonoBehaviour {
                     }
                 } else if (playerSelected) {
                     if (Input.GetMouseButton(0)) {
+                        for (int i = 0; i < PlayerController.pc.Shooter.shootableEnemies.Count; i++) {
+                            //TODO doesn't switch back to Off when MouseButtonUp
+                            EnemyController enemy = PlayerController.pc.Shooter.shootableEnemies[i];
+                            ShootableNode shootableNode = enemy.Mover.currentNode.transform.parent.GetComponentInChildren<ShootableNode>();
+                            shootableNode.currentState = ShootableNode.NodeState.ShootableUnselected;
+                        }
+
                         //TODO figure out how to unselect node when mouse is held down but not on node
                         //drag to node or enemy
                         //create layerMask = test enemies and world layer
@@ -53,15 +60,15 @@ public class PlayerInput : MonoBehaviour {
                         if (target != null) {
                             if (target.tag == "WorldBlock") {
                                 //no selected block, select new block
-                                if (selectedBlock == null) { 
+                                if (selectedBlock == null) {
                                     MoveNode node = target.GetComponentInChildren<MoveNode>();
                                     if (node.movable) {
                                         selectedBlock = target;
                                         MovableNode nodeController = target.GetComponentInChildren<MovableNode>();
                                         nodeController.currentState = MovableNode.NodeState.MovableSelected;
                                     }
-                                //mouse over new block
-                                } else if (target != selectedBlock) {  
+                                    //mouse over new block
+                                } else if (target != selectedBlock) {
                                     //unselect previous block
                                     MovableNode previousNode = selectedBlock.GetComponentInChildren<MovableNode>();
                                     previousNode.currentState = MovableNode.NodeState.MovableUnselected;
@@ -74,11 +81,20 @@ public class PlayerInput : MonoBehaviour {
                                         nodeController.currentState = MovableNode.NodeState.MovableSelected;
                                     }
                                 }
-                            }
-                            else {
+                            } else {
                                 //not a block, unselect previous block
-                                    MovableNode previousNode = target.GetComponentInChildren<MovableNode>();
-                                    previousNode.currentState = MovableNode.NodeState.MovableUnselected;
+                                //MovableNode previousNode = target.GetComponentInChildren<MovableNode>();
+                                //previousNode.currentState = MovableNode.NodeState.MovableUnselected;
+
+                                if (target.tag == "Enemy") {
+                                    EnemyController enemy = target.GetComponent<EnemyController>();
+                                    if (enemy.shootable) {
+                                        ShootableNode node =
+                                            enemy.Mover.currentNode.transform.parent
+                                                .GetComponentInChildren<ShootableNode>();
+                                        node.currentState = ShootableNode.NodeState.ShootableSelected;
+                                    }
+                                } 
                             }
                         }
                     } else if (Input.GetMouseButtonUp(0)) {

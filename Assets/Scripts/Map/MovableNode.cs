@@ -8,7 +8,7 @@ public class MovableNode : MonoBehaviour {
 		MovableUnselected,
 		MeleeableSelected,
 		MeleeableUnselected,
-		Off
+        Off
 	}
 
 	public Renderer selectedRenderer;

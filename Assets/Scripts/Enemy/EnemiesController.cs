@@ -52,4 +52,8 @@ public class EnemiesController : MonoBehaviour, ITurnBased {
             CurrentTurn.AdvancePhase();
     }
 
+	public void ResetEnemiesController() {
+		//TODO
+	}
+
 }

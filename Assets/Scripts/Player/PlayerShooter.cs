@@ -91,8 +91,6 @@ public class PlayerShooter : MonoBehaviour {
             Debug.DrawRay(ray.origin, ray.direction * 100, Color.blue, 5.0f);
         }
         return true;
-        //HACK for now just return true
-        //return true;
     }
 
     public bool CheckMeleeRange(Transform target) {
@@ -111,7 +109,6 @@ public class PlayerShooter : MonoBehaviour {
         //TODO change method to only except EnemyControllers
         if (target != null && PlayerController.pc.Shooter.CheckValidTarget(target)) {
             PlayerController.pc.Input.allowInput = false;
-            //TODO add melee, if target is one square away
             if (CheckMeleeRange(target)) {
                 //switch to melee mesh
                 StartCoroutine(Melee(target));
@@ -188,7 +185,6 @@ public class PlayerShooter : MonoBehaviour {
         Debug.DrawRay(transform.position, target.position - transform.position, Color.red, 3.0f);
 
         while (Time.time < rotateTime + startTime) {
-            //TODO object immediately snaps to final position?
             transform.rotation = Quaternion.Slerp(startRot, endRot, (Time.time - startTime) / rotateTime);
             yield return null;
         }

@@ -58,6 +58,30 @@ public class GameControl : MonoBehaviour {
             Debug.Log("New High Score!");
         }
     }
+
+	public void ResetGameController() {
+		//TODO
+	}
+
+	public static void ClearGameObjectsBeforeRestart ()
+	{
+		GameObject[] GameObjects = (FindObjectsOfType<GameObject>() as GameObject[]);
+		
+		for (int i = 0; i < GameObjects.Length; i++)
+		{
+			GameObject obj = GameObjects[i];
+			//Exclude certain types here
+			if(obj.name == "GameController") continue;
+
+			Destroy(obj);
+		}
+	}
+
+	public static void ResetStaticVariables() {
+		EnemyController.totalEnemies = 0;
+		EnemyBullet.totalBullets = 0;
+		//Turn.TurnNumber = 0;
+	}
 }
 
 [Serializable]

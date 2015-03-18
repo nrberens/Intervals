@@ -8,7 +8,7 @@ public class EnemyBullet : MonoBehaviour, IMover {
 
     public int distance;
     public float MoveTime;
-    public static int totalBullets;
+    public static int totalBullets; //TODO reset at game over
 	public bool finished;
 
     public MoveNode[,] nodes { get; private set; }

@@ -52,4 +52,8 @@ public class BulletsController : MonoBehaviour, ITurnBased {
 		if (CurrentTurn.CurrentPhase == Turn.Phase.Bullet)
 			CurrentTurn.AdvancePhase();
 	}
+
+	public static void ResetBulletsController() {
+		//TODO
+	}
 }

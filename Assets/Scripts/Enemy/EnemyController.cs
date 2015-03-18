@@ -16,7 +16,7 @@ public class EnemyController : MonoBehaviour, ITurnBased {
     public bool acting { get; set; }
 	public bool turnFinished;
     public bool shootable { get; set; }
-    public static int totalEnemies;
+    public static int totalEnemies; //reset during game over
 
     // Use this for initialization
     void Start() {
@@ -61,9 +61,12 @@ public class EnemyController : MonoBehaviour, ITurnBased {
 		//remove from list of enemies
         Vector3 deathPrefabPosition = transform.FindChild("DeathPrefab").position;
         Transform death = (Transform) Instantiate(deathPrefab, deathPrefabPosition, bullet.rotation);
-        //TODO set rotation opposite to the bullet impact
 		EnemiesController.ec.Enemies.Remove(this);
         Mover.currentNode.RemoveFromNode(gameObject);
 		Destroy (gameObject);
+	}
+
+	public static void ResetEnemyController() {
+		totalEnemies = 0;
 	}
 }

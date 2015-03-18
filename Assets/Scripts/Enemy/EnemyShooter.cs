@@ -30,7 +30,6 @@ public class EnemyShooter : MonoBehaviour {
     }
 
     public IEnumerator Shoot(Direction direction) {
-        //TODO Check for valid shot
         //Check for node in that direction
         if (CheckForValidShot(direction)) {
 			if(CheckForMeleeRange()) {
@@ -82,11 +81,9 @@ public class EnemyShooter : MonoBehaviour {
 	                    break;
 	            }
 
-	            //HACK enemies don't wobble when shooting
 	            StartCoroutine(_ec.Mover.ObjectWiggle(transform.position));
 
 	            // Instantiate EnemyBullet prefab and set direction
-				//TODO shots from adjacent squares don't cause collision
 	            Transform bullet = (Transform)Instantiate(BulletTransform);
 	            EnemyBullet enemyBulletScript = bullet.GetComponent<EnemyBullet>();
 	            EnemyBullet.totalBullets++;
@@ -161,7 +158,6 @@ public class EnemyShooter : MonoBehaviour {
         Debug.DrawRay(transform.position, directionVector, Color.red, 3.0f);
 
         while (Time.time < rotateTime + startTime) {
-            //TODO object immediately snaps to final position?
             transform.rotation = Quaternion.Slerp(startRot, endRot, (Time.time - startTime) / rotateTime);
             yield return null;
         }

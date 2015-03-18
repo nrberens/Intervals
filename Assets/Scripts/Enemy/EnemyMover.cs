@@ -169,7 +169,6 @@ public class EnemyMover : MonoBehaviour, IMover
 
 		//Rotate Object before moving
 		while (Time.time < rotateTime + startTime) {
-			//TODO object immediately snaps to final position?
 			transform.rotation = Quaternion.Slerp (startRot, endRot, (Time.time - startTime) / rotateTime);
 			yield return null;
 		}
@@ -225,7 +224,6 @@ public class EnemyMover : MonoBehaviour, IMover
 
 	public bool CheckForValidMovement (Direction dir, int distance)
 	{
-		//TODO fix crash from in here
 		try {
 			MoveNode node;
 			switch (dir) {

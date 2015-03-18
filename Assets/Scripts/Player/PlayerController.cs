@@ -64,16 +64,23 @@ public class PlayerController : MonoBehaviour {
         Transform death = (Transform) Instantiate(deathPrefab, deathPrefabPosition, Quaternion.Inverse(bullet.rotation));
         Debug.Log("Died with a score of " + GameControl.gc.currentScore);
         GameControl.gc.CheckForHighScore();
-        //TODO world falls away? show score, restart button
+        //world falls away? show score, restart button
         WorldFallAway wfa = FindObjectOfType<WorldFallAway>();
         StartCoroutine(wfa.ManageFallAwayTiming());
         GameOverScreen gameOverScreen = FindObjectOfType<GameOverScreen>();
         gameOverScreen.DisplayGameOverUI();
-        GameControl.gc.currentScore = 0;
         GameControl.gc.Save();
     }
 
     public void RestartLevel() {
+		GameControl.ClearGameObjectsBeforeRestart();
+		GameControl.ResetStaticVariables();
+        GameControl.gc.currentScore = 0;
+		//Turn.ResetTurn();
         Application.LoadLevel(1);
     }
+
+	public static void ResetPlayerController() {
+		//TODO
+	}
 }

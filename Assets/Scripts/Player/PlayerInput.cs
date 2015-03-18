@@ -31,7 +31,7 @@ public class PlayerInput : MonoBehaviour
 			if (allowInput && !PlayerController.pc.acting) {
 				if (!playerSelected) {
 					if (Input.GetMouseButtonDown (0)) {
-						//TODO create layerMask - test only player layer = 8
+						// create layerMask - test only player layer = 8
 						int playerLayer = 8;
 						int layerMask = 1 << playerLayer;
 						Transform target = GetTargetOfClick (layerMask);
@@ -39,7 +39,6 @@ public class PlayerInput : MonoBehaviour
 						if (target.tag == "Player") {
 							playerSelected = true;
 							PlayerController.pc.Mover.TagMovableNodes ();
-							//TODO doesn't seem to work
 							PlayerController.pc.Shooter.TagShootableEnemies ();
 						} else if (target == null) {
 							//Do nothing
@@ -54,7 +53,6 @@ public class PlayerInput : MonoBehaviour
 								shootableNode.currentState = ShootableNode.NodeState.ShootableUnselected;
 						}
 
-						//TODO figure out how to unselect node when mouse is held down but not on node
 						//drag to node or enemy
 						//create layerMask = test enemies and world layer
 						int enemyLayer = 10;
@@ -120,7 +118,7 @@ public class PlayerInput : MonoBehaviour
 						PlayerController.pc.Mover.UnTagMovableNodes ();
 						PlayerController.pc.Shooter.UnTagShootableEnemies ();
 
-						//TODO create layerMask = test enemies and world layer
+						// create layerMask = test enemies and world layer
 						int enemyLayer = 10;
 						int worldLayer = 11;
 						int layerMask = 1 << enemyLayer | 1 << worldLayer;
@@ -145,7 +143,6 @@ public class PlayerInput : MonoBehaviour
 					}
 				}
                 //END OF TURN
-                //TODO find another way of marking end of turn
 			} else if (!allowInput && !PlayerController.pc.acting) {
 				PlayerController.pc.EndPhase ();
 			}

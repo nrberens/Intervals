@@ -12,9 +12,10 @@ public class Turn : MonoBehaviour
 		Enemy
 	}
 
-	public Phase CurrentPhase { get; set; }
+	public Phase CurrentPhase; //TODO reset in game over
 
-	public static int TurnNumber { get; set; }
+	public int TurnNumber; //TODO reset in game over
+	public int turnNumberPublic;
 
 	public int turnsBetweenSpawns;
 	public int turnsUntilNextSpawn;
@@ -32,7 +33,7 @@ public class Turn : MonoBehaviour
 
 	public void Update ()
 	{
-
+		turnNumberPublic = TurnNumber;
 	}
 
 	public void AdvancePhase ()
@@ -64,4 +65,10 @@ public class Turn : MonoBehaviour
 
 
 	}
+
+	//public static void ResetTurn() {
+		//turnsUntilNextSpawn = turnsBetweenSpawns;
+		//CurrentPhase = Phase.Player;
+		//TurnNumber = 0;
+	//}
 }

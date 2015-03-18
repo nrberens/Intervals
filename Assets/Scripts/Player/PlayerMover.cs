@@ -66,7 +66,6 @@ public class PlayerMover : MonoBehaviour, IMover {
                 //if(obj.tag == "Bullet") {
                 //	hasBullet = true;
                 //    bullet = obj.transform;
-                //TODO Add OnCollisionEnter for EnemyBullets
                 //} else if (obj.tag == "Enemy") {
                 if (obj.tag == "Enemy") {
                     hasEnemy = true;

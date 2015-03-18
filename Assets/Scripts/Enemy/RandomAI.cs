@@ -69,7 +69,6 @@ public class RandomAI : FSM
 			List<Direction> potentialDirs = new List<Direction> { Direction.North, Direction.South, Direction.East, Direction.West };
 
 			do {
-				//TODO track attempted directions -- if no directions work, just end turn
 				if (potentialDirs.Count == 0) {
 					Debug.Log ("No valid directions, just staying put.");
 					_ec.EndPhase ();

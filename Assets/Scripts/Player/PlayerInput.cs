@@ -21,6 +21,7 @@ public class PlayerInput : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
+		//TODO This is fucking awful spaghetti code and I hate it
 
 		//crosshairPos = Crosshair.GetCrosshairInWorld();
 
@@ -107,6 +108,10 @@ public class PlayerInput : MonoBehaviour
 									}
 								}
 							}
+						} else if (target == null) {
+							MovableNode previousNode = selectedBlock.GetComponentInChildren<MovableNode> ();
+							previousNode.currentState = MovableNode.NodeState.MovableUnselected;
+							selectedBlock = null;
 						}
 						
 					} else if (Input.GetMouseButtonUp (0)) {

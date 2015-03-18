@@ -18,6 +18,7 @@ public class PlayerShooter : MonoBehaviour {
         bulletSpawnPoint = transform.FindChild("BulletSpawnPoint");
         muzzleFlashLight = muzzleFlash.GetComponent<Light>();
         muzzleFlashLight.enabled = false;
+		shootableEnemies = new List<EnemyController>();
     }
 
     // Update is called once per frame
@@ -248,5 +249,6 @@ public class PlayerShooter : MonoBehaviour {
             ShootableNode nodeController = node.transform.parent.GetComponentInChildren<ShootableNode>();
             nodeController.currentState = ShootableNode.NodeState.Off;
         }
+		shootableEnemies.Clear ();
     }
 }

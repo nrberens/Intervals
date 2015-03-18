@@ -21,12 +21,13 @@ public class PlayerController : MonoBehaviour {
 	//public bool turnFinished;
 
 	void Awake() {
-		if (pc == null) {
-			DontDestroyOnLoad(gameObject);
-			pc = this;
-		} else if (pc != this) {
-			Destroy(gameObject);
-		}
+//		if (pc == null) {
+//			DontDestroyOnLoad(gameObject);
+//			pc = this;
+//		} else if (pc != this) {
+//			Destroy(gameObject);
+//		}
+		pc = this;
 	}
 
 	// Use this for initialization
@@ -59,6 +60,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     public void GameOver(Transform bullet) {
+		CurrentTurn.CurrentPhase = Turn.Phase.GameOver;
         Debug.Log("Game over, man, game over!");
         Vector3 deathPrefabPosition = transform.FindChild("DeathPrefab").position;
         Transform death = (Transform) Instantiate(deathPrefab, deathPrefabPosition, Quaternion.Inverse(bullet.rotation));
@@ -69,15 +71,21 @@ public class PlayerController : MonoBehaviour {
         StartCoroutine(wfa.ManageFallAwayTiming());
         GameOverScreen gameOverScreen = FindObjectOfType<GameOverScreen>();
         gameOverScreen.DisplayGameOverUI();
-        GameControl.gc.Save();
+        //GameControl.gc.Save();
     }
 
     public void RestartLevel() {
+		BulletsController.bc.ResetBulletsController();
+		EnemiesController.ec.ResetEnemiesController();
+		CurrentTurn.ResetTurn();
+		Map map = FindObjectOfType<Map>();
+		map.ResetMap();
 		GameControl.ClearGameObjectsBeforeRestart();
 		GameControl.ResetStaticVariables();
         GameControl.gc.currentScore = 0;
 		//Turn.ResetTurn();
         Application.LoadLevel(1);
+		CurrentTurn.RestartTurn ();
     }
 
 	public static void ResetPlayerController() {

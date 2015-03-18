@@ -9,7 +9,8 @@ public class Turn : MonoBehaviour
 	{
 		Player,
 		Bullet,
-		Enemy
+		Enemy,
+		GameOver
 	}
 
 	public Phase CurrentPhase; //TODO reset in game over
@@ -66,9 +67,13 @@ public class Turn : MonoBehaviour
 
 	}
 
-	//public static void ResetTurn() {
-		//turnsUntilNextSpawn = turnsBetweenSpawns;
-		//CurrentPhase = Phase.Player;
-		//TurnNumber = 0;
-	//}
+	public void ResetTurn() {
+		turnsUntilNextSpawn = turnsBetweenSpawns;
+		TurnNumber = 0;
+	}
+
+	public void RestartTurn() {
+		map=FindObjectOfType<Map>();
+		CurrentPhase = Turn.Phase.Player;
+	}
 }

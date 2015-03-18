@@ -234,4 +234,9 @@ public class Map : MonoBehaviour {
         }
     }
 
+	public void ResetMap() {
+		Nodes = new MoveNode[,] {};
+		SpawnPoints.Clear ();
+	}
+
 }

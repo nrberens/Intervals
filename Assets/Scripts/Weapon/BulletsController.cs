@@ -53,7 +53,9 @@ public class BulletsController : MonoBehaviour, ITurnBased {
 			CurrentTurn.AdvancePhase();
 	}
 
-	public static void ResetBulletsController() {
+	public void ResetBulletsController() {
 		//TODO
+		Bullets.Clear ();
+		acting = false;
 	}
 }

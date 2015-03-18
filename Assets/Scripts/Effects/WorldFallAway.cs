@@ -12,7 +12,7 @@ public class WorldFallAway : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	    world = GameObject.Find("World").transform;
+	    world = transform;
 	    player = GameObject.FindGameObjectWithTag("Player").transform;
 	    fallingComplete = false;
 	}

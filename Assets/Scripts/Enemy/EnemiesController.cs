@@ -54,6 +54,9 @@ public class EnemiesController : MonoBehaviour, ITurnBased {
 
 	public void ResetEnemiesController() {
 		//TODO
+		Enemies.Clear ();
+		acting = false;
+		totalCurrentEnemies = 0;
 	}
 
 }

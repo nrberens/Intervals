@@ -8,9 +8,9 @@ public class GameControl : MonoBehaviour {
 
     public static GameControl gc;
 
-    public float currentScore { get; set; }
-    public float highScore { get; set; }
-    public AudioSource music;
+	public float currentScore; 
+	public float highScore;
+    //public AudioSource music;
 
     void Awake() {
         if (gc == null) {
@@ -24,9 +24,9 @@ public class GameControl : MonoBehaviour {
     void Start() {
         currentScore = 0;
         //TODO load high score from file
-        Load();
-	    music = FindObjectOfType<AudioSource>();
-        DontDestroyOnLoad(music);
+        //Load();
+	    //music = FindObjectOfType<AudioSource>();
+        //DontDestroyOnLoad(music);
     }
 
     public void Save() {

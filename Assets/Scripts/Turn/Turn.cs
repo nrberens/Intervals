@@ -10,10 +10,12 @@ public class Turn : MonoBehaviour
 		Player,
 		Bullet,
 		Enemy,
-		GameOver
+		GameOver,
+		Paused
 	}
 
 	public Phase CurrentPhase; //TODO reset in game over
+	public Phase PausedPhase; //reset in game over? not necessary
 
 	public int TurnNumber; //TODO reset in game over
 	public int turnNumberPublic;

@@ -25,7 +25,7 @@ public class PlayerInput : MonoBehaviour
 
 		//crosshairPos = Crosshair.GetCrosshairInWorld();
 
-		if (PlayerController.pc.CurrentTurn.CurrentPhase == Turn.Phase.Player) {
+		if (PlayerController.pc.CurrentTurn.CurrentPhase == Turn.Phase.Player && Time.timeScale > 0) {
 			//INPUT PHASE 
 			//TODO track time between inputs, only allow input every half second or so
 			if (allowInput && !PlayerController.pc.acting) {

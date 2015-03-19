@@ -45,7 +45,7 @@ public class UIController : MonoBehaviour {
 
 	public void StartGame() {
 		startMenuPanel.gameObject.SetActive (false);
-		Application.LoadLevel(1);
+		Application.LoadLevel(2);
 	}
 
 	public void DisplayPauseUI() {

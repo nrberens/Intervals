@@ -9,8 +9,10 @@ public class UIController : MonoBehaviour {
 
     public RectTransform startMenuPanel;
 	public RectTransform pausePanel;
+	public RectTransform creditsPanel;
     public RectTransform gameOverPanel;
     public Text gameOverText;
+
 
 	void Awake() {
 		if (ui == null) {
@@ -44,17 +46,33 @@ public class UIController : MonoBehaviour {
 	}
 
 	public void StartGame() {
-		startMenuPanel.gameObject.SetActive (false);
+		DisableAllUI ();
 		Application.LoadLevel(2);
 	}
 
+	public void QuitGame() {
+		Application.Quit();
+	}
+
+	public void DisplayMainMenu() {
+		DisableAllUI ();
+		startMenuPanel.gameObject.SetActive (true);
+	}
+
 	public void DisplayPauseUI() {
+		DisableAllUI ();
 		pausePanel.gameObject.SetActive(true);
 	}
 
 	public void DisplayGameOverUI() {
+		DisableAllUI ();
 		gameOverPanel.gameObject.SetActive(true);
 		//gameOverText.text = "GAME OVER\n SCORE " + GameControl.gc.currentScore + "\nHIGH SCORE " + GameControl.gc.highScore;
+	}
+
+	public void DisplayCredits() {
+		DisableAllUI ();
+		creditsPanel.gameObject.SetActive(true);
 	}
 
 }

@@ -29,7 +29,7 @@ public class UIController : MonoBehaviour
 	void Start ()
 	{
 		//DEBUG allow starting from any scene -- start menu only appears if scene = 0
-		gameOverPanel.gameObject.SetActive (false);
+		DisableAllUI();
 		if (Application.loadedLevel == 0) {
 			startMenuPanel.gameObject.SetActive (true);
 		}
@@ -49,11 +49,17 @@ public class UIController : MonoBehaviour
 		}
 	}
 
+	public void EnableAllUI() {
+		foreach(RectTransform rect in canvas.transform) {
+			rect.gameObject.SetActive (true);
+		}
+	}
+
 	public void StartGame ()
 	{
 		if (!initialPlay) {
 			Debug.Log ("Restart level " + Application.loadedLevel);
-			DisableAllUI();
+			DisableAllUI ();
 			GameControl.gc.RestartLevel ();
 		} else {
 			Debug.Log ("Initial play - Current Level" + Application.loadedLevel + " loading level 2");

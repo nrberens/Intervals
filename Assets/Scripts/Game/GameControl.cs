@@ -50,6 +50,12 @@ public class GameControl : MonoBehaviour {
         }
     }
 
+	public void RestartLevel() {
+		if (PlayerController.pc != null) {
+			PlayerController.pc.RestartLevel();
+		} 
+	}
+
     public void CheckForHighScore() {
         if (currentScore > highScore) {
             highScore = currentScore;

@@ -84,7 +84,7 @@ public class PlayerController : MonoBehaviour {
 		GameControl.ResetStaticVariables();
         GameControl.gc.currentScore = 0;
 		//Turn.ResetTurn();
-        Application.LoadLevel(1);
+        Application.LoadLevel(Application.loadedLevel);
 		CurrentTurn.RestartTurn ();
     }
 

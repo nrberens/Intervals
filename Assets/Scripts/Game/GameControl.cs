@@ -78,6 +78,8 @@ public class GameControl : MonoBehaviour {
 			GameObject obj = GameObjects[i];
 			//Exclude certain types here
 			if(obj.name == "GameController") continue;
+			else if(obj.name == "Canvas") continue;
+			else if(obj.name == "UIController") continue;
 
 			Destroy(obj);
 		}

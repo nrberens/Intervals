@@ -33,6 +33,11 @@ public class Pause : MonoBehaviour
 		Time.timeScale = 1;
 	}
 
+	public void UnPauseAndQuitToMenu() {
+		ResumeGame ();
+		UIController.ui.QuitToMenu();
+	}
+
 //	void OnApplicationPause(bool pauseStatus) {
 //		paused = pauseStatus;
 //		if(paused) {

@@ -30,7 +30,7 @@ public class FallingSpawn : MonoBehaviour {
         }
 
         while (Time.time < startTime + fallTime || transform.position.y > finalPos.y) {
-			Debug.Log (gameObject + " position is " + transform.position);
+			//Debug.Log (gameObject + " position is " + transform.position);
             Vector3 currentPosition = Vector3.Lerp(startPos, finalPos, (Time.time - startTime) / fallTime - ((transform.position.x+transform.position.z)*.2f));
             //Vector3 currentPosition = Vector3.Lerp(startPos, finalPos, (Time.time - startTime) / fallTime + fallOffset);
             transform.position = currentPosition;

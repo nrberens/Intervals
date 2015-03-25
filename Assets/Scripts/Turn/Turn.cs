@@ -72,7 +72,7 @@ public class Turn : MonoBehaviour {
                     do {
                         phoneX = Random.Range(0, map.mapWidth);
                         phoneZ = Random.Range(0, map.mapLength);
-                    } while (map.Nodes[phoneX, phoneZ].objectsOnNode.Count <= 0);
+                    } while (map.Nodes[phoneX, phoneZ].objectsOnNode.Count > 0 && map.Nodes[phoneX, phoneZ].blocksMovement);
 
                     map.SpawnPhone(phoneX, phoneZ);
                     PhoneController.pc.turnsUntilPhoneSpawn = PhoneController.pc.turnsBetweenPhones;

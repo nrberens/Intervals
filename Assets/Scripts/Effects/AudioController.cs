@@ -29,7 +29,7 @@ public class AudioController : MonoBehaviour {
 	}
 
 	public void PlayGunshot() {
-		soundEffect.PlayOneShot (gunshot, 0.4f);
+		soundEffect.PlayOneShot (gunshot, 0.7f);
 	}
 
 	public void PlaySpawnNoise() {

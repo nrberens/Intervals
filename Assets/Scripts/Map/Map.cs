@@ -6,6 +6,7 @@ using UnityEngine.SocialPlatforms;
 
 public class Map : MonoBehaviour {
     public Transform EnemyTransform;
+    public Transform PhoneTransform;
     public int mapWidth, mapLength;
 	public float fallTime;
 
@@ -36,7 +37,6 @@ public class Map : MonoBehaviour {
         }
         SpawnWorld sw = GetComponent<SpawnWorld>();
         StartCoroutine(sw.ManageSpawnTiming());
-
     }
 
     private void GenerateNodeArray() {
@@ -232,6 +232,29 @@ public class Map : MonoBehaviour {
         else {
             Debug.Log("Node (" + nodeX + "," +  nodeZ +") full, can't spawn here!");
         }
+    }
+
+    public void SpawnPhone(int nodeX, int nodeZ) {
+        //Relies on the calling method having checked for a clear space
+        MoveNode node = Nodes[nodeX, nodeZ];
+
+        GameObject phone = Instantiate(PhoneTransform.gameObject);
+        int phoneX = nodeX;
+        int phoneZ = nodeZ;
+
+        phone.GetComponent<Phone>().currentNode = Nodes[phoneX, phoneZ];
+        PhoneController.pc.currentPhone = phone.GetComponent<Phone>();
+        Nodes[phoneX, phoneZ].AddToNode(phone);
+        phone.transform.position = Nodes[phoneX, phoneZ].transform.position;
+        foreach (Transform t in phone.transform) {
+            Renderer[] renderers = t.GetComponentsInChildren<Renderer>();
+            foreach (Renderer r in renderers) {
+                r.enabled = false;
+            }
+        }
+        FallingSpawn fs = phone.GetComponent<FallingSpawn>();
+        StartCoroutine(fs.FallIntoPlace());
+
     }
 
 	public void ResetMap() {

@@ -80,7 +80,7 @@ public class GameControl : MonoBehaviour {
 			if(obj.name == "GameController") continue;
 			else if(obj.layer == 5) continue; //layer 5 is UI
 			else if(obj.name == "UIController") continue;
-			else if (obj.name == "AudioController" || obj.name == "Audio Source") continue;
+			else if (obj.name == "AudioController" || obj.name == "Music" || obj.name == "SoundEffect") continue;
 
 			Destroy(obj);
 		}

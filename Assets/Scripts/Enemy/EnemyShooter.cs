@@ -96,6 +96,7 @@ public class EnemyShooter : MonoBehaviour {
 	            bullet.rotation = transform.rotation;
 	            enemyBulletScript.UpdateBullet();
 	            yield return StartCoroutine(MuzzleFlash());
+				AudioController.ac.PlayGunshot();
 	            yield return new WaitForSeconds(0.5f);
 	            _ec.firingMesh.SetActive(false);
 	            _ec.lowReadyMesh.SetActive(true);

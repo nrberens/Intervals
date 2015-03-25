@@ -142,6 +142,7 @@ public class PlayerShooter : MonoBehaviour {
         Debug.Log(target + " killed!");
         //target.GetComponent<EnemyController>().TakeDamage(newBullet);
         yield return StartCoroutine(MuzzleFlash());
+		AudioController.ac.PlayGunshot();
         yield return new WaitForSeconds(0.5f);
         PlayerController.pc.firingMesh.SetActive(false);
         PlayerController.pc.lowReadyMesh.SetActive(true);

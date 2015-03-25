@@ -41,6 +41,8 @@ public class FallingSpawn : MonoBehaviour {
         startTime = Time.time;
         Vector3 centerPos = finalPos;
 
+		AudioController.ac.PlaySpawnNoise();
+
         yield return StartCoroutine(ObjectWiggle(centerPos));
 
 		if(transform.tag == "Enemy") {

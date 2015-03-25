@@ -60,6 +60,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     public void GameOver(Transform bullet) {
+		AudioController.ac.PlayDeathNoise();
 		CurrentTurn.CurrentPhase = Turn.Phase.GameOver;
         Debug.Log("Game over, man, game over!");
         Vector3 deathPrefabPosition = transform.FindChild("DeathPrefab").position;

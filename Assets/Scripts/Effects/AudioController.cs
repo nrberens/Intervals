@@ -10,6 +10,7 @@ public class AudioController : MonoBehaviour {
 
 	public AudioClip gunshot;
 	public AudioClip spawn;
+	public AudioClip explosion;
 
 	// Use this for initialization
 	void Start () {
@@ -29,5 +30,13 @@ public class AudioController : MonoBehaviour {
 
 	public void PlayGunshot() {
 		soundEffect.PlayOneShot (gunshot, 0.4f);
+	}
+
+	public void PlaySpawnNoise() {
+		soundEffect.PlayOneShot (spawn, 0.5f);
+	}
+
+	public void PlayDeathNoise() {
+		soundEffect.PlayOneShot (explosion, 0.5f);
 	}
 }

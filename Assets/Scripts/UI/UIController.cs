@@ -11,6 +11,9 @@ public class UIController : MonoBehaviour
 	public RectTransform creditsPanel;
 	public RectTransform gameOverPanel;
 	public Text gameOverText;
+	public RectTransform ingameUI;
+	public Text scoreText;
+	public Text phoneText;
 	public bool initialPlay;
 
 	void Awake ()
@@ -42,6 +45,17 @@ public class UIController : MonoBehaviour
 	
 	}
 
+	void OnGUI() {
+		if(ingameUI.gameObject.activeInHierarchy == true) {
+			scoreText.text = "score: " + GameControl.gc.currentScore; 
+			if(PhoneController.pc.currentPhone == null) {
+				phoneText.text = "turns until new phone: " + PhoneController.pc.turnsUntilPhoneSpawn;
+			} else {
+				phoneText.text = "turns to reach phone: " + PhoneController.pc.turnsUntilGameOver;
+			}
+		}
+	}
+
 	public void DisableAllUI ()
 	{
 		foreach (RectTransform rect in canvas.transform) {
@@ -60,11 +74,13 @@ public class UIController : MonoBehaviour
 		if (!initialPlay) {
 			Debug.Log ("Restart level " + Application.loadedLevel);
 			DisableAllUI ();
+			DisplayInGameUI();
 			GameControl.gc.RestartLevel ();
 		} else {
 			Debug.Log ("Initial play - Current Level" + Application.loadedLevel + " loading level 2");
 			initialPlay = false;
 			DisableAllUI ();
+			DisplayInGameUI();
 			Application.LoadLevel (2);
 		}
 	}
@@ -103,6 +119,11 @@ public class UIController : MonoBehaviour
 	{
 		DisableAllUI ();
 		creditsPanel.gameObject.SetActive (true);
+	}
+
+	public void DisplayInGameUI() {
+		DisableAllUI ();
+		ingameUI.gameObject.SetActive(true);
 	}
 
 }

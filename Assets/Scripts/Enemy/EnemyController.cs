@@ -59,6 +59,7 @@ public class EnemyController : MonoBehaviour, ITurnBased {
 	public void TakeDamage(Transform bullet) {
 		//kill enemy instantly
 		//remove from list of enemies
+		GameControl.gc.currentScore += 100;
 		AudioController.ac.PlayDeathNoise();
         Vector3 deathPrefabPosition = transform.FindChild("DeathPrefab").position;
         Transform death = (Transform) Instantiate(deathPrefab, deathPrefabPosition, bullet.rotation);

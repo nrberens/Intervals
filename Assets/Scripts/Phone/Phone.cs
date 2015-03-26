@@ -23,6 +23,7 @@ public class Phone : MonoBehaviour {
     void OnCollisionEnter(Collision collision) {
         if (collision.transform.tag == "Player") {
             //TODO destroy phone, play sound effect, reset timers
+			GameControl.gc.currentScore += 300;
             PhoneController.pc.currentPhone = null;
             Destroy(gameObject);
         }

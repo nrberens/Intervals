@@ -111,8 +111,8 @@ public class UIController : MonoBehaviour
 	public void DisplayGameOverUI ()
 	{
 		DisableAllUI ();
+		scoreText.text = "score" + GameControl.gc.currentScore;
 		gameOverPanel.gameObject.SetActive (true);
-		//gameOverText.text = "GAME OVER\n SCORE " + GameControl.gc.currentScore + "\nHIGH SCORE " + GameControl.gc.highScore;
 	}
 
 	public void DisplayCredits ()

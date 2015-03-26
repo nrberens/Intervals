@@ -76,16 +76,16 @@ public class PlayerMover : MonoBehaviour, IMover {
 
                 switch (direction) {
                     case Direction.North:
-                        PlayerController.pc.Mover.MoveUp(distance);
+                        MoveUp(distance);
                         break;
                     case Direction.South:
-                        PlayerController.pc.Mover.MoveDown(distance);
+                        MoveDown(distance);
                         break;
                     case Direction.West:
-                        PlayerController.pc.Mover.MoveLeft(distance);
+                        MoveLeft(distance);
                         break;
                     case Direction.East:
-                        PlayerController.pc.Mover.MoveRight(distance);
+                        MoveRight(distance);
                         break;
                 }
 
@@ -119,7 +119,8 @@ public class PlayerMover : MonoBehaviour, IMover {
         currentNode.RemoveFromNode(gameObject);
         targetNode.AddToNode(gameObject);
 
-        StartCoroutine(MoveToNode(targetNode));
+        //StartCoroutine(MoveToNode(targetNode));
+		MoveToNodeTweened(targetNode);
         currentNode = targetNode;
     }
 
@@ -140,7 +141,8 @@ public class PlayerMover : MonoBehaviour, IMover {
         currentNode.RemoveFromNode(gameObject);
         targetNode.AddToNode(gameObject);
 
-        StartCoroutine(MoveToNode(targetNode));
+        //StartCoroutine(MoveToNode(targetNode));
+		MoveToNodeTweened(targetNode);
         currentNode = targetNode;
     }
 
@@ -161,7 +163,8 @@ public class PlayerMover : MonoBehaviour, IMover {
         currentNode.RemoveFromNode(gameObject);
         targetNode.AddToNode(gameObject);
 
-        StartCoroutine(MoveToNode(targetNode));
+        //StartCoroutine(MoveToNode(targetNode));
+		MoveToNodeTweened(targetNode);
         currentNode = targetNode;
     }
 
@@ -182,7 +185,8 @@ public class PlayerMover : MonoBehaviour, IMover {
         currentNode.RemoveFromNode(gameObject);
         targetNode.AddToNode(gameObject);
 
-        StartCoroutine(MoveToNode(targetNode));
+        //StartCoroutine(MoveToNode(targetNode));
+		MoveToNodeTweened(targetNode);
         currentNode = targetNode;
     }
 
@@ -224,6 +228,35 @@ public class PlayerMover : MonoBehaviour, IMover {
 
         PlayerController.pc.acting = false;
     }
+
+	public void MoveToNodeTweened(MoveNode targetNode) {
+		Rigidbody r = transform.GetComponent<Rigidbody>();
+		r.isKinematic = true;
+		r.constraints = RigidbodyConstraints.None;
+
+		Vector3 startPos = currentNode.transform.position;
+		Vector3 endPos = targetNode.transform.position;
+		Vector3 startRot = transform.rotation.eulerAngles;
+		Vector3 endRot = Quaternion.LookRotation(targetNode.transform.position - transform.position).eulerAngles;
+		Debug.DrawRay (transform.position, targetNode.transform.position - transform.position, Color.black, 3.0f);
+		float startTime = Time.time;
+
+		//Rotate Object before moving
+		iTween.RotateTo (gameObject, iTween.Hash("rotation", endRot, "time", rotateTime, "easeType", "easeInOutBack"));
+		//move
+		iTween.MoveTo(gameObject, iTween.Hash("position", endPos, "time", MoveTime, "delay", rotateTime, "easeType", "easeInOutBack", "oncomplete", "MoveComplete"));
+	}
+
+	public void MoveComplete() {
+		Rigidbody r = transform.GetComponent<Rigidbody>();
+		if(r != null) {
+			r.isKinematic = false;
+			r.constraints = RigidbodyConstraints.FreezeAll;
+		}
+
+		PlayerController.pc.acting = false;
+		PlayerController.pc.EndPhase ();
+	}
 
     public IEnumerator ObjectWiggle(Vector3 centerPos) {
         float startTime = Time.time;

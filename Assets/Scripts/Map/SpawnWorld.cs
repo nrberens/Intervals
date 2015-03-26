@@ -18,22 +18,22 @@ public class SpawnWorld : MonoBehaviour {
 
     public IEnumerator ManageSpawnTiming() {
         yield return new WaitForSeconds(1.0f);
-        StartCoroutine(SpawnInWorldBlocks());
-        StartCoroutine(SpawnInPlayer());
-        StartCoroutine(SpawnInEnemies());
+		SpawnInWorldBlocks();
+		SpawnInPlayer();
+		SpawnInEnemies();
         yield return new WaitForSeconds(1.0f);
     }
 
-    public IEnumerator SpawnInWorldBlocks() {
+    public void SpawnInWorldBlocks() {
         //spawn in world
         foreach (Transform t in transform) {
             FallingSpawn fs = t.GetComponent<FallingSpawn>();
-            if (fs != null) StartCoroutine(fs.FallIntoPlace());
+            //if (fs != null) StartCoroutine(fs.FallIntoPlace());
+			if(fs != null) fs.FallIntoPlaceTweened();
         }
-        yield return null;
     }
 
-    public IEnumerator SpawnInPlayer() {
+    public void SpawnInPlayer() {
         //find spawn point
         //FOR NOW HARDCODE IN 0,0
         MoveNode spawnPoint = map.Nodes[0, 0];
@@ -43,11 +43,11 @@ public class SpawnWorld : MonoBehaviour {
 		PlayerController.pc.Mover.currentNode = spawnPoint;
         PlayerController.pc.Mover.currentNode.AddToNode(PlayerController.pc.gameObject);
         FallingSpawn fs = PlayerController.pc.GetComponent<FallingSpawn>();
-        StartCoroutine(fs.FallIntoPlace());
-        yield return null;
+        //StartCoroutine(fs.FallIntoPlace());
+		fs.FallIntoPlaceTweened();
     }
 
-    public IEnumerator SpawnInEnemies() {
+    public void SpawnInEnemies() {
         //instantiate enemy at random position
         //TODO check for valid spawn point for enemies
         for (int i = 1; i <= numberOfEnemies; i++) {
@@ -66,10 +66,8 @@ public class SpawnWorld : MonoBehaviour {
 				//enemy.AddComponent<FallingSpawn>();
                 enemy.SetActive(true);
 				FallingSpawn fs = enemy.GetComponent<FallingSpawn>();
-				//fs.fallTime = fallTime;
-				//fs.finalY = 0f;
-				StartCoroutine(fs.FallIntoPlace());
-                yield return null;
+				//StartCoroutine(fs.FallIntoPlace());
+				fs.FallIntoPlaceTweened();
 				enemy.GetComponent<EnemyController>().turnFinished = true;
             }
         }

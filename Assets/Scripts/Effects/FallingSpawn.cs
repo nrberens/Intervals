@@ -10,6 +10,7 @@ public class FallingSpawn : MonoBehaviour {
     public float wobbleAmount = 50.0f;
     public float wobbleRotateAmount = 40.0f;
 
+
     public IEnumerator FallIntoPlace() {
         float startTime = Time.time;
         startPos = new Vector3(transform.position.x, 8.0f, transform.position.z);
@@ -50,6 +51,43 @@ public class FallingSpawn : MonoBehaviour {
 			ec.turnFinished = true;
 		}
     }
+
+	public void FallIntoPlaceTweened() {
+        startPos = new Vector3(transform.position.x, 8.0f, transform.position.z);
+        finalPos = new Vector3(transform.position.x, finalY, transform.position.z);
+		transform.position = startPos;
+        //float fallOffset = Random.Range(0, 20) * 0.05f;
+
+        Renderer renderer = GetComponent<Renderer>();
+        if (renderer != null) {
+            renderer.enabled = true;
+        }
+
+		foreach (Transform t in transform) {
+			Renderer[] renderers = t.GetComponentsInChildren<Renderer>();
+			foreach (Renderer r in renderers) {
+				r.enabled = true;
+			}
+		}
+
+		iTween.MoveTo(gameObject, iTween.Hash("position", finalPos, "time", fallTime, "easeType", "easeOutBounce", "oncomplete", "FallComplete"));
+
+
+	}
+
+	public void FallComplete() {
+		Rigidbody r = transform.GetComponent<Rigidbody>();
+		if(r != null) {
+			r.isKinematic = false;
+			r.constraints = RigidbodyConstraints.FreezeAll;
+		}
+		AudioController.ac.PlaySpawnNoise();
+
+		if(transform.tag == "Enemy") {
+			EnemyController ec = transform.GetComponent<EnemyController>();
+			ec.turnFinished = true;
+		}
+	}
 
     public IEnumerator ObjectWiggle(Vector3 centerPos) {
         float startTime = Time.time;

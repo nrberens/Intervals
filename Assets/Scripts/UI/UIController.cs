@@ -48,10 +48,10 @@ public class UIController : MonoBehaviour
 	void OnGUI() {
 		if(ingameUI.gameObject.activeInHierarchy == true) {
 			scoreText.text = "score: " + GameControl.gc.currentScore; 
-			if(PhoneController.pc.currentPhone == null) {
-				phoneText.text = "turns until new phone: " + PhoneController.pc.turnsUntilPhoneSpawn;
-			} else {
+			if(PhoneController.pc.currentPhone != null) {
 				phoneText.text = "turns to reach phone: " + PhoneController.pc.turnsUntilGameOver;
+			} else {
+				phoneText.text = "turns until new phone: " + PhoneController.pc.turnsUntilPhoneSpawn;
 			}
 		}
 	}

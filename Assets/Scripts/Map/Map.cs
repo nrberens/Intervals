@@ -227,7 +227,8 @@ public class Map : MonoBehaviour {
                 }
             }
             FallingSpawn fs = enemy.GetComponent<FallingSpawn>();
-			StartCoroutine(fs.FallIntoPlace());
+			//StartCoroutine(fs.FallIntoPlace());
+			fs.FallIntoPlaceTweened();
         }
         else {
             Debug.Log("Node (" + nodeX + "," +  nodeZ +") full, can't spawn here!");
@@ -253,7 +254,8 @@ public class Map : MonoBehaviour {
             }
         }
         FallingSpawn fs = phone.GetComponent<FallingSpawn>();
-        StartCoroutine(fs.FallIntoPlace());
+        //StartCoroutine(fs.FallIntoPlace());
+		fs.FallIntoPlaceTweened();
 
     }
 

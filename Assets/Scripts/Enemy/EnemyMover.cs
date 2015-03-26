@@ -69,7 +69,7 @@ public class EnemyMover : MonoBehaviour, IMover
 			currentNode.RemoveFromNode (gameObject);
 			targetNode.AddToNode (gameObject);
 
-			StartCoroutine (MoveToNode (targetNode));
+			MoveToNodeTweened (targetNode);
 			currentNode = targetNode;
 		} catch (NullReferenceException e) {
 			Console.WriteLine (e);
@@ -96,7 +96,7 @@ public class EnemyMover : MonoBehaviour, IMover
 			currentNode.RemoveFromNode (gameObject);
 			targetNode.AddToNode (gameObject);
 
-			StartCoroutine (MoveToNode (targetNode));
+			MoveToNodeTweened (targetNode);
 			currentNode = targetNode;
 		} catch (NullReferenceException e) {
 			Console.WriteLine (e);
@@ -123,7 +123,7 @@ public class EnemyMover : MonoBehaviour, IMover
 			currentNode.RemoveFromNode (gameObject);
 			targetNode.AddToNode (gameObject);
 
-			StartCoroutine (MoveToNode (targetNode));
+			MoveToNodeTweened (targetNode);
 			currentNode = targetNode;
 		} catch (NullReferenceException e) {
 			Console.WriteLine (e);
@@ -150,7 +150,7 @@ public class EnemyMover : MonoBehaviour, IMover
 			currentNode.RemoveFromNode (gameObject);
 			targetNode.AddToNode (gameObject);
 
-			StartCoroutine (MoveToNode (targetNode));
+			MoveToNodeTweened (targetNode);
 			currentNode = targetNode;
 		} catch (NullReferenceException e) {
 			Console.WriteLine (e);
@@ -197,6 +197,34 @@ public class EnemyMover : MonoBehaviour, IMover
 
 		transform.position = endPos;
 		//transform.rotation = startRot;
+
+		_ec.EndPhase ();
+	}
+
+	public void MoveToNodeTweened(MoveNode targetNode) {
+		Rigidbody r = transform.GetComponent<Rigidbody>();
+		r.isKinematic = true;
+		r.constraints = RigidbodyConstraints.None;
+
+		Vector3 startPos = currentNode.transform.position;
+		Vector3 endPos = targetNode.transform.position;
+		Vector3 startRot = transform.rotation.eulerAngles;
+		Vector3 endRot = Quaternion.LookRotation(targetNode.transform.position - transform.position).eulerAngles;
+		Debug.DrawRay (transform.position, targetNode.transform.position - transform.position, Color.black, 3.0f);
+		float startTime = Time.time;
+
+		//Rotate Object before moving
+		iTween.RotateTo (gameObject, iTween.Hash("rotation", endRot, "time", rotateTime, "easeType", "easeInOutBack"));
+		//move
+		iTween.MoveTo(gameObject, iTween.Hash("position", endPos, "time", MoveTime, "delay", rotateTime, "easeType", "easeInOutBack", "oncomplete", "MoveComplete"));
+	}
+
+	public void MoveComplete() {
+		Rigidbody r = transform.GetComponent<Rigidbody>();
+		if(r != null) {
+			r.isKinematic = false;
+			r.constraints = RigidbodyConstraints.FreezeAll;
+		}
 
 		_ec.EndPhase ();
 	}

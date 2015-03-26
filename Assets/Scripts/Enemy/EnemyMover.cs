@@ -226,6 +226,7 @@ public class EnemyMover : MonoBehaviour, IMover
 			r.constraints = RigidbodyConstraints.FreezeAll;
 		}
 
+		_ec.acting = false;
 		_ec.EndPhase ();
 	}
 

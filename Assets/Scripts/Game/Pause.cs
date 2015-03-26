@@ -22,6 +22,7 @@ public class Pause : MonoBehaviour
 	public void PauseGame ()
 	{
 		paused = true;
+        UIController.ui.DisableAllUI();
 		UIController.ui.DisplayPauseUI ();
 		Time.timeScale = 0;
 	}
@@ -30,6 +31,7 @@ public class Pause : MonoBehaviour
 	{
 		paused = false;
 		UIController.ui.DisableAllUI ();
+        UIController.ui.DisplayInGameUI();
 		Time.timeScale = 1;
 	}
 

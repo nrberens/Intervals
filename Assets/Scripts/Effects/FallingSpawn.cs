@@ -70,7 +70,7 @@ public class FallingSpawn : MonoBehaviour {
 			}
 		}
 
-		iTween.MoveTo(gameObject, iTween.Hash("position", finalPos, "time", fallTime, "easeType", "easeOutBounce", "oncomplete", "FallComplete"));
+		iTween.MoveTo(gameObject, iTween.Hash("position", finalPos, "time", fallTime - ((transform.position.x+transform.position.z)*-0.08f), "easeType", "easeOutBounce", "oncomplete", "FallComplete"));
 
 
 	}

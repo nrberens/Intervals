@@ -56,6 +56,7 @@ public class Map : MonoBehaviour {
                 SpawnPoints.Add(n);
             } 
         }
+		return;
     }
 
     // Update is called once per frame

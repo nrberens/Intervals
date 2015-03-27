@@ -79,11 +79,11 @@ public class UIController : MonoBehaviour
 			DisplayInGameUI();
 			GameControl.gc.RestartLevel ();
 		} else {
-			Debug.Log ("Initial play - Current Level" + Application.loadedLevel + " loading level 2");
+			Debug.Log ("Initial play - Current Level" + Application.loadedLevel + " loading level 3");
 			initialPlay = false;
 			DisableAllUI ();
 			DisplayInGameUI();
-			Application.LoadLevel (2);
+			Application.LoadLevel (3);
 		}
 	}
 

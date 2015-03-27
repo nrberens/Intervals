@@ -35,8 +35,7 @@ public class SpawnWorld : MonoBehaviour {
 
     public void SpawnInPlayer() {
         //find spawn point
-        //FOR NOW HARDCODE IN 0,0
-        MoveNode spawnPoint = map.Nodes[0, 0];
+        MoveNode spawnPoint = map.Nodes[6, 2];
         //instantiate player at spawn point
         //TODO make random spawn point
         PlayerController.pc.transform.position = spawnPoint.transform.position;

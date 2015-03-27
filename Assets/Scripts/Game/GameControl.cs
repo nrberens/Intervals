@@ -8,6 +8,9 @@ public class GameControl : MonoBehaviour {
 
     public static GameControl gc;
 
+	public int scorePerKill;
+	public int scorePerPhone;
+
 	public float currentScore; 
 	public float highScore;
     //public AudioSource music;

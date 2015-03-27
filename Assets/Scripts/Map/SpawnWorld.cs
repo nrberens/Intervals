@@ -50,11 +50,13 @@ public class SpawnWorld : MonoBehaviour {
     public void SpawnInEnemies() {
         //instantiate enemy at random position
         //TODO check for valid spawn point for enemies
-        for (int i = 1; i <= numberOfEnemies; i++) {
+		int spawnedEnemies = 0;
+		do {
             int enemyX = Random.Range(0, map.mapWidth);
             int enemyZ = Random.Range(0, map.mapLength);
 
-            if (map.Nodes[enemyX, enemyZ].objectsOnNode.Count == 0) {
+            if (map.Nodes[enemyX, enemyZ].objectsOnNode.Count == 0 && !map.Nodes[enemyX, enemyZ].blocksMovement && enemyX != 1 && enemyZ != 1) {
+				spawnedEnemies++;
                 GameObject enemy = (GameObject) Instantiate(map.EnemyTransform.gameObject);
                 enemy.GetComponent<EnemyMover>().currentNode = map.Nodes[enemyX, enemyZ];
 
@@ -70,6 +72,6 @@ public class SpawnWorld : MonoBehaviour {
 				fs.FallIntoPlaceTweened();
 				enemy.GetComponent<EnemyController>().turnFinished = true;
             }
-        }
+		} while (spawnedEnemies < numberOfEnemies);
     }
 }

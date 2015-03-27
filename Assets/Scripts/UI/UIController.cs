@@ -11,6 +11,7 @@ public class UIController : MonoBehaviour
 	public RectTransform creditsPanel;
 	public RectTransform gameOverPanel;
 	public Text gameOverText;
+	public Text gameOverScoreText;
 	public RectTransform ingameUI;
 	public Text scoreText;
 	public Text phoneText;
@@ -54,6 +55,7 @@ public class UIController : MonoBehaviour
 				phoneText.text = "turns until new phone: " + PhoneController.pc.turnsUntilPhoneSpawn;
 			}
 		}
+
 	}
 
 	public void DisableAllUI ()
@@ -111,7 +113,7 @@ public class UIController : MonoBehaviour
 	public void DisplayGameOverUI ()
 	{
 		DisableAllUI ();
-		scoreText.text = "score" + GameControl.gc.currentScore;
+		gameOverScoreText.text = "score: " + GameControl.gc.currentScore;
 		gameOverPanel.gameObject.SetActive (true);
 	}
 

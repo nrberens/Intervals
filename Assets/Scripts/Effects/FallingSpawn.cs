@@ -42,8 +42,6 @@ public class FallingSpawn : MonoBehaviour {
         startTime = Time.time;
         Vector3 centerPos = finalPos;
 
-		AudioController.ac.PlaySpawnNoise();
-
         yield return StartCoroutine(ObjectWiggle(centerPos));
 
 		if(transform.tag == "Enemy") {
@@ -81,7 +79,6 @@ public class FallingSpawn : MonoBehaviour {
 			r.isKinematic = false;
 			r.constraints = RigidbodyConstraints.FreezeAll;
 		}
-		AudioController.ac.PlaySpawnNoise();
 
 		if(transform.tag == "Enemy") {
 			EnemyController ec = transform.GetComponent<EnemyController>();

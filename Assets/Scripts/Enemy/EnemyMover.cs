@@ -216,8 +216,10 @@ public class EnemyMover : MonoBehaviour, IMover
 		//Rotate Object before moving
 		iTween.RotateTo (gameObject, iTween.Hash("rotation", endRot, "time", rotateTime, "easeType", "easeInOutBack"));
 		//move
-		iTween.MoveTo(gameObject, iTween.Hash("position", endPos, "time", MoveTime, "delay", rotateTime, "easeType", "easeInOutBack", "oncomplete", "MoveComplete"));
+		iTween.MoveTo(gameObject, iTween.Hash("position", endPos, "time", MoveTime, "delay", rotateTime, "easeType", "easeInOutBack", "onstart", "PlayMoveNoise", "oncomplete", "MoveComplete"));
 	}
+
+	public void PlayMoveNoise() { AudioController.ac.PlayEnemyMoveNoise(); }
 
 	public void MoveComplete() {
 		Rigidbody r = transform.GetComponent<Rigidbody>();

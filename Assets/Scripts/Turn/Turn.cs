@@ -60,9 +60,13 @@ public class Turn : MonoBehaviour {
 
                 //Spawn enemies
                 if (turnsUntilNextSpawn <= 0) {
-                    int index = Random.Range(0, map.SpawnPoints.Count - 1);
-                    MoveNode spawnPoint = map.SpawnPoints[index];
-                    map.SpawnEnemy(spawnPoint.x, spawnPoint.z);
+					int phoneX, phoneZ;
+                    //HACK potential infinite loop
+					do {
+                        phoneX = Random.Range(0, map.mapWidth);
+                        phoneZ = Random.Range(0, map.mapLength);
+                    } while (map.Nodes[phoneX, phoneZ].objectsOnNode.Count > 0 || map.Nodes[phoneX, phoneZ].blocksMovement);
+                    map.SpawnEnemy(phoneX, phoneZ);
                     turnsUntilNextSpawn = turnsBetweenSpawns;
                 }
                 //Spawn phones

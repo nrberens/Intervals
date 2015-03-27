@@ -69,6 +69,7 @@ public class SpawnWorld : MonoBehaviour {
 				FallingSpawn fs = enemy.GetComponent<FallingSpawn>();
 				//StartCoroutine(fs.FallIntoPlace());
 				fs.FallIntoPlaceTweened();
+				AudioController.ac.PlaySpawnNoise();
 				enemy.GetComponent<EnemyController>().turnFinished = true;
             }
 		} while (spawnedEnemies < numberOfEnemies);

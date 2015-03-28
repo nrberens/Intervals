@@ -9,7 +9,7 @@ public class Pause : MonoBehaviour
 	void Update ()
 	{
 		if (Application.loadedLevel != 0) {
-			if (Input.GetButtonDown ("Pause")) {
+			if (Input.GetButtonDown ("Pause") || Input.GetKeyDown(KeyCode.Escape)) {
 				if (!paused) {
 					PauseGame ();
 				} else {

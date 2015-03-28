@@ -13,7 +13,7 @@ public class GameControl : MonoBehaviour {
 
 	public float currentScore; 
 	public float highScore;
-    //public AudioSource music;
+    //public AudioSource MusicSource;
 
     void Awake() {
         if (gc == null) {
@@ -28,8 +28,8 @@ public class GameControl : MonoBehaviour {
         currentScore = 0;
         //TODO load high score from file
         //Load();
-	    //music = FindObjectOfType<AudioSource>();
-        //DontDestroyOnLoad(music);
+	    //MusicSource = FindObjectOfType<AudioSource>();
+        //DontDestroyOnLoad(MusicSource);
     }
 
     public void Save() {
@@ -83,7 +83,7 @@ public class GameControl : MonoBehaviour {
 			if(obj.name == "GameController") continue;
 			else if(obj.layer == 5) continue; //layer 5 is UI
 			else if(obj.name == "UIController") continue;
-			else if (obj.name == "AudioController" || obj.name == "Music" || obj.name == "SoundEffect") continue;
+			else if (obj.name == "AudioController" || obj.name == "Music" || obj.name == "Gunshot" || obj.name == "MoveNoise") continue;
 
 			Destroy(obj);
 		}

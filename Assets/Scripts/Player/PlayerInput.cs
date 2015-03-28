@@ -125,7 +125,7 @@ public class PlayerInput : MonoBehaviour
 						Transform target = GetTargetOfClick (layerMask);
 						Debug.Log ("MouseUp - Target = " + target);
 						if (target != null) {
-							if (target.tag == "Enemy") {
+							if (target.tag == "Enemy" && PlayerController.pc.Shooter.CheckValidTarget(target)) {
 								PlayerController.pc.acting = true;
 								allowInput = false;
 								PlayerController.pc.Shooter.BeginShot (target);

@@ -108,7 +108,7 @@ public class PlayerShooter : MonoBehaviour {
 
     public void BeginShot(Transform target) {
         //TODO change method to only except EnemyControllers
-        if (target != null && PlayerController.pc.Shooter.CheckValidTarget(target)) {
+        if (target != null ) {
             PlayerController.pc.Input.allowInput = false;
             if (CheckMeleeRange(target)) {
                 //switch to melee mesh

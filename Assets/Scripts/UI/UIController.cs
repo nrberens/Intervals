@@ -9,12 +9,22 @@ public class UIController : MonoBehaviour
 	public RectTransform startMenuPanel;
 	public RectTransform pausePanel;
 	public RectTransform creditsPanel;
+    
 	public RectTransform gameOverPanel;
 	public Text gameOverText;
 	public Text gameOverScoreText;
+
 	public RectTransform ingameUI;
 	public Text scoreText;
 	public Text phoneText;
+
+    public RectTransform tutorialPanel;
+    public Text header_text;
+    public Text p1_text;
+    public Text p2_text;
+    public Text p3_text;
+
+    public int tutorialPage;
 	public bool initialPlay;
 
 	void Awake ()
@@ -55,6 +65,29 @@ public class UIController : MonoBehaviour
 				phoneText.text = "turns until new phone: " + PhoneController.pc.turnsUntilPhoneSpawn;
 			}
 		}
+
+	    if (tutorialPanel.gameObject.activeInHierarchy) {
+	        switch (tutorialPage) {
+                case 1:
+	                header_text.text = "how to play. (1/3)";
+                    p1_text.gameObject.SetActive(true);
+                    p2_text.gameObject.SetActive(false);
+                    p3_text.gameObject.SetActive(false);
+	                break;
+                case 2: 
+	                header_text.text = "how to play. (2/3)";
+                    p1_text.gameObject.SetActive(false);
+                    p2_text.gameObject.SetActive(true);
+                    p3_text.gameObject.SetActive(false);
+	                break;
+                case 3: 
+	                header_text.text = "how to play. (3/3)";
+                    p1_text.gameObject.SetActive(false);
+                    p2_text.gameObject.SetActive(false);
+                    p3_text.gameObject.SetActive(true);
+	                break;
+	        }
+	    }
 
 	}
 
@@ -127,5 +160,19 @@ public class UIController : MonoBehaviour
 		DisableAllUI ();
 		ingameUI.gameObject.SetActive(true);
 	}
+
+    public void DisplayTutorialUI() {
+        DisableAllUI();
+        tutorialPanel.gameObject.SetActive(true);
+        tutorialPage = 1;
+    }
+
+    public void AdvanceTutorialPage() {
+        if (tutorialPage < 3) {
+            tutorialPage++;
+        } else if (tutorialPage == 3) {
+            tutorialPage = 1;
+        }
+    }
 
 }

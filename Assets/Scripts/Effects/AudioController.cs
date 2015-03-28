@@ -5,8 +5,9 @@ public class AudioController : MonoBehaviour {
 
 	public static AudioController ac;
 
-	public AudioSource music;
-	public AudioSource soundEffect;
+	public AudioSource MusicSource;
+	public AudioSource GunShotSource;
+    public AudioSource MoveNoiseSource;
 
 	public AudioClip gunshot;
 	public AudioClip spawn;
@@ -31,22 +32,42 @@ public class AudioController : MonoBehaviour {
 	}
 
 	public void PlayGunshot() {
-		soundEffect.PlayOneShot (gunshot, 0.7f);
+	    if (!GunShotSource.isPlaying) {
+	        GunShotSource.clip = gunshot;
+	        GunShotSource.volume = 1.0f;
+            GunShotSource.Play();
+	    }
 	}
 
 	public void PlaySpawnNoise() {
-		soundEffect.PlayOneShot (spawn, 1.0f);
+	    if (!GunShotSource.isPlaying) {
+	        GunShotSource.clip = spawn;
+	        GunShotSource.volume = 1.0f;
+	        GunShotSource.Play();
+	    }
 	}
 
 	public void PlayDeathNoise() {
-		soundEffect.PlayOneShot (explosion, 0.5f);
+	    if (!GunShotSource.isPlaying) {
+	        GunShotSource.clip = explosion;
+	        GunShotSource.volume = 0.5f;
+	        GunShotSource.Play();
+	    }
 	}
 
 	public void PlayPlayerMoveNoise(){
-		soundEffect.PlayOneShot (playerMove, 1.0f);
+	    if (!MoveNoiseSource.isPlaying) {
+	        MoveNoiseSource.clip = playerMove;
+	        MoveNoiseSource.volume = 0.7f;
+	        MoveNoiseSource.Play();
+	    }
 	}
 
 	public void PlayEnemyMoveNoise() {
-		soundEffect.PlayOneShot(enemyMove, 1.0f);
-	}
+	    if (!MoveNoiseSource.isPlaying) {
+	        MoveNoiseSource.clip = enemyMove;
+	        MoveNoiseSource.volume = 1.0f;
+	        MoveNoiseSource.Play();
+	    }
+    }
 }

@@ -54,7 +54,7 @@ public class SpawnWorld : MonoBehaviour {
             int enemyX = Random.Range(0, map.mapWidth);
             int enemyZ = Random.Range(0, map.mapLength);
 
-            if (map.Nodes[enemyX, enemyZ].objectsOnNode.Count == 0 && !map.Nodes[enemyX, enemyZ].blocksMovement && enemyX != 1 && enemyZ != 1) {
+            if (map.Nodes[enemyX, enemyZ].objectsOnNode.Count == 0 && !map.Nodes[enemyX, enemyZ].blocksMovement) {
 				spawnedEnemies++;
                 GameObject enemy = (GameObject) Instantiate(map.EnemyTransform.gameObject);
                 enemy.GetComponent<EnemyMover>().currentNode = map.Nodes[enemyX, enemyZ];

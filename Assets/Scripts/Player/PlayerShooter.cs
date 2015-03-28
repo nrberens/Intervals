@@ -157,6 +157,7 @@ public class PlayerShooter : MonoBehaviour {
         PlayerController.pc.meleeMesh.SetActive(true);
         Debug.Log(target + " killed!");
         enemy.TakeDamage(transform);
+        yield return new WaitForSeconds(0.2f);
         //TODO move player to target node
         PlayerController.pc.Mover.currentNode.RemoveFromNode(gameObject);
         targetNode.AddToNode(gameObject);

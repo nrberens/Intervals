@@ -8,12 +8,15 @@ public class AudioController : MonoBehaviour {
 	public AudioSource MusicSource;
 	public AudioSource GunShotSource;
     public AudioSource MoveNoiseSource;
+    public AudioSource PhoneRingSource;
 
 	public AudioClip gunshot;
 	public AudioClip spawn;
 	public AudioClip explosion;
 	public AudioClip playerMove;
 	public AudioClip enemyMove;
+    public AudioClip phoneRing;
+    public AudioClip phonePickUp;
 
 	// Use this for initialization
 	void Start () {
@@ -69,5 +72,17 @@ public class AudioController : MonoBehaviour {
 	        MoveNoiseSource.volume = 1.0f;
 	        MoveNoiseSource.Play();
 	    }
+    }
+
+    public void PlayPhoneRing() {
+        PhoneRingSource.clip = phoneRing;
+        PhoneRingSource.volume = 1.0f;
+        PhoneRingSource.Play();
+    }
+
+    public void PlayPhonePickUp() {
+        PhoneRingSource.clip = phonePickUp;
+        PhoneRingSource.volume = 1.0f;
+        PhoneRingSource.Play();
     }
 }

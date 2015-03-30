@@ -4,6 +4,7 @@ using UnityEngineInternal;
 
 public class EnemyController : MonoBehaviour, ITurnBased {
     public Transform deathPrefab;
+    public Transform fivePrefab;
     public GameObject lowReadyMesh;
     public GameObject firingMesh;
     public GameObject meleeMesh;
@@ -63,6 +64,9 @@ public class EnemyController : MonoBehaviour, ITurnBased {
 		AudioController.ac.PlayDeathNoise();
         Vector3 deathPrefabPosition = transform.FindChild("DeathPrefab").position;
         Transform death = (Transform) Instantiate(deathPrefab, deathPrefabPosition, bullet.rotation);
+        //HACK five particle is already rotated - rotate it to point x axis up
+	    Quaternion fiveRotation = Quaternion.AngleAxis(-90.0f, Vector3.right);
+	    Transform five = (Transform) Instantiate(fivePrefab, transform.position, fiveRotation);
 		EnemiesController.ec.Enemies.Remove(this);
         Mover.currentNode.RemoveFromNode(gameObject);
 		Destroy (gameObject);

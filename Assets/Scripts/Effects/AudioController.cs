@@ -35,11 +35,11 @@ public class AudioController : MonoBehaviour {
 	}
 
 	public void PlayGunshot() {
-	    if (!GunShotSource.isPlaying) {
+	    //if (!GunShotSource.isPlaying) {
 	        GunShotSource.clip = gunshot;
 	        GunShotSource.volume = 1.0f;
             GunShotSource.Play();
-	    }
+	    //}
 	}
 
 	public void PlaySpawnNoise() {

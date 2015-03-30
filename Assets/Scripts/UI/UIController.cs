@@ -11,7 +11,6 @@ public class UIController : MonoBehaviour
 	public RectTransform creditsPanel;
     
 	public RectTransform gameOverPanel;
-	public Text gameOverText;
 	public Text gameOverScoreText;
 
 	public RectTransform ingameUI;

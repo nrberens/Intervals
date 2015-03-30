@@ -32,6 +32,6 @@ Reach a phone - 15 points
 
 ## ADDITIONAL CREDITS
 
-Music: "Boss Worm - OL Zima Remix" - by Pixelord
+Music: "Golden Gauntlet" - Maxo
 
 Made with Unity Personal Edition

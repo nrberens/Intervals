@@ -2,8 +2,8 @@
 
 by
 
-*Nate Berens* @nrberens
-*David Firth* @maximumoverdave
+*Nate Berens* [@nrberens](twitter.com/nrberens)
+*David Firth* [@maximumoverdave](twitter.com/nrberens)
 
 VERSION 0.1a - 3/29/2015
 

@@ -67,9 +67,11 @@ public class PlayerMover : MonoBehaviour, IMover {
                 //	hasBullet = true;
                 //    bullet = obj.transform;
                 //} else if (obj.tag == "Enemy") {
-                if (obj.tag == "Enemy") {
-                    hasEnemy = true;
-                }
+				if(obj){
+	                if (obj.tag == "Enemy") {
+	                    hasEnemy = true;
+	                }
+				}
             }
 
             if (!hasBlocking && !hasEnemy) {

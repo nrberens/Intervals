@@ -27,6 +27,7 @@ public class Phone : MonoBehaviour {
             AudioController.ac.PlayPhonePickUp();
 			GameControl.gc.currentScore += GameControl.gc.scorePerPhone;
             PhoneController.pc.currentPhone = null;
+			currentNode.RemoveFromNode (gameObject);
             Destroy(gameObject);
         }
     }

@@ -8,9 +8,13 @@ ModelImporter:
     100000: fountain_geo_base
     100002: //RootNode
     100004: fountain_geo_water
+    100006: Camera
+    100008: Directional Light
     400000: fountain_geo_base
     400002: //RootNode
     400004: fountain_geo_water
+    400006: Camera
+    400008: Directional Light
     2300000: fountain_geo_base
     2300002: fountain_geo_water
     3300000: fountain_geo_base

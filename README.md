@@ -32,6 +32,6 @@ Reach a phone - 15 points
 
 ## ADDITIONAL CREDITS
 
-Music: "Golden Gauntlet" - Maxo
+Music: "Golden Gauntlet" by Maxo
 
 Made with Unity Personal Edition

@@ -45,76 +45,57 @@ public class SmartAI : FSM {
     protected override void FSMUpdate() { }
 
     void LateUpdate() {
-        Debug.DrawLine(transform.position, targetNode.transform.position, Color.red);
+        //Debug.DrawLine(transform.position, targetNode.transform.position, Color.red);
     }
 
     // Update once per turn
     public override void UpdateAI() {
 
-        switch (CurState) {
-            case FSMState.SeekLOS:
                 UpdateSeekLOSState();
-                break;
-            case FSMState.Attack:
-                UpdateAttackState();
-                break;
-            case FSMState.Dead:
-                UpdateDeadState();
-                break;
-        }
-
-        if (Health <= 0) {
-            CurState = FSMState.Dead;
-        }
     }
 
     protected void UpdateSeekLOSState() {
-        //Check for LOS to player
+        //check for LOS to player, if player, shoot in that direction,
         Direction? shootDir = CheckLOSToPlayer();
 
         if (shootDir != null) {
-            _ec.Shooter.Shoot((Direction) shootDir);
-            _ec.acting = false;
-            _ec.EndPhase();
+            Direction dir = (Direction) shootDir; //convert from nullable Direction?
+            StartCoroutine(_ec.Shooter.Shoot(dir));
             return;
         }
 
-        //Check for LOS to an LOS flagged node  
-        MoveNode closestLOSNode = map.FindClosestLOSNode(transform);
+        //TODO check for LOS to LOS-flagged node
+        //TODO if yes, move toward that node
+        //TODO if no, move randomly
+        MoveNode closestLOSNode = GetClosestLOSNode();
+
         if (closestLOSNode != null) {
-            Debug.Log("Closest LOS node for " + transform.name + " is: (" + closestLOSNode.x + "," + closestLOSNode.z +
-                      ")");
-            //TODO move towards closestNode
-            targetNode = closestLOSNode;
-            Direction moveDir = MoveNode.DirectionToNode(_ec.Mover.currentNode, closestLOSNode);
-            _ec.Mover.Move(moveDir, Distance);
-        } else {
-            //TODO No LOS so move randomly
-            Direction moveDir = GetRandomDirection();
-            _ec.Mover.Move(moveDir, Distance);
+            Debug.Log(transform + ": Closest LOS Node is (" + closestLOSNode.x + "," + closestLOSNode.z + ")");
+            return;
         }
-    }
 
-    protected void UpdateAttackState() {
-        
-    }
+        //No LOS, move randomly
+        int moveCoin = UnityEngine.Random.Range(0, 4);
+        //HACK default direction is north
+        Direction randomDir = Direction.North;
 
-    protected void UpdateDeadState() {
-    }
+        bool directionValid = false;
+        List<Direction> potentialDirs = new List<Direction> { Direction.North, Direction.South, Direction.East, Direction.West };
 
-    private void Explode() {
-        float rndX = UnityEngine.Random.Range(10.0f, 30.0f);
-        float rndZ = UnityEngine.Random.Range(10.0f, 30.0f);
-        for (int i = 0; i < 3; i++) {
-            GetComponent<Rigidbody>().AddExplosionForce(10000.0f,
-transform.position - new Vector3(rndX, 10.0f, rndZ), 40.0f, 10.0f);
-            GetComponent<Rigidbody>().velocity = transform.TransformDirection(new Vector3(rndX, 20.0f, rndZ));
+        do {
+            if (potentialDirs.Count == 0) {
+                Debug.Log("No valid directions, just staying put.");
+                _ec.EndPhase();
+                break;
+            }
+            randomDir = potentialDirs[UnityEngine.Random.Range(0, potentialDirs.Count - 1)];
+            potentialDirs.Remove(randomDir);
+            directionValid = _ec.Mover.CheckForValidMovement(randomDir, Distance);
+        } while (!directionValid);
+
+        if (directionValid) {
+            _ec.Mover.Move(randomDir, Distance);
         }
-        Destroy(gameObject, 1.5f);
-    }
-
-    void TakeDamage(int damage) {
-        Health -= damage;
     }
 
     private Direction GetRandomDirection() {
@@ -124,30 +105,32 @@ transform.position - new Vector3(rndX, 10.0f, rndZ), 40.0f, 10.0f);
     }
 
     private Direction? CheckLOSToPlayer() {
-        Ray ray = new Ray(transform.position, Vector3.forward);
+        Vector3 rayOrigin = new Vector3(transform.position.x, 1.0f, transform.position.z);
+        Ray ray = new Ray(rayOrigin, Vector3.forward);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit, Mathf.Infinity)) {
+            Debug.Log(gameObject + " ray hit " + hit.transform.name);
             if (hit.transform.tag == "Player") {
                 return Direction.North;
             }
-        }        
+        }
 
-        ray = new Ray(transform.position, Vector3.back);
+        ray = new Ray(rayOrigin, Vector3.back);
         if (Physics.Raycast(ray, out hit, Mathf.Infinity)) {
             if (hit.transform.tag == "Player") {
                 return Direction.South;
             }
-        }        
+        }
 
-        ray = new Ray(transform.position, Vector3.left);
+        ray = new Ray(rayOrigin, Vector3.left);
         if (Physics.Raycast(ray, out hit, Mathf.Infinity)) {
             if (hit.transform.tag == "Player") {
                 return Direction.West;
             }
-        }        
+        }
 
-        ray = new Ray(transform.position, Vector3.right);
+        ray = new Ray(rayOrigin, Vector3.right);
         if (Physics.Raycast(ray, out hit, Mathf.Infinity)) {
             if (hit.transform.tag == "Player") {
                 return Direction.East;
@@ -155,6 +138,80 @@ transform.position - new Vector3(rndX, 10.0f, rndZ), 40.0f, 10.0f);
         }
 
         return null;
+    }
+
+    private MoveNode GetClosestLOSNode() {
+        List<MoveNode> losNodes = new List<MoveNode>();
+        MoveNode currentNode = _ec.Mover.currentNode;
+        //if node blocks movement or LOS, cancel that direction
+        //if LOS node found, add to a list
+
+        //search north
+        for (int z = currentNode.z+1; z < map.mapLength; z++) {
+            int x = currentNode.x;
+            MoveNode thisNode = map.Nodes[x, z];
+            if (thisNode.blocksLOS || thisNode.blocksMovement) {
+                break;
+            }
+
+            if (thisNode.LOSToPlayer) {
+                losNodes.Add(thisNode);
+                break;
+            }
+        }
+
+
+        //search south
+        for (int z = currentNode.z-1; z > 0; z--) {
+            int x = currentNode.x;
+            MoveNode thisNode = map.Nodes[x, z];
+            if (thisNode.blocksLOS || thisNode.blocksMovement) {
+                break;
+            }
+
+            if (thisNode.LOSToPlayer) {
+                losNodes.Add(thisNode);
+                break;
+            }
+        }
+
+
+        //search left 
+        for (int x = currentNode.x-1; x > 0; x--) {
+            int z = currentNode.z;
+            MoveNode thisNode = map.Nodes[x, z];
+            if (thisNode.blocksLOS || thisNode.blocksMovement) {
+                break;
+            }
+
+            if (thisNode.LOSToPlayer) {
+                losNodes.Add(thisNode);
+                break;
+            }
+        }
+
+
+        //search right 
+        for (int x = currentNode.x+1; x > map.mapWidth; x++) {
+            int z = currentNode.z;
+            MoveNode thisNode = map.Nodes[x, z];
+            if (thisNode.blocksLOS || thisNode.blocksMovement) {
+                break;
+            }
+
+            if (thisNode.LOSToPlayer) {
+                losNodes.Add(thisNode);
+                break;
+            }
+        }
+
+        if (losNodes.Count == 0) return null;
+        if (losNodes.Count == 1) return losNodes[0];
+        if (losNodes.Count > 1) {
+            //TODO find closest node and return
+            return losNodes[0];
+        }
+        else return null;
     }
 
 }

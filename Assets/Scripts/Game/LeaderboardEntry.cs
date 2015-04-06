@@ -1,9 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LeaderboardEntry : MonoBehaviour {
+public class LeaderboardEntry {
 
-    private string name { get; set; }
-    private int score { get; set; }
+    public string name { get; set; }
+    public int score { get; set; }
+
+    public LeaderboardEntry(string name, int score) {
+        this.name = name;
+        this.score = score;
+    }
 
 }

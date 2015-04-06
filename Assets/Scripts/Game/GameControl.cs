@@ -39,7 +39,7 @@ public class GameControl : MonoBehaviour {
         FileStream file = File.Create(Application.persistentDataPath + "/playerInfo.dat");
 
         PlayerData data = new PlayerData();
-        data.scores = leaderboard.scores;
+        data.scores = leaderboard.scoresFromFile;
 
         bf.Serialize(file, data);
         file.Close();
@@ -51,7 +51,8 @@ public class GameControl : MonoBehaviour {
             FileStream file = File.Open(Application.persistentDataPath + "/playerInfo.dat", FileMode.Open);
             PlayerData data = (PlayerData) bf.Deserialize(file);
 
-            leaderboard.scores = data.scores;
+            leaderboard.scoresFromFile = data.scores;
+
         }
     }
 
@@ -100,6 +101,6 @@ public class GameControl : MonoBehaviour {
 
 [Serializable]
 class PlayerData {
-    public Queue<LeaderboardEntry> scores { get; set; }
+    public List<LeaderboardEntry> scores { get; set; }
 }
 

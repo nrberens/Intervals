@@ -2,6 +2,7 @@
 using System.Collections;
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 
 /**
  * 1. Enemy Spawns
@@ -50,7 +51,6 @@ public class SmartAI : FSM {
 
     // Update once per turn
     public override void UpdateAI() {
-
                 UpdateSeekLOSState();
     }
 
@@ -71,6 +71,16 @@ public class SmartAI : FSM {
 
         if (closestLOSNode != null) {
             Debug.Log(transform + ": Closest LOS Node is (" + closestLOSNode.x + "," + closestLOSNode.z + ")");
+            //TODO get direction toward LOS Node and move
+            Direction? moveDir = GetDirectionToNode(_ec.Mover.currentNode, closestLOSNode);
+
+            if (moveDir != null) {
+                Direction dir = (Direction) moveDir;
+                _ec.Mover.Move(dir, Distance);
+            }
+            else {
+                Debug.Log("Direction returned null.");
+            }
             return;
         }
 
@@ -212,6 +222,25 @@ public class SmartAI : FSM {
             return losNodes[0];
         }
         else return null;
+    }
+
+    private Direction? GetDirectionToNode(MoveNode from, MoveNode to) {
+        int deltaX = from.x - to.x;
+        int deltaZ = from.z - to.z;
+
+        if (Mathf.Abs(deltaX) > Mathf.Abs(deltaZ)) {
+            if(deltaX > 0)  //enemy is east of node, must move west
+                return Direction.West;
+            if (deltaX < 0)
+                return Direction.East;
+        } else if (Mathf.Abs(deltaZ) > Mathf.Abs(deltaX)) {
+            if (deltaZ > 0) //enemy is north of node, must move south
+                return Direction.South;
+            if(deltaZ < 0)
+                return Direction.North;
+        }
+
+        return null;
     }
 
 }

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
@@ -23,6 +24,25 @@ public class UIController : MonoBehaviour
     public Text p2_text;
     public Text p3_text;
 
+    public RectTransform highscorePanel;
+    public Text highscore_score_text;
+    public Text letter1_text;
+    public Text letter2_text;
+    public Text letter3_text;
+
+    public RectTransform leaderboardPanel;
+    public Text score1_text;
+    public Text score2_text;
+    public Text score3_text;
+    public Text score4_text;
+    public Text score5_text;
+    public Text score6_text;
+    public Text score7_text;
+    public Text score8_text;
+    public Text score9_text;
+    public Text score10_text;
+    public Text[] scoreTexts;
+
     public int tutorialPage;
 	public bool initialPlay;
 
@@ -36,6 +56,7 @@ public class UIController : MonoBehaviour
 		}
 
 		initialPlay = true;
+        scoreTexts = new Text[] {score1_text, score2_text, score3_text, score4_text, score5_text, score6_text, score7_text, score8_text, score9_text, score10_text};
 	}
 
 	// Use this for initialization
@@ -147,6 +168,8 @@ public class UIController : MonoBehaviour
 		DisableAllUI ();
 		gameOverScoreText.text = "score: " + GameControl.gc.currentScore;
 		gameOverPanel.gameObject.SetActive (true);
+        //HACK
+        DisplayHighscoreUI();
 	}
 
 	public void DisplayCredits ()
@@ -172,6 +195,31 @@ public class UIController : MonoBehaviour
         } else if (tutorialPage == 3) {
             tutorialPage = 1;
         }
+    }
+
+    public void DisplayHighscoreUI() {
+        DisableAllUI();
+        highscorePanel.gameObject.SetActive(true);
+    }
+
+    public void AdvanceLetter(Text letter) {
+        if (letter.text.Equals("Z")) letter.text = 'A'.ToString();
+        else if (letter.text.Equals("_")) letter.text = 'A'.ToString();
+        else {
+            char c = letter.text.ToCharArray()[0];
+            c++;
+            letter.text = c.ToString();
+        }
+    }
+
+    public void DisplayLeaderboardUI() {
+        for (int i = 0; i < 10; i++) {
+            LeaderboardEntry entry = GameControl.gc.leaderboard.leaderboard[i];
+            scoreTexts[i].text = i + 1 + ". " + entry.name + " " + entry.score;
+        }
+
+        DisableAllUI();
+        leaderboardPanel.gameObject.SetActive(true);
     }
 
 }

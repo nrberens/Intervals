@@ -212,6 +212,18 @@ public class UIController : MonoBehaviour
         }
     }
 
+    public void SubmitHighScore() {
+        string name = GetHighScoreNameFromLetters();
+        int score = GameControl.gc.currentScore;
+        LeaderboardEntry entry = new LeaderboardEntry(name, score);
+        GameControl.gc.leaderboard.AddEntry(entry);
+        DisplayLeaderboardUI();
+    }
+
+    public string GetHighScoreNameFromLetters() {
+        return letter1_text.text + letter2_text.text + letter3_text.text;
+    }
+
     public void DisplayLeaderboardUI() {
         for (int i = 0; i < 10; i++) {
             LeaderboardEntry entry = GameControl.gc.leaderboard.leaderboard[i];

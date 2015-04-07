@@ -13,8 +13,8 @@ public class GameControl : MonoBehaviour {
 	public int scorePerKill;
 	public int scorePerPhone;
 
-	public float currentScore; 
-	public float highScore;
+	public int currentScore; 
+	public int highScore;
     //public AudioSource MusicSource;
 
     void Awake() {

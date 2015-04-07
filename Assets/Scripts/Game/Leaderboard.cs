@@ -60,6 +60,14 @@ public class Leaderboard : MonoBehaviour {
     }
 
     public void AddEntry(LeaderboardEntry entry) {
-        
+        leaderboard.Add(entry);
+        leaderboard.Sort(delegate(LeaderboardEntry a, LeaderboardEntry b) {
+            if (a.score > b.score) return 1;
+            if (a.score < b.score) return -1;
+            return 0;
+        });
+
+        leaderboard.Reverse();
+        leaderboard = leaderboard.GetRange(0, 10);
     }
 }

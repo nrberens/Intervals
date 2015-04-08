@@ -1,18 +1,20 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 
 public class GameControl : MonoBehaviour {
 
     public static GameControl gc;
+    public Leaderboard leaderboard;
 
 	public int scorePerKill;
 	public int scorePerPhone;
 
-	public float currentScore; 
-	public float highScore;
+	public int currentScore; 
+	public int highScore;
     //public AudioSource MusicSource;
 
     void Awake() {
@@ -26,9 +28,9 @@ public class GameControl : MonoBehaviour {
 
     void Start() {
         currentScore = 0;
-        //TODO load high score from file
+        leaderboard = GetComponent<Leaderboard>();
         //Load();
-	    //MusicSource = FindObjectOfType<AudioSource>();
+        //MusicSource = FindObjectOfType<AudioSource>();
         //DontDestroyOnLoad(MusicSource);
     }
 
@@ -37,7 +39,7 @@ public class GameControl : MonoBehaviour {
         FileStream file = File.Create(Application.persistentDataPath + "/playerInfo.dat");
 
         PlayerData data = new PlayerData();
-        data.highScore = highScore;
+        data.scores = leaderboard.scoresFromFile;
 
         bf.Serialize(file, data);
         file.Close();
@@ -49,7 +51,8 @@ public class GameControl : MonoBehaviour {
             FileStream file = File.Open(Application.persistentDataPath + "/playerInfo.dat", FileMode.Open);
             PlayerData data = (PlayerData) bf.Deserialize(file);
 
-            highScore = data.highScore;
+            leaderboard.scoresFromFile = data.scores;
+
         }
     }
 
@@ -98,5 +101,6 @@ public class GameControl : MonoBehaviour {
 
 [Serializable]
 class PlayerData {
-    public float highScore { get; set; }
+    public List<LeaderboardEntry> scores { get; set; }
 }
+

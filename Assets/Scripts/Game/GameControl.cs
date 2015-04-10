@@ -29,7 +29,7 @@ public class GameControl : MonoBehaviour {
     void Start() {
         currentScore = 0;
         leaderboard = GetComponent<Leaderboard>();
-        //Load();
+        Load();
         //MusicSource = FindObjectOfType<AudioSource>();
         //DontDestroyOnLoad(MusicSource);
     }

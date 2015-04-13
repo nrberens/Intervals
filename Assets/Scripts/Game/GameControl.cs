@@ -29,12 +29,13 @@ public class GameControl : MonoBehaviour {
     void Start() {
         currentScore = 0;
         leaderboard = GetComponent<Leaderboard>();
-        //Load();
+        Load();
         //MusicSource = FindObjectOfType<AudioSource>();
         //DontDestroyOnLoad(MusicSource);
     }
 
     public void Save() {
+        Debug.Log("Saving to " + Application.persistentDataPath + "/playerInfo.dat");
         BinaryFormatter bf = new BinaryFormatter();
         FileStream file = File.Create(Application.persistentDataPath + "/playerInfo.dat");
 
@@ -43,16 +44,18 @@ public class GameControl : MonoBehaviour {
 
         bf.Serialize(file, data);
         file.Close();
+        Debug.Log("Saved!");
     }
 
     public void Load() {
         if (File.Exists(Application.persistentDataPath + "/playerInfo.dat")) {
+            Debug.Log("File exists, loading from " + Application.persistentDataPath + "/playerInfo.dat");
             BinaryFormatter bf = new BinaryFormatter();
             FileStream file = File.Open(Application.persistentDataPath + "/playerInfo.dat", FileMode.Open);
             PlayerData data = (PlayerData) bf.Deserialize(file);
 
             leaderboard.scoresFromFile = data.scores;
-
+            Debug.Log("Loaded!");
         }
     }
 

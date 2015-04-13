@@ -80,7 +80,7 @@ public class UIController : MonoBehaviour
 		if(ingameUI.gameObject.activeInHierarchy == true) {
 			scoreText.text = "score: " + GameControl.gc.currentScore; 
 			if(PhoneController.pc.currentPhone != null) {
-				phoneText.text = "turns to reach phone: " + PhoneController.pc.turnsUntilGameOver;
+				phoneText.text = "current phone value: " + PhoneController.pc.currentValue;
 			} else {
 				phoneText.text = "turns until new phone: " + PhoneController.pc.turnsUntilPhoneSpawn;
 			}

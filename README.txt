@@ -10,7 +10,7 @@ INTERVALS. is a turn-based tactics game. You are the BLUE soldier. Enemies are R
 Each turn you can move one square or attack an enemy in line of sight. After your turn, enemies will take their turn as a group.
 Your bullets travel instantly. Enemy bullets travel one square per turn. One shot kills.
 Enemies will spawn in every few turns.
-Every 25 turns a phone will drop into the map.
+Every 30 turns a phone will drop into the map.
 You must reach the phone within 20 turns or the game will end.
 
 CONTROLS

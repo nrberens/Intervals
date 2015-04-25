@@ -78,15 +78,17 @@ public class MeleeAI : FSM {
                 StartCoroutine(_ec.Shooter.Shoot(dir));
             }
             else {
-                _ec.Mover.Move(dir, Distance);
+                //TODO check for valid movement
+                if (_ec.Mover.CheckForValidMovement(dir, Distance)) {
+                    _ec.Mover.Move(dir, Distance);
+                    return;
+                }
             }
-            return;
-
         }
 
-        //TODO check for LOS to LOS-flagged node
-        //TODO if yes, move toward that node
-        //TODO if no, move randomly
+        //check for LOS to LOS-flagged node
+        //if yes, move toward that node
+        //if no, move randomly
         MoveNode closestLOSNode = GetClosestLOSNode();
 
         if (closestLOSNode != null) {
@@ -95,12 +97,15 @@ public class MeleeAI : FSM {
             Direction? moveDir = GetDirectionToNode(_ec.Mover.currentNode, closestLOSNode);
 
             if (moveDir != null) {
+                //TODO check for valid movement
                 Direction dir = (Direction)moveDir;
-                _ec.Mover.Move(dir, Distance);
+                if (_ec.Mover.CheckForValidMovement(dir, Distance)) {
+                    _ec.Mover.Move(dir, Distance);
+                    return;
+                }
             } else {
                 Debug.Log("Direction returned null.");
             }
-            return;
         }
 
         //No LOS, move randomly

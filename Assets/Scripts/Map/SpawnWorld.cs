@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Linq;
 
 public class SpawnWorld : MonoBehaviour {
 
@@ -56,7 +57,9 @@ public class SpawnWorld : MonoBehaviour {
 
             if (map.Nodes[enemyX, enemyZ].objectsOnNode.Count == 0 && !map.Nodes[enemyX, enemyZ].blocksMovement) {
 				spawnedEnemies++;
-                GameObject enemy = (GameObject) Instantiate(map.EnemyTransform.gameObject);
+                int typeCoin = UnityEngine.Random.Range(0, map.EnemyTransforms.Length);
+                Transform enemyTransform = map.EnemyTransforms[typeCoin];
+                GameObject enemy = (GameObject) Instantiate(enemyTransform.gameObject);
                 enemy.GetComponent<EnemyMover>().currentNode = map.Nodes[enemyX, enemyZ];
 
                 EnemiesController.ec.Enemies.Add(enemy.GetComponent<EnemyController>());

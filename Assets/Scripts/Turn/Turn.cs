@@ -66,7 +66,8 @@ public class Turn : MonoBehaviour {
                         phoneX = Random.Range(0, map.mapWidth);
                         phoneZ = Random.Range(0, map.mapLength);
                     } while (map.Nodes[phoneX, phoneZ].objectsOnNode.Count > 0 || map.Nodes[phoneX, phoneZ].blocksMovement);
-                    map.SpawnEnemy(phoneX, phoneZ);
+                    int typeCoin = UnityEngine.Random.Range(0, map.EnemyTransforms.Length);
+                    map.SpawnEnemy(phoneX, phoneZ, (Map.EnemyType)typeCoin);
                     turnsUntilNextSpawn = turnsBetweenSpawns;
                 }
                 //Spawn phones

@@ -51,10 +51,10 @@ public class Turn : MonoBehaviour {
                 PhoneController.pc.turnsUntilPhoneSpawn--;
 
                 if (PhoneController.pc.currentPhone != null) {
-                    PhoneController.pc.turnsUntilGameOver--;
+                    PhoneController.pc.currentValue -= PhoneController.pc.decrementValue;
 
-                    if (PhoneController.pc.turnsUntilGameOver <= 0) {
-                        PhoneController.pc.GameOverViaPhone();
+                    if (PhoneController.pc.currentValue <= 0) {
+                        PhoneController.pc.DestroyPhone();
                     }
                 }
 
@@ -66,7 +66,8 @@ public class Turn : MonoBehaviour {
                         phoneX = Random.Range(0, map.mapWidth);
                         phoneZ = Random.Range(0, map.mapLength);
                     } while (map.Nodes[phoneX, phoneZ].objectsOnNode.Count > 0 || map.Nodes[phoneX, phoneZ].blocksMovement);
-                    map.SpawnEnemy(phoneX, phoneZ);
+                    int typeCoin = UnityEngine.Random.Range(0, map.EnemyTransforms.Length);
+                    map.SpawnEnemy(phoneX, phoneZ, (Map.EnemyType)typeCoin);
                     turnsUntilNextSpawn = turnsBetweenSpawns;
                 }
                 //Spawn phones
@@ -79,6 +80,7 @@ public class Turn : MonoBehaviour {
                     } while (map.Nodes[phoneX, phoneZ].objectsOnNode.Count > 0 || map.Nodes[phoneX, phoneZ].blocksMovement);
 
                     map.SpawnPhone(phoneX, phoneZ);
+                    PhoneController.pc.currentValue = PhoneController.pc.startValue;
                     PhoneController.pc.turnsUntilPhoneSpawn = PhoneController.pc.turnsBetweenPhones;
                     PhoneController.pc.turnsUntilGameOver = PhoneController.pc.turnsToReachPhone;
                 }

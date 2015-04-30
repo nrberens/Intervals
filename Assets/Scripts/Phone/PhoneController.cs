@@ -14,6 +14,9 @@ public class PhoneController : MonoBehaviour, ITurnBased {
     public int turnsUntilPhoneSpawn;
     public int turnsToReachPhone;
     public int turnsUntilGameOver;
+    public int startValue;
+    public int decrementValue;
+    public int currentValue;
 
 
     void Awake() {
@@ -30,6 +33,8 @@ public class PhoneController : MonoBehaviour, ITurnBased {
 	    CurrentTurn = FindObjectOfType<Turn>();
         turnsUntilPhoneSpawn = 0;
 	    turnsUntilGameOver = turnsToReachPhone;
+
+	    currentValue = startValue;
 	}
 	
 	// Update is called once per frame
@@ -47,5 +52,10 @@ public class PhoneController : MonoBehaviour, ITurnBased {
         StartCoroutine(wfa.ManageFallAwayTiming());
         UIController.ui.DisplayGameOverUI();
         //GameControl.gc.Save();PlayerController.pc.GameOver();
+    }
+
+    public void DestroyPhone() {
+        currentPhone.GetComponent<Phone>().DestroyPhone();
+        currentPhone = null;
     }
 }

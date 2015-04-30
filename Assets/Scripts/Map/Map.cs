@@ -5,7 +5,13 @@ using System.Collections;
 using UnityEngine.SocialPlatforms;
 
 public class Map : MonoBehaviour {
-    public Transform EnemyTransform;
+    public enum EnemyType {
+        Smart = 0,
+        CQB = 1,
+        Berserker = 2
+    }
+
+    public Transform[] EnemyTransforms = new Transform[3]; 
     public Transform PhoneTransform;
     public int mapWidth, mapLength;
 	public float fallTime;
@@ -208,11 +214,11 @@ public class Map : MonoBehaviour {
         return closestNode;
     }
 
-    public void SpawnEnemy(int nodeX, int nodeZ) {
+    public void SpawnEnemy(int nodeX, int nodeZ, EnemyType type) {
         MoveNode node = Nodes[nodeX, nodeZ];
 
         if (node.objectsOnNode.Count == 0) {
-            GameObject enemy = (GameObject) Instantiate(EnemyTransform.gameObject);
+            GameObject enemy = (GameObject) Instantiate(EnemyTransforms[(int)type].gameObject);
             int enemyX = nodeX;
             int enemyZ = nodeZ;
             enemy.GetComponent<EnemyMover>().currentNode = Nodes[enemyX, enemyZ];

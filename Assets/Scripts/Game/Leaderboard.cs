@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -12,22 +13,21 @@ public class Leaderboard : MonoBehaviour {
         defaultScores = new List<LeaderboardEntry>();
         scoresFromFile = new List<LeaderboardEntry>();
         leaderboard = new List<LeaderboardEntry>();
-        defaultScores.Add(new LeaderboardEntry("AAA", 500));
-        defaultScores.Add(new LeaderboardEntry("BBB", 400));
-        defaultScores.Add(new LeaderboardEntry("CCC", 300));
-        defaultScores.Add(new LeaderboardEntry("DDD", 280));
-        defaultScores.Add(new LeaderboardEntry("EEE", 250));
-        defaultScores.Add(new LeaderboardEntry("FFF", 215));
-        defaultScores.Add(new LeaderboardEntry("GGG", 200));
-        defaultScores.Add(new LeaderboardEntry("HHH", 150));
-        defaultScores.Add(new LeaderboardEntry("III", 100));
+        defaultScores.Add(new LeaderboardEntry("AAA", 200));
+        defaultScores.Add(new LeaderboardEntry("BBB", 180));
+        defaultScores.Add(new LeaderboardEntry("CCC", 150));
+        defaultScores.Add(new LeaderboardEntry("DDD", 120));
+        defaultScores.Add(new LeaderboardEntry("EEE", 110));
+        defaultScores.Add(new LeaderboardEntry("FFF", 105));
+        defaultScores.Add(new LeaderboardEntry("GGG", 100));
+        defaultScores.Add(new LeaderboardEntry("HHH", 050));
+        defaultScores.Add(new LeaderboardEntry("III", 040));
         defaultScores.Add(new LeaderboardEntry("JJJ", 015));
     }
 
 	// Use this for initialization
 	void Start () {
-        //HACK add score from 'file' to test sorting
-        scoresFromFile.Add(new LeaderboardEntry("NAT", 310));
+
 	    GenerateLeaderboard();
 
 	    foreach (LeaderboardEntry entry in leaderboard) {
@@ -61,6 +61,7 @@ public class Leaderboard : MonoBehaviour {
 
     public void AddEntry(LeaderboardEntry entry) {
         leaderboard.Add(entry);
+        scoresFromFile.Add(entry);
         leaderboard.Sort(delegate(LeaderboardEntry a, LeaderboardEntry b) {
             if (a.score > b.score) return 1;
             if (a.score < b.score) return -1;
@@ -69,5 +70,6 @@ public class Leaderboard : MonoBehaviour {
 
         leaderboard.Reverse();
         leaderboard = leaderboard.GetRange(0, 10);
+        GameControl.gc.Save();
     }
 }

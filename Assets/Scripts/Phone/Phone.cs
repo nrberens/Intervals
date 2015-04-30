@@ -25,11 +25,16 @@ public class Phone : MonoBehaviour {
         if (collision.transform.tag == "Player") {
             //TODO destroy phone, play sound effect, reset timers
             AudioController.ac.PlayPhonePickUp();
-			GameControl.gc.currentScore += GameControl.gc.scorePerPhone;
+			GameControl.gc.currentScore += PhoneController.pc.currentValue;
             PhoneController.pc.currentPhone = null;
 			currentNode.RemoveFromNode (gameObject);
             Destroy(gameObject);
         }
+    }
+
+    public void DestroyPhone() {
+        currentNode.RemoveFromNode(gameObject);
+        Destroy(gameObject);
     }
 
     public IEnumerator StartPhoneRinging() {

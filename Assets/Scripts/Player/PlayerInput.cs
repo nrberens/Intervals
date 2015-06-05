@@ -29,23 +29,10 @@ public class PlayerInput : MonoBehaviour
 			//INPUT PHASE 
 			//TODO track time between inputs, only allow input every half second or so
 			if (allowInput && !PlayerController.pc.acting) {
-				if (!playerSelected) {
-					if (Input.GetMouseButtonDown (0)) {
-						// create layerMask - test only player layer = 8
-						int playerLayer = 8;
-						int layerMask = 1 << playerLayer;
-						Transform target = GetTargetOfClick (layerMask);
-						//If target is player
-						if (target.tag == "Player") {
-							playerSelected = true;
 							PlayerController.pc.Mover.TagMovableNodes ();
 							PlayerController.pc.Shooter.TagShootableEnemies ();
-						} else if (target == null) {
-							//Do nothing
-						}
-					}
-				} else if (playerSelected) {
-					if (Input.GetMouseButton (0)) {
+
+
 						for (int i = 0; i < PlayerController.pc.Shooter.shootableEnemies.Count; i++) {
 							EnemyController enemy = PlayerController.pc.Shooter.shootableEnemies [i];
 							ShootableNode shootableNode = enemy.Mover.currentNode.transform.parent.GetComponentInChildren<ShootableNode> ();
@@ -112,17 +99,16 @@ public class PlayerInput : MonoBehaviour
 							selectedBlock = null;
 						}
 						
-					} else if (Input.GetMouseButtonUp (0)) {
-						playerSelected = false;
+					 if (Input.GetMouseButtonDown (0)) {
 						selectedBlock = null;
 						PlayerController.pc.Mover.UnTagMovableNodes ();
 						PlayerController.pc.Shooter.UnTagShootableEnemies ();
 
 						// create layerMask = test enemies and world layer
-						int enemyLayer = 10;
-						int worldLayer = 11;
-						int layerMask = 1 << enemyLayer | 1 << worldLayer;
-						Transform target = GetTargetOfClick (layerMask);
+						enemyLayer = 10;
+						worldLayer = 11;
+						layerMask = 1 << enemyLayer | 1 << worldLayer;
+						target = GetTargetOfClick (layerMask);
 						Debug.Log ("MouseUp - Target = " + target);
 						if (target != null) {
 							if (target.tag == "Enemy" && PlayerController.pc.Shooter.CheckValidTarget(target)) {
@@ -141,7 +127,7 @@ public class PlayerInput : MonoBehaviour
 							}
 						}
 					}
-				}
+				
                 //END OF TURN
 			} else if (!allowInput && !PlayerController.pc.acting) {
 				PlayerController.pc.EndPhase ();
